@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Imports\LeadImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
+use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Log;
+use App\Services\LeadService;
+use App\Http\Resources\LeadCollection;
+use App\Http\Resources\LeadResource;
+
+
+class LeadController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    use ApiResponse;
+
+    protected $leadService;
+
+    public function __construct(LeadService $leadService = null)
+    {
+        $this->leadService = $leadService;
+    }
+    // Import leads from the uploaded Excel file
+    public function importLead(Request $request)
+    {
+        // Validate the incoming request to ensure a file is uploaded and it is an Excel or CSV file
+        $validator = Validator::make($request->all(), [
+            'lead_file' => 'required|file|mimes:xlsx,csv',  // Validate for Excel or CSV files
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()
+            ], 422); // Unprocessable Entity
+        }
+
+        // Import the leads from the Excel file
+        try {
+            // The 'lead_file' comes from the frontend, handle the import
+            Excel::import(new LeadImport, $request->file('lead_file'));
+            return response()->json([
+                'message' => 'Leads imported successfully!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to import leads: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        try {
+            $responseArr = [];
+            $inputs = $request->all();
+            $leads = new LeadCollection($this->leadService->getList($inputs));
+            $responseArr = $leads->response()->getData(true);
+            $responseArr['message'] = 'Leads fetched successfully.';
+            return $this->successResponse($responseArr);
+        } catch (\Exception $e) {
+            Log::error('Leads fetched_api', ['error' => $e->getMessage()]);
+            report($e);
+            return $this->failResponse();
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Resquest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        $responseArr = [];
+        $inputs = $request->all();
+        try {
+            $responseArr['data'] = $this->leadService->store($inputs);
+            $responseArr['message'] = 'Lead Created Successfully.';
+            return $this->successResponse($responseArr);
+        } catch (\Exception $e) {
+            Log::error('Lead store api', ['error' => $e->getMessage()]);
+            report($e);
+            return $this->failResponse();
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        try {
+            $responseArr = [];
+            $responseArr['data'] = new LeadResource($this->leadService->show($id));
+            $responseArr['message'] = 'Lead fetched Successfully.';
+            return $this->successResponse($responseArr);
+        } catch (\Exception $e) {
+            Log::error('Lead fetched api', ['error' => $e->getMessage()]);
+            report($e);
+            return $this->failResponse();
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Resquest $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+
+        $responseArr = [];
+        $inputs = $request->all();
+        try {
+            $responseArr['data'] = $this->leadService->update($inputs, $id);
+            $responseArr['message'] = 'Lead Updated Successfully.';
+            return $this->successResponse($responseArr);
+        } catch (\Exception $e) {
+            Log::error('Lead update api', ['error' => $e->getMessage()]);
+            report($e);
+            return $this->failResponse();
+        }
+    }
+}
