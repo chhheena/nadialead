@@ -12,25 +12,25 @@
                     <div class="flex gap-2">
                         <select id="leadTags" @change="filter($event)" name="leadTag"
                             class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option selected>Select Lead Tag</option>
+                            <option value="" selected>Select Lead Tag</option>
                             <option v-for="tag in leadTags" :key="tag" :value="tag">{{ tag }}</option>
                         </select>
 
                         <select id="leadRatings" @change="filter($event)" name="rating"
                             class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option selected>Select Lead Rating</option>
+                            <option value="" selected>Select Lead Rating</option>
                             <option v-for="rating in leadRatings" :key="rating" :value="rating">{{ rating }}</option>
                         </select>
 
                         <select id="noteStrikeFirst" @change="filter($event)" name="noteStrikeFirst"
                             class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option selected>Select Note(Strike First)</option>
+                            <option value="" selected>Select Note(Strike First)</option>
                             <option v-for="note in noteStrikeFirst" :key="note" :value="note">{{ note }}</option>
                         </select>
 
                         <select id="statuses" @change="filter($event)" name="status"
                             class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option selected>Select Status</option>
+                            <option value="" selected>Select Status</option>
                             <option v-for="status in statuses" :key="status" :value="status">{{ status }}</option>
                         </select>
                     </div>
@@ -240,7 +240,6 @@ const search = ref("");
 const perPage = ref(10);
 const pageData = ref([]);
 const queryData = ref({
-    isRestore: "",
     page: 1,
     search: "",
     filters: {

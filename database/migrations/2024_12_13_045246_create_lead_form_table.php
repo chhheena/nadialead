@@ -33,7 +33,7 @@ return new class extends Migration
             $table->id();
             $table->string('column_key');
             $table->string('color');
-            $table->string('role');
+            $table->foreignId('role_id')->constrained()->onDelete('cascade');
         });
     }
 

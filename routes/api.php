@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LeadColorController;
 use App\Http\Controllers\LeadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('users', UserController::class);
 Route::post('/import/lead', [LeadController::class, 'importLead'])->name('import.lead');
 Route::apiResource('leads', LeadController::class);
+Route::apiResource('leadcolors', LeadColorController::class);
 
 
 
