@@ -24,7 +24,7 @@ class LeadColorController extends Controller
         $columns = Schema::getColumnListing((new Lead())->getTable());
 
         $row = LeadColor::find($id);
-        $colors = LeadColor::get();
+        $colors = LeadColor::with('roles')->get();
 
         return Inertia::render('Lead/LeadColor', compact('columns','roles', 'colors','row'));
     }
@@ -38,12 +38,13 @@ class LeadColorController extends Controller
         $data = $request->validated();
 
         if(!$id) {
-            $res = LeadColor::create($data);
-            $action = "added";
+            $lead = LeadColor::create($data);
         } else {
-            $res = LeadColor::where('id', $id)->update($data);
-            $action = "updated";
+            unset($data['column_key']);
+            $lead = LeadColor::where('id', $id)->update($data);
         }
+
+        $action = $id ? 'updated' : 'added';
 
         return redirect()->route('lead_color')->with('success', "Color to lead {$action} successfully.");
     }

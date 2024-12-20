@@ -25,11 +25,18 @@ class LeadColorPostRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'column_key' => ['required',Rule::in($this->getLeadColumns())],
+
+        $id = $this->route('id');
+
+        $arr = [
             'color' => ['required'],
-            'role' => ['required', Rule::in($this->roles())],
+            'role' => ['required', 'array', Rule::in($this->roles())],
         ];
+
+        if(!$id) { # On create new color
+            $arr['column_key'] = ['required',Rule::in($this->getLeadColumns())];
+        }
+        return $arr;
     }
 
     private function getLeadColumns()
