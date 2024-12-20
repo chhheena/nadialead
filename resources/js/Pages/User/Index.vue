@@ -172,6 +172,7 @@ const queryData = ref({
   page: 1,
   search: "",
 });
+
 const pagination = ref({
   currentPage: 1,
   lastPage: 1,

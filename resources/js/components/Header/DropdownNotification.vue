@@ -42,9 +42,9 @@ const notificationItems = ref([
 
 <template>
   <li class="relative" ref="target">
-    <Link
+    <div
       class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
-      href="#"
+
       @click.prevent="(dropdownOpen = !dropdownOpen), (notifying = false)"
     >
       <span
@@ -69,7 +69,7 @@ const notificationItems = ref([
           fill=""
         />
       </svg>
-    </Link>
+    </div>
 
     <!-- Dropdown Start -->
     <div

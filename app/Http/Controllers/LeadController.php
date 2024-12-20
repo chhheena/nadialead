@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LeadUpdateRequest;
 use Illuminate\Http\Request;
 use App\Imports\LeadImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -85,7 +86,6 @@ class LeadController extends Controller
      */
     public function store(Request $request)
     {
-
         $responseArr = [];
         $inputs = $request->all();
         try {
@@ -126,13 +126,11 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(LeadUpdateRequest $request, $id)
     {
-
         $responseArr = [];
-        $inputs = $request->all();
         try {
-            $responseArr['data'] = $this->leadService->update($inputs, $id);
+            $responseArr['data'] = $this->leadService->update($request->validated(), $id);
             $responseArr['message'] = 'Lead Updated Successfully.';
             return $this->successResponse($responseArr);
         } catch (\Exception $e) {
