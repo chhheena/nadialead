@@ -28,62 +28,103 @@ class CallRailCommand extends Command
      */
     public function handle()
     {
-        $this->info('Fetching CallRail data...');
+        $this->info('Fetching CallRail data started...');
 
-        $this->lead = Lead::latest()->select('lead_id','start_time')->first();
-        if($this->lead) {
-            $this->call_api(date('Y-m-d', strtotime($this->lead->start_time)));
+        if(!$sources = $this->get_source()) {
+            return false;
+        }
+
+        $lead = Lead::select('start_time')->orderBy('start_time', 'desc')->first();
+
+        if(!$lead) {
+            $start_date = date('Y-01-01');
         } else {
-            $this->call_api(date('Y-10-d'));
+            $start_date = date('Y-m-d', strtotime($lead->start_time));
+        }
+
+        foreach($sources as $source) {
+            $this->call_api($source, $start_date);
         }
 
         $this->info('Data fetched and saved successfully.');
     }
 
-
-
-    public function call_api($start_date, $offset = 0)
+    public function get_source()
     {
-        $data = CallRail::calls()->where(['start_date'=> $start_date, 'order' => 'asc'])->paginate(5, $offset);
+        $data = CallRail::source()->paginate(20);
+        $this->info('Fetching source...');
 
-        if($data['calls']) {
-            foreach($data['calls'] as $item) {
-                if($this->lead && $item['lead_id'] == $this->lead->lead_id) {
-                    $this->update($item);
-                } else {
-                    $this->insert($item);
-                }
-            }
-            return $this->call_api($start_date, $offset++);
+        $extracted = [];
+        if($data['trackers']) {
+
+            $this->info('Fetched all sources...');
+
+            $extracted = array_map(function($item) {
+                return [
+                    'id' => $item['id'],
+                    'name' => $item['name']
+                ];
+            }, $data['trackers']);
+
+        } else {
+            $this->info('Source is not found.');
         }
+
+        return $extracted;
+    }
+
+    public function call_api($source, $start_date, $offset = 0)
+    {
+        $this->info('CallRail api started...');
+
+        $end_date = date('Y-m-d');
+
+        $data = CallRail::calls()->where(
+            [
+                'start_date'=> $start_date,
+                'end_date' => date('Y-m-d'),
+                'order' => 'desc',
+                'tracker_id' => $source['id'],
+            ]
+        )->paginate(50, $offset);
+
+        if(!$data['calls']) {
+            $this->info("CallRail api has not data from $start_date to $end_date.");
+            return false;
+        }
+
+        $this->info("CallRail api has data fetched from $start_date to $end_date");
+
+        foreach($data['calls'] as $item) {
+            $hasLead = Lead::where('lead_id', $item['id'])->exists();
+            if(!$hasLead) {
+                $this->insert($item, $source);
+            }
+        }
+        return $this->call_api($source, $start_date, $offset++);
     }
 
 
+    public function insert($data, $source)
+    {
+        $this->info("CallRail api data started insert in Lead.");
 
-    public function insert($data) {
-        //dd($data);
-        return Lead::create([
+        $data = Lead::create([
             'lead_id' => $data['id'],
             'start_time' => date('Y-m-d H:i:s', strtotime($data['start_time'])),
             'name' => $data['customer_name'],
-            //'phone' => implode(',', [$data['business_phone_number'], $data['customer_phone_number'], $data['tracking_phone_number']]),
             'phone' => $data['customer_phone_number'],
             'city' => $data['customer_city'],
             'state' => $data['customer_state'],
             'status' => 'Waiting On Intake Status',
-        ]);
-    }
-
-    public function update($data) {
-
-        return Lead::where('lead_id', $this->lead->lead_id)->update([
-            'start_time' => date('Y-m-d H:i:s', strtotime($data['start_time'])),
-            'name' => $data['customer_name'],
-            //'phone' => implode(',', [$data['business_phone_number'], $data['customer_phone_number'], $data['tracking_phone_number']]),
-            'phone' => $data['customer_phone_number'],
-            'city' => $data['customer_city'],
-            'state' => $data['customer_state'],
+            'source' => $source['name'],
         ]);
 
+        if($data) {
+            $this->info("CallRail api data inserted in Lead.");
+        } else {
+            $this->info("CallRail api data inserted Failed");
+        }
+        return $data;
     }
 }

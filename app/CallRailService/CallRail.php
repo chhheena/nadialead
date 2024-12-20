@@ -2,49 +2,10 @@
 
 namespace App\CallRailService;
 
-use App\Exceptions\CallRailException;
-use Illuminate\Support\Facades\Http;
+use App\CallRailService\Foundation\CallRailSetup;
 
-class CallRail
+class CallRail extends CallRailSetup
 {
-    protected string $api_url;
-    protected string $version;
-    protected string $accountID;
-    protected string $headerAuthToken;
-    protected $http;
-    private $paramsArr = [];
-    private $route;
-
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-
-        $this->api_url = config('callrail.api_url');
-        $this->accountID = config('callrail.account_id');
-        $this->version = config('callrail.version');
-        $this->headerAuthToken = "Token token=".config('callrail.token');
-
-        $this->http = Http::withHeaders([
-            'Authorization' => "$this->headerAuthToken"
-        ]);
-    }
-
-    public function url($path = '')
-    {
-        $root = rtrim($this->api_url, '/') . '/'. $this->version . '/a/'. $this->accountID .'/';
-        return $root. ltrim($path, '/');
-    }
-
-    public function routeUrl()
-    {
-        if(!$this->route) {
-            throw new CallRailException("Route is not defined. please add function ->calls()|->users()|->company()");
-        }
-        return $this->route;
-    }
-
     public function calls()
     {
         $this->route = $this->url('/calls.json');
@@ -63,47 +24,17 @@ class CallRail
         return $this;
     }
 
-    public function where(array $params = [])
+    public function source()
     {
-        $this->paramsArr = $params;
+        $this->route = $this->url('/trackers.json');
+        $this->paramsArr['type'] = 'source';
         return $this;
     }
 
-    public function get()
+    public function session()
     {
-        $this->routeUrl();
-
-        $response = $this->http->get(
-            $this->route,
-            $this->paramsArr
-        );
-
-        if ($response->successful()) {
-            return $response->json();
-        } elseif ($response->failed()) {
-            return $response->body();
-        }
-    }
-
-    public function paginate($perPage, $offset = 0)
-    {
-        $this->routeUrl();
-
-        $params = [...$this->paramsArr, ...[
-            'relative_pagination' => 'true',
-            'per_page' => $perPage,
-            'offset' => $offset
-        ]];
-
-        $response = $this->http->get(
-            $this->route,
-            $params
-        );
-
-        if ($response->successful()) {
-            return $response->json();
-        } elseif ($response->failed()) {
-            return $response->body();
-        }
+        $this->route = $this->url('/trackers.json');
+        $this->paramsArr['type'] = 'session';
+        return $this;
     }
 }
