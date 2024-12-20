@@ -41,7 +41,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         ]);
     })->name('lead.update');
 
-    Route::get('/lead-colors/{id?}', [LeadColorController::class, 'index'])->name('lead_color');
+    Route::get('/lead-colors', [LeadColorController::class, 'color_list_page'])->name('lead_color');
+
+
+
     Route::post('/lead-colors/{id?}', [LeadColorController::class, 'store']);
     Route::delete('/lead-colors/{id?}', [LeadColorController::class, 'delete'])->name('lead_color.delete');
     Route::get('/assign-permissions', [RolePermissionController::class, 'index'])->name('permission.assign');
