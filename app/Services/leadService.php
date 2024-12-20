@@ -14,16 +14,36 @@ class leadService
         try {
             $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
             $leads = Lead::latest();
+
+            if (!empty($inputs['filters'])) {
+                if (!empty($inputs['filters']['leadTag'])) {
+                    $lead_tags = $inputs['filters']['leadTag'];
+                    $leads->where('lead_tag', $lead_tags);
+                }
+                if (!empty($inputs['filters']['rating'])) {
+                    $lead_tags = $inputs['filters']['rating'];
+                    $leads->where('rating', $lead_tags);
+                }
+                if (!empty($inputs['filters']['noteStrikeFirst'])) {
+                    $lead_tags = $inputs['filters']['noteStrikeFirst'];
+                    $leads->where('note_strike_first', $lead_tags);
+                }
+                if (!empty($inputs['filters']['status'])) {
+                    $lead_tags = $inputs['filters']['status'];
+                    $leads->where('status', $lead_tags);
+                }
+            }
             if (isset($inputs["search"])) {
                 $search = trim($inputs["search"]);
                 $leads = $leads->where(function ($q) use ($search) {
-                    $q->where('email', 'LIKE', '%' . $search . '%');
+                    $q->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('phone',$search)->orWhere('phone',$search);
                 });
             }
             $perPage = !empty($inputs["perPage"]) ? $inputs["perPage"] : $perPage;
             return $perPage != 'all' ? $leads->paginate($perPage) : $leads->get();
         } catch (\Exception | RequestException $e) {
-            Log::error('lead fetched service', ['error' => $e->getMessage()]);
+            Log::error('leads fetched service', ['error' => $e->getMessage()]);
             throw $e;
         }
     }
@@ -31,10 +51,7 @@ class leadService
     public function store($inputs)
     {
         try {
-            DB::beginTransaction();
-            $model = Lead::create($inputs);
-            DB::commit();
-            return $model;
+            return Lead::create($inputs);
         } catch (\Exception | RequestException $e) {
             DB::rollback();
             Log::error('lead store service', ['error' => $e->getMessage()]);
@@ -42,25 +59,20 @@ class leadService
         }
     }
 
-    public function show($id)
+    public function show($lead)
     {
         try {
-            $model = Lead::find($id);
-            return $model;
+            return $lead;
         } catch (\Exception | RequestException $e) {
             Log::error('lead fetched service', ['error' => $e->getMessage()]);
             throw $e;
         }
     }
 
-    public function update($inputs, $id)
+    public function update($inputs, $lead)
     {
         try {
-            DB::beginTransaction();
-            $lead = Lead::find($id);
-            $model = $lead->update($inputs);
-            DB::commit();
-            return $model;
+            return $lead->update($inputs);
         } catch (\Exception | RequestException $e) {
             DB::rollback();
             Log::error('lead update service', ['error' => $e->getMessage()]);

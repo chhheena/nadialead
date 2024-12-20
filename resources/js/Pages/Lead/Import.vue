@@ -27,18 +27,16 @@
 </template>
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { router } from '@inertiajs/vue3'
 
 
-
-const form = ref({
-    leadFile: null, // Store the file
-});
+const form = ref({});
 
 const handleFileChange = (event) => {
     form.value.leadFile = event.target.files[0];
@@ -49,16 +47,17 @@ const submitForm = () => {
         alert("Please select a file to import.");
         return;
     }
-
     const formData = new FormData();
     formData.append("lead_file", form.value.leadFile);
     axios
         .post(route("import.lead"), formData)
         .then((response) => {
-            console.log(response.data.message); // Success message
+            if (response.status) {
+                router.visit('/leads');
+            }
         })
         .catch((error) => {
-            console.error("Error importing leads:", error.response.data); // Error message
+            console.log(error);
         });
 };
 </script>

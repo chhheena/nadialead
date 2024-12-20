@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Services\LeadService;
 use App\Http\Resources\LeadCollection;
 use App\Http\Resources\LeadResource;
-
+use App\Models\Lead;
 
 class LeadController extends Controller
 {
@@ -48,6 +48,7 @@ class LeadController extends Controller
             // The 'lead_file' comes from the frontend, handle the import
             Excel::import(new LeadImport, $request->file('lead_file'));
             return response()->json([
+                'status'  => true,
                 'message' => 'Leads imported successfully!',
             ], 200);
         } catch (\Exception $e) {
@@ -72,28 +73,7 @@ class LeadController extends Controller
             $responseArr['message'] = 'Leads fetched successfully.';
             return $this->successResponse($responseArr);
         } catch (\Exception $e) {
-            Log::error('Leads fetched_api', ['error' => $e->getMessage()]);
-            report($e);
-            return $this->failResponse();
-        }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Resquest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $responseArr = [];
-        $inputs = $request->all();
-        try {
-            $responseArr['data'] = $this->leadService->store($inputs);
-            $responseArr['message'] = 'Lead Created Successfully.';
-            return $this->successResponse($responseArr);
-        } catch (\Exception $e) {
-            Log::error('Lead store api', ['error' => $e->getMessage()]);
+            Log::error('Leads fetched api', ['error' => $e->getMessage()]);
             report($e);
             return $this->failResponse();
         }
@@ -105,11 +85,11 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Lead $lead)
     {
         try {
             $responseArr = [];
-            $responseArr['data'] = new LeadResource($this->leadService->show($id));
+            $responseArr['data'] = new LeadResource($this->leadService->show($lead));
             $responseArr['message'] = 'Lead fetched Successfully.';
             return $this->successResponse($responseArr);
         } catch (\Exception $e) {
@@ -126,11 +106,11 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LeadUpdateRequest $request, $id)
+    public function update(LeadUpdateRequest $request, Lead $lead)
     {
         $responseArr = [];
         try {
-            $responseArr['data'] = $this->leadService->update($request->validated(), $id);
+            $responseArr['data'] = $this->leadService->update($request->all(), $lead);
             $responseArr['message'] = 'Lead Updated Successfully.';
             return $this->successResponse($responseArr);
         } catch (\Exception $e) {

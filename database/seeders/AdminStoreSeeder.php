@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +21,7 @@ class AdminStoreSeeder extends Seeder
         ]);
 
         Role::insert([
-            ['name' => 'admin'], ['name' => 'team'], ['name' => 'client']
+            ['name' => 'admin','guard_name' => 'web'], ['name' => 'team','guard_name' => 'web'], ['name' => 'client','guard_name' => 'web']
         ]);
 
         $user->assignRole('admin');

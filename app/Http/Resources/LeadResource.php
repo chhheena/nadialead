@@ -15,7 +15,6 @@ class LeadResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-
         return [
             'id'                    => $this->id,
             'name'                  => $this->name,
@@ -30,10 +29,10 @@ class LeadResource extends JsonResource
             'note_strike_first'     => $this->note_strike_first,
             'action'                => $this->action,
             'status'                => $this->status,
-            'created_at'            => $this->created_at,
-            'updated_at'            => $this->updated_at,
             'start_time'            => $this->start_time,
-            'lead_id'               => $this->lead_id
+            'lead_id'               => $this->lead_id,
+            'created_at'            => $this->created_at,
+            'updated_at'            => $this->updated_at
         ];
     }
 }
