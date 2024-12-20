@@ -17,7 +17,7 @@ class AdminStoreSeeder extends Seeder
         $user = User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('12345678')
+            'password' => Hash::make('admin@123')
         ]);
 
         Role::insert([
