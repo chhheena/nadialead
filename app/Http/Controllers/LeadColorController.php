@@ -45,17 +45,17 @@ class LeadColorController extends Controller
             $action = "updated";
         }
 
-        return response()->route('lead_color')->with('success', "Color to lead {$action} successfully.");
+        return redirect()->route('lead_color')->with('success', "Color to lead {$action} successfully.");
     }
 
     public function delete(LeadColor $id)
     {
         $row = LeadColor::find($id);
         if(!$row) {
-            return response()->route('lead_color')->with('error', "Something went wrong.");
+            return redirect()->route('lead_color')->with('error', "Something went wrong.");
         }
         $row->delete();
-        return response()->route('lead_color')->with('success', "Color of lead is deleted successfully.");
+        return redirect()->route('lead_color')->with('success', "Color of lead is deleted successfully.");
     }
 
 }
