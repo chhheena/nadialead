@@ -1,5 +1,8 @@
 
 import _ from "lodash";
+import {useToast} from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+const $toast = useToast();
 
 export const trans = (string, args) => {
     let value = _.get(window.i18n, string);
@@ -56,3 +59,11 @@ export const convertJsonToFormData = (data) => {
     return formData
 };
 
+export const notificationMessage = (type, message) => {
+    const toast = $toast[type](message,{
+        position: 'top-right',
+        duration: 3000,
+        dismissible: true
+    });
+    return toast;
+}

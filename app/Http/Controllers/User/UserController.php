@@ -10,6 +10,7 @@ use App\Services\UserService;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 class UserController
 {
@@ -33,7 +34,12 @@ class UserController
          * @return \Illuminate\Http\Response
         */
         public function index(Request $request){
-
+            $responseArr = [];
+            $inputs = $request->all();
+            $users = new UserCollection($this->userService->getList($inputs));
+            $responseArr = $users->response()->getData(true);
+            $responseArr['message'] = 'Users fetched successfully.';
+            return $this->successResponse($responseArr);
             try {
                 $responseArr = [];
                 $inputs = $request->all();
@@ -56,7 +62,14 @@ class UserController
         */
         public function store(Request $request)
         {
-            dd($request->all());
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'confirmPassword' => 'required',
+                'role' => 'required'
+            ]);
+
             $responseArr = [];
             $inputs = $request->all();
             try {
@@ -79,6 +92,7 @@ class UserController
          * @return \Illuminate\Http\Response
         */
         public function show($id) {
+            
             try {
                 $responseArr = [];
                 $responseArr['data']['row'] = new UserResource($this->userService->show($id));
@@ -101,10 +115,16 @@ class UserController
         */
         public function update(Request $request , $id)
         {
+
             $responseArr = [];
             $inputs = $request->only('id','name','email','role','parent_id','password');
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'role' => 'required'
+            ]);
             //$inputs = $request->all();
-            dd($inputs);
+            //dd($inputs);
 
             try {
                 $responseArr['data'] = $this->userService->update($inputs,$id);
