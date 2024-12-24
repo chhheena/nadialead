@@ -38,4 +38,5 @@ class UserPostRequest extends FormRequest
             'status' => ['required'],
         ];
     }
+
 }

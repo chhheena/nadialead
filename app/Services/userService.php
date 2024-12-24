@@ -13,8 +13,9 @@ class userService
     public function getList($inputs)
     {
         try {
+
             $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
-            $users = User::latest();
+            $users = User::with(['roles','team'])->latest();
             if (isset($inputs["search"])) {
                 $search = trim($inputs["search"]);
                 $users = $users->where(function ($q) use ($search) {
@@ -23,6 +24,7 @@ class userService
             }
             $perPage = !empty($inputs["perPage"]) ? $inputs["perPage"] : $perPage;
             return $perPage != 'all' ? $users->paginate($perPage) : $users->get();
+
         } catch (\Exception | RequestException $e) {
             Log::error('user fetched service', ['error' => $e->getMessage()]);
             throw $e;
@@ -45,13 +47,8 @@ class userService
 
     public function show($id)
     {
-        try {
-            $model = User::find($id);
-            return $model;
-        } catch (\Exception | RequestException $e) {
-            Log::error('user fetched service', ['error' => $e->getMessage()]);
-            throw $e;
-        }
+        $row =  User::with(['roles','team'])->find($id);
+        return $row;
     }
 
     public function update($inputs, $id)

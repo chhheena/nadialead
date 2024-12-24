@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\UserService;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 
 class UserController
 {
@@ -53,12 +54,14 @@ class UserController
          * @param \Illuminate\Http\Resquest $request
          * @return \Illuminate\Http\Response
         */
-        public function store(Request $request){
-
+        public function store(Request $request)
+        {
+            dd($request->all());
             $responseArr = [];
             $inputs = $request->all();
             try {
                 $responseArr['data'] = $this->userService->store($inputs);
+
                 $responseArr['message'] = 'User Created Successfully.';
                 return $this->successResponse($responseArr);
             } catch (\Exception $e) {
@@ -78,7 +81,8 @@ class UserController
         public function show($id) {
             try {
                 $responseArr = [];
-                $responseArr['data'] = new UserResource($this->userService->show($id));
+                $responseArr['data']['row'] = new UserResource($this->userService->show($id));
+                $responseArr['data']['team'] = User::select('id','name')->role('team')->get();
                 $responseArr['message'] = 'User fetched Successfully.';
                 return $this->successResponse($responseArr);
             } catch (\Exception $e) {
@@ -86,7 +90,6 @@ class UserController
                 report($e);
                 return $this->failResponse();
             }
-
         }
 
         /**
@@ -96,10 +99,13 @@ class UserController
          * @param int $id
          * @return \Illuminate\Http\Response
         */
-        public function update(Request $request , $id) {
-
+        public function update(Request $request , $id)
+        {
             $responseArr = [];
-            $inputs = $request->all();
+            $inputs = $request->only('id','name','email','role','parent_id','password');
+            //$inputs = $request->all();
+            dd($inputs);
+
             try {
                 $responseArr['data'] = $this->userService->update($inputs,$id);
                 $responseArr['message'] = 'User Updated Successfully.';

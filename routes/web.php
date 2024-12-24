@@ -14,7 +14,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     })->name('dashboard');
 
     Route::get('/users', function () {
-        // Permission::create(['name' => 'view_dashboard']);
         return Inertia::render('User/Index');
     })->name('users');
 
@@ -43,11 +42,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/lead-colors', [LeadColorController::class, 'color_list_page'])->name('lead_color');
 
-
-
     Route::post('/lead-colors/{id?}', [LeadColorController::class, 'store']);
     Route::delete('/lead-colors/{id?}', [LeadColorController::class, 'delete'])->name('lead_color.delete');
     Route::get('/assign-permissions', [RolePermissionController::class, 'index'])->name('permission.assign');
+
     Route::get('lead/import', function () {
         return Inertia::render('Lead/Import');
     })->name('lead.import.page');

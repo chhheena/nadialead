@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Lead;
+use App\Models\LeadColor;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
@@ -34,8 +35,9 @@ class LeadColorPostRequest extends FormRequest
         ];
 
         if(!$id) { # On create new color
-            $arr['column_key'] = ['required',Rule::in($this->getLeadColumns())];
+            $arr['column_key'] = ['required',Rule::in($this->getLeadColumns()), Rule::unique(LeadColor::class)];
         }
+        dd($arr);
         return $arr;
     }
 

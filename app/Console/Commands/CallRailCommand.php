@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\CallRailService\Facades\CallRail;
+use App\Models\Enums\LeadStatus;
 use App\Models\Lead;
 use Illuminate\Console\Command;
 
@@ -101,6 +102,9 @@ class CallRailCommand extends Command
                 $this->insert($item, $source);
             }
         }
+
+        sleep(60);
+
         return $this->call_api($source, $start_date, $offset++);
     }
 
@@ -116,7 +120,7 @@ class CallRailCommand extends Command
             'phone' => $data['customer_phone_number'],
             'city' => $data['customer_city'],
             'state' => $data['customer_state'],
-            'status' => 'Waiting On Intake Status',
+            'status' => LeadStatus::WaitingOnIntakeStatus->value,
             'source' => $source['name'],
         ]);
 

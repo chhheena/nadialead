@@ -12,18 +12,25 @@ class AdminStoreSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+    public static $num = 2;
+
     public function run(): void
     {
+        foreach(range(1, 10) as $team) {
+            $this->runLoop();
+            self::$num++;
+        }
+    }
+
+    private function runLoop()
+    {
         $user = User::create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin@123')
+            'name' => 'client '. self::$num,
+            'email' => 'client_'.self::$num.'@gmail.com',
+            'password' => Hash::make('admin@123'),
+            'parent' => 111
         ]);
 
-        Role::insert([
-            ['name' => 'admin','guard_name' => 'web'], ['name' => 'team','guard_name' => 'web'], ['name' => 'client','guard_name' => 'web']
-        ]);
-
-        $user->assignRole('admin');
+        $user->assignRole('client');
     }
 }
