@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Lead;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class leadService
@@ -12,6 +13,8 @@ class leadService
     public function getList($inputs)
     {
         try {
+            $userRole = Auth::user();
+            dd($userRole);
             $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
             $leads = Lead::latest();
 

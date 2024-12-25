@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
+use App\Helpers\ApiResponse;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 class userService
 {
     public function getList($inputs)
@@ -65,4 +67,101 @@ class userService
             throw $e;
         }
     }
+
+    public function login($request)
+    {
+        try {
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user || ! Hash::check($request->password, $user->password)) {
+                return ApiResponse::error('The provided credentials are incorrect.', 500);
+            }
+            $token = $user->createToken(env('APP_NAME'))->plainTextToken;
+            $response = [
+                'user_detail' => $user,
+                'token' => $token
+            ];
+            return ApiResponse::success($response);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
+    public function logout($request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return ApiResponse::success('User logout successfully');
+    }
+
+    public function forgetPassword($request)
+    {
+        $userDetail = User::where('email', $request->email)->first();
+        if (!isset($userDetail)) {
+            return ApiResponse::error('Email is not exist', 401);
+        }
+        // SendForgetPasswordJob::dispatch($userDetail);
+        return ApiResponse::success('Please check you email, We have send you forget password link on you email');
+    }
+
+    public function resetPassword($request)
+    {
+        try {
+            $userId = Crypt::decrypt($request->user_id);
+            $user = User::find($userId);
+
+            if (!isset($user)) {
+                return ApiResponse::error('User is not exist.', 500);
+            }
+            $user->update([
+                'password' => $request->password
+            ]);
+            return ApiResponse::success('Password has been updated successfully');
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
+    public function socialHandler($userDetail)
+    {
+        try {
+            if ($userDetail) {
+                $user = User::updateOrCreate([
+                    'email' => $userDetail['email'],
+                ], [
+                    'name' => $userDetail['name'],
+                    'google_id' => $userDetail['google_id'],
+                    'email_verified_at' => now(),
+                    'password' => rand(100000, 999999)
+                ]);
+
+                $token = $user->createToken(env('APP_NAME'))->plainTextToken;
+                $response = [
+                    'user_detail' => $user,
+                    'token' => $token
+                ];
+
+                return ApiResponse::success($response);
+            } else {
+                return ApiResponse::error('Invalid Google token', 401);
+            }
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
+    public function createUser($request)
+    {
+        try {
+            $userDetail = $request->all();
+            $createUser = User::create($userDetail);
+            if ($createUser) {
+                $message = 'User created successfully';
+                return ApiResponse::success($message);
+            }
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
+
 }

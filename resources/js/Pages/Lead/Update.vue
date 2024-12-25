@@ -140,7 +140,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SelectInput from "@/Components/SelectInput.vue";
-import { convertJsonToFormData } from "@/helpers";
+import { convertJsonToFormData, notificationMessage } from "@/helpers";
 import { router, Link } from '@inertiajs/vue3';
 
 
@@ -177,6 +177,7 @@ const submitForm = () => {
     axios.post(route('leads.update', { id: form.value.id }), formData, config)
         .then((response) => {
             if (response.status) {
+                notificationMessage('success', 'Lead updated successfully');
                 router.visit('/leads');
             }
         })

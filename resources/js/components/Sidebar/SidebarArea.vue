@@ -66,7 +66,7 @@ const menuGroups = ref([
                   />
                 </svg>`,
         label: 'Roles',
-        route: route('leads')
+        route: route('roles')
       },
       {
         icon: `<svg

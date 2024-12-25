@@ -5,6 +5,13 @@ use App\Http\Controllers\RolePermissionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Enums\{LeadTag, LeadRating, NoteStrikeFirst, LeadStatus};
+use Illuminate\Support\Facades\Auth;
+
+
+Route::get('/', function () {
+    return Inertia::render('Auth/Login');
+})->name('login');
+
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -16,6 +23,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/users', function () {
         return Inertia::render('User/Index');
     })->name('users');
+
+    Route::get('/roles', function () {
+        return Inertia::render('Role/Index');
+    })->name('roles');
 
     Route::get('user/{id?}', function ($id = '') {
         return Inertia::render('User/Add-Edit', ['id' => $id]);
@@ -51,5 +62,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     })->name('lead.import.page');
 });
 
+Route::get('get-user', function(){
+    return Auth::user();
+});
 
-require __DIR__ . '/auth.php';
+// require __DIR__ . '/auth.php';

@@ -15,7 +15,7 @@ use Spatie\Permission\Models\Role;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens,HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $guarded = ['id'];
     protected $appends = ['status_label'];

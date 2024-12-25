@@ -34,12 +34,7 @@ class UserController
          * @return \Illuminate\Http\Response
         */
         public function index(Request $request){
-            $responseArr = [];
-            $inputs = $request->all();
-            $users = new UserCollection($this->userService->getList($inputs));
-            $responseArr = $users->response()->getData(true);
-            $responseArr['message'] = 'Users fetched successfully.';
-            return $this->successResponse($responseArr);
+            dd(Auth::user());
             try {
                 $responseArr = [];
                 $inputs = $request->all();

@@ -33,8 +33,8 @@ import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { router } from '@inertiajs/vue3'
-
+import { router } from '@inertiajs/vue3';
+import { notificationMessage } from "@/helpers";
 
 const form = ref({});
 
@@ -53,6 +53,7 @@ const submitForm = () => {
         .post(route("import.lead"), formData)
         .then((response) => {
             if (response.status) {
+                notificationMessage('success', 'File imported successfully!');
                 router.visit('/leads');
             }
         })

@@ -17,9 +17,8 @@ onClickOutside(target, () => {
     <div class="relative" ref="target">
         <div class="flex items-center gap-4"  @click.prevent="dropdownOpen = !dropdownOpen">
             <span class="hidden text-right lg:block">
-                <span class="block text-sm font-medium text-black dark:text-white">{{ $page.props.auth.user.name
-                    }}</span>
-                <span class="block text-xs font-medium">{{ $page.props.auth.user.email }}</span>
+                <span class="block text-sm font-medium text-black dark:text-white">dfd</span>
+                <span class="block text-xs font-medium">dd</span>
             </span>
 
             <span class="h-12 w-12 rounded-full">
@@ -56,7 +55,7 @@ onClickOutside(target, () => {
                 </li>
 
             </ul>
-            <TransParentButton :href="route('logout')" method="post" as="button"
+            <TransParentButton href="" method="post" as="button"
                 class="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                 <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
