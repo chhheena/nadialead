@@ -73,7 +73,6 @@
                         <InputError class="mt-2" :message="errors.confirmPassword ? errors.confirmPassword[0] : '' " />
                     </div>
                 </div>
-
                 <div class="mb-6">
                     <InputLabel for="role" value="Role" class="text-gray-600" />
                     <SelectInput v-model="form.role"
@@ -90,17 +89,17 @@
                 <div class="mt-4" v-if="form.role == 'client'">
                     <InputLabel for="parent" value="Assign Team" class="text-gray-600" />
                     <SelectInput
-                        v-model="form.parent_id"
+                        v-model="form.team_id"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value="" selected>Select team</option>
-                        <option :value="user.id" v-for="(user, index) in team">{{ user.name }}</option>
+                        <option :value="user.id" v-for="(user) in team" :key="user">{{ user.name }}</option>
                     </SelectInput>
                 </div>
                 <div class="mt-8 flex justify-end">
                     <!-- <a class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300" :href="route('users')">Cancel </a> -->
-                    <router-link 
-                        class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300" 
+                    <router-link
+                        class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300"
                         :to="{name: 'users'}">
                         Cancel
                     </router-link>
@@ -146,7 +145,6 @@ const show = () => {
         .get(endpoint)
         .then((response) => {
             form.value = response.data.data.row;
-            form.value.role = response.data.data.row.role[0],
             team.value = response.data.data.team
         })
         .catch((error) => {})
@@ -169,14 +167,11 @@ const submitForm = () => {
     if (form.value.id) {
         formData.append("_method", "PUT");
         method = "post";
-        // actionUrl = "users.update";
         actionUrl = `${baseUrl}users/${userId.value}`;
     } else {
         method = "post";
-        // actionUrl = "users.store";
         actionUrl = `${baseUrl}users`;
     }
-    
     axios[method](actionUrl, formData, config)
         .then((response) => {
             let messageType = (form.value.id) ? 'updated' : 'created';

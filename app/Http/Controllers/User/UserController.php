@@ -86,7 +86,6 @@ class UserController
          * @return \Illuminate\Http\Response
         */
         public function show($id) {
-            
             try {
                 $responseArr = [];
                 $responseArr['data']['row'] = new UserResource($this->userService->show($id));
