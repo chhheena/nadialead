@@ -3,13 +3,23 @@ import { onClickOutside } from '@vueuse/core'
 import DropdownLink from '@/Components/DropdownLink.vue'
 import TransParentButton from '@/Components/TransParentButton.vue'
 import { ref } from 'vue'
-
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const authStore = useAuthStore();
 const target = ref(null)
 const dropdownOpen = ref(false)
 
 onClickOutside(target, () => {
     dropdownOpen.value = false
 })
+
+const logoutHandler = () => {
+    authStore.logout();
+    router.push({name: 'login'});
+}
+
+
 </script>
 
 <template>
@@ -39,8 +49,8 @@ onClickOutside(target, () => {
             <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
 
                 <li>
-                    <DropdownLink :href="route('profile.edit')"
-                        class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                    <!-- <DropdownLink :href="route('profile.edit')" -->
+                        <DropdownLink class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -55,7 +65,7 @@ onClickOutside(target, () => {
                 </li>
 
             </ul>
-            <TransParentButton href="" method="post" as="button"
+            <button @click="logoutHandler" href="" method="post" as="button"
                 class="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                 <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +77,7 @@ onClickOutside(target, () => {
                         fill="" />
                 </svg>
                 Log Out
-            </TransParentButton>
+            </button>
         </div>
         <!-- Dropdown End -->
     </div>

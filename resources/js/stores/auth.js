@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios'; // Assuming you're using Axios for HTTP requests
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -35,7 +36,7 @@ export const useAuthStore = defineStore('auth', {
             this.user = null;
             this.token = null;
             localStorage.removeItem('token');
-            delete axios.defaults.headers.common['Authorization'];
+            return;
         },
 
         async forgotPassword(email) {

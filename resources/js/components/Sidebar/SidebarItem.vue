@@ -25,13 +25,19 @@ const handleItemClick = () => {
 
 <template>
   <li>
-    <Link :href="item.route"
+    <router-link :to="{ name: `${item.route}` }"
+      class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
+      
+     
+    
+
+    <!-- <Link :href="item.route"
       class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
       @click.prevent="handleItemClick"
       :class="{
         'bg-graydark dark:bg-meta-4': sidebarStore.page === item.label
       }"
-    >
+    > -->
       <span v-html="item.icon"></span>
 
       {{ item.label }}
@@ -53,7 +59,8 @@ const handleItemClick = () => {
           fill=""
         />
       </svg>
-    </Link>
+    <!-- </Link> -->
+  </router-link>
 
     <!-- Dropdown Menu Start -->
     <div class="translate transform overflow-hidden" v-show="sidebarStore.page === item.label">
