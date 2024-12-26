@@ -1,159 +1,108 @@
 <template>
-    <div
-            class="rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800"
-        >
-            <!-- Filter and Actions -->
-            <div class="space-y-4">
-                <!-- First Line: Filter and Alternative Button -->
-                <div class="flex flex-wrap items-center justify-between">
-                    <!-- Course Filter -->
-                    <select
-                        @change="changeFilter($event)"
-                        id="course"
-                        class="block w-full lg:w-64 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                        <option selected disabled>Select Role</option>
-                        <option value="client">Client</option>
-                        <option value="team">Team</option>
-                    </select>
+    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+        <!-- Filter and Actions -->
+        <div class="space-y-4">
+            <!-- First Line: Filter and Alternative Button -->
+            <div class="flex flex-wrap items-center justify-between">
+                <!-- Course Filter -->
+                <select @change="changeFilter($event)" id="course"
+                    class="block w-full lg:w-64 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option selected disabled>Select Role</option>
+                    <option value="client">Client</option>
+                    <option value="team">Team</option>
+                </select>
 
-                    <!-- Alternative Button -->
-                    <!-- <Link
+                <!-- Alternative Button -->
+                <!-- <Link
                         :href="route('user.add-edit')"
                         class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                     >
                         Add User
                     </Link> -->
-                </div>
-
-                <!-- Second Line: Show Entries and Search Bar -->
-                <div class="flex flex-wrap items-center justify-between">
-                    <!-- Entries Per Page -->
-                    <div class="flex items-center space-x-2">
-                        <label
-                            for="perPage"
-                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                        >
-                            Show
-                        </label>
-                        <select
-                            id="perPage"
-                            v-model="perPage"
-                            @change="pageChange"
-                            class="text-sm rounded-lg w-16 border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white p-2"
-                        >
-                            <option value="10">10</option>
-                            <option value="30">30</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                        <span class="text-sm text-gray-600 dark:text-gray-400"
-                            >Entries</span
-                        >
-                    </div>
-
-                    <!-- Search Bar -->
-                    <div class="relative w-full md:w-64">
-                        <input
-                            type="search"
-                            v-model="search"
-                            placeholder="Search..."
-                            class="block w-full px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        <svg
-                            class="absolute right-3 top-3 h-4 w-4 text-gray-500 dark:text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 20 20"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M15 15l-4.35-4.35M10.5 7.5a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                        </svg>
-                    </div>
-                </div>
             </div>
 
-            <!-- Table Section -->
-            <div class="mt-2 overflow-x-auto">
-                <table
-                    class="w-full min-w-full border-collapse border border-gray-200 rounded-lg shadow-md dark:border-gray-700"
-                >
-                    <thead class="border-b-2 border-gray-300">
-                        <tr
-                            class="bg-gray-2 text-left dark:bg-meta-4 whitespace-nowrap"
-                        >
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                #
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                Name
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                Email
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                Role
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                Team (If Client)
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="(user, index) in users"
-                            :key="user"
-                            class="border-t last:border-b hover:bg-gray-50 dark:hover:bg-gray-700"
-                        >
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300"
-                            >
-                                {{
-                                    (pagination.currentPage - 1) *
-                                        pagination.perPage +
-                                    index +
-                                    1
-                                }}
-                            </td>
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                                {{ user.name }}
-                            </td>
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                                {{ user.email }}
-                            </td>
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 capitalize">
-                                {{ Object.values(user.role).join(', ') }}
-                            </td>
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                                {{ user.parent }}
-                            </td>
-                            <td class="px-4 py-3 text-right">
-                                <div class="flex items-end space-x-3.5">
-                                    <!-- <Link :href="route('user.add-edit', user.id)" class="hover:text-primary">
+            <!-- Second Line: Show Entries and Search Bar -->
+            <div class="flex flex-wrap items-center justify-between">
+                <!-- Entries Per Page -->
+                <div class="flex items-center space-x-2">
+                    <label for="perPage" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Show
+                    </label>
+                    <select id="perPage" v-model="perPage" @change="pageChange"
+                        class="text-sm rounded-lg w-16 border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white p-2">
+                        <option value="10">10</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Entries</span>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="relative w-full md:w-64">
+                    <input type="search" v-model="search" placeholder="Search..."
+                        class="block w-full px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500" />
+                    <svg class="absolute right-3 top-3 h-4 w-4 text-gray-500 dark:text-gray-400"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 15l-4.35-4.35M10.5 7.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="mt-2 overflow-x-auto">
+            <table
+                class="w-full min-w-full border-collapse border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+                <thead class="border-b-2 border-gray-300">
+                    <tr class="bg-gray-2 text-left dark:bg-meta-4 whitespace-nowrap">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                            #
+                        </th>
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                            Name
+                        </th>
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                            Email
+                        </th>
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                            Role
+                        </th>
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                            Team (If Client)
+                        </th>
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(user, index) in users" :key="user"
+                        class="border-t last:border-b hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                            {{
+                                (pagination.currentPage - 1) *
+                                pagination.perPage +
+                                index +
+                                1
+                            }}
+                        </td>
+                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                            {{ user.name }}
+                        </td>
+                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                            {{ user.email }}
+                        </td>
+                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 capitalize">
+                            {{ Object.values(user.role).join(', ') }}
+                        </td>
+                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                            {{ user.parent }}
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            <div class="flex items-end space-x-3.5">
+                                <!-- <Link :href="route('user.add-edit', user.id)" class="hover:text-primary">
                                         <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -164,31 +113,25 @@
                                                 fill="" />
                                         </svg>
                                     </Link> -->
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div
-                class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 text-sm text-gray-700 dark:text-gray-300"
-            >
-                <div>
-                    Showing {{ pageData.from }} to {{ pageData.to }} of
-                    {{ pageData.total }}
-                    entries
-                </div>
-                <Pagination
-                    v-if="pagination.lastPage != 1"
-                    @refreshTable="createTable"
-                    :currentPage="pagination.currentPage"
-                    :lastPage="pagination.lastPage"
-                    :total="pagination.total"
-                />
-            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
+        <!-- Pagination -->
+        <div
+            class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 text-sm text-gray-700 dark:text-gray-300">
+            <div>
+                Showing {{ pageData.from }} to {{ pageData.to }} of
+                {{ pageData.total }}
+                entries
+            </div>
+            <Pagination v-if="pagination.lastPage != 1" @refreshTable="createTable"
+                :currentPage="pagination.currentPage" :lastPage="pagination.lastPage" :total="pagination.total" />
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -235,13 +178,13 @@ const createTable = (page) => {
             params: queryData.value,
         })
         .then((response) => {
-            consoel.log(response, 'response');
+            console.log(response, 'response');
             users.value = response.data.data;
             pageData.value = response.data.meta;
             setPagination(response);
         })
-        .catch((error) => {})
-        .finally(() => {});
+        .catch((error) => { })
+        .finally(() => { });
 };
 
 const pageChange = (event) => {

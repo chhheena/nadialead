@@ -6,8 +6,8 @@ import GuestLayout from "@/Layouts/GuestLayout.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Dashboard from "@/Pages/Dashboard.vue";
 import Role from "@/Pages/Role/Index.vue";
-
-
+import User from "@/Pages/User/Index.vue"
+import AddEditUser from "@/Pages/User/Add-Edit.vue"
 
 
 
@@ -55,6 +55,21 @@ const routes = [
         path: "/roles",
         name: "roles",
         component: Role,
+      },
+      {
+        path: "/users",
+        name: "users",
+        component: User,
+      },
+      {
+        path: "/add/user",
+        name: "add.user",
+        component: AddEditUser,
+      },
+      {
+        path: "/edit/user/:id",
+        name: "edit.user",
+        component: AddEditUser,
       }
     ],
   },
