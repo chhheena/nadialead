@@ -111,7 +111,7 @@
                                             fill="" />
                                     </svg>
                                 </button>
-                                <Link :href="route('lead_color.delete', { id: color.id })" class="hover:text-primary">
+                                <!-- <Link :href="route('lead_color.delete', { id: color.id })" class="hover:text-primary">
                                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -127,7 +127,7 @@
                                         d="M6.72245 9.67504C6.38495 9.70317 6.1037 10.0125 6.13182 10.35L6.3287 12.825C6.35683 13.1625 6.63808 13.4157 6.94745 13.4157C6.97558 13.4157 6.97558 13.4157 7.0037 13.4157C7.3412 13.3875 7.62245 13.0782 7.59433 12.7407L7.39745 10.2657C7.39745 9.90004 7.08808 9.64692 6.72245 9.67504Z"
                                         fill="" />
                                 </svg>
-                                </Link>
+                                </Link> -->
                             </div>
                         </td>
                     </tr>
@@ -222,9 +222,9 @@ import axios from "axios";
 import { notificationMessage } from "@/helpers";
 import HTTP from "../../axios.js";
 
-const props = defineProps({
-    roles: Array,
-});
+// const props = defineProps({
+//     roles: Array,
+// });
 
 
 const columns = [
@@ -260,12 +260,14 @@ const queryData = ref({
         role: ""
     },
 });
+const roles = ref([]);
 const pagination = ref({
     currentPage: 1,
     lastPage: 1,
     total: 0,
     perPage: 10,
 });
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const setPagination = (response) => {
     pagination.value.total = response.data.meta.total;
@@ -274,10 +276,10 @@ const setPagination = (response) => {
 };
 const submitForm = () => {
     let method = "post";
-    let endPoint = `${import.meta.env.VITE_API_BASE_URL}leadcolors`;
+    let endPoint = `${baseUrl}leadcolors`;
     if (form.value.id) {
         method = "put";
-        endPoint = `${import.meta.env.VITE_API_BASE_URL}leadcolors/${form.value.id}`;
+        endPoint = `${baseUrl}leadcolors/${form.value.id}`;
     }
     const requestData = { ...form.value };
     HTTP[method](endPoint, requestData)
@@ -299,8 +301,20 @@ const submitForm = () => {
 
 const createTable = (page) => {
     queryData.value.page = page;
-    axios
-        .get(route("leadcolors.index"), {
+    // axios
+    //     .get(route("leadcolors.index"), {
+    //         params: queryData.value,
+    //     })
+    //     .then((response) => {
+    //         colors.value = response.data.data;
+    //         pageData.value = response.data.meta;
+    //         setPagination(response);
+    //     })
+    //     .catch((error) => { })
+    //     .finally(() => { });
+    let endpoint = `${baseUrl}leadcolors`
+    HTTP
+        .get(endpoint, {
             params: queryData.value,
         })
         .then((response) => {
@@ -355,5 +369,20 @@ const closeModal = () => {
     }, 200);
 }
 
+onMounted(() => {
+    getRoles();
+});
+
+const getRoles = () => {
+    let endpoint = `${baseUrl}roles`;
+    HTTP
+        .get(endpoint)
+        .then((response) => {
+            roles.value = response.data.data;
+            console.log(roles, 'get-roles');
+        })
+        .catch((error) => console.log(error))
+        .finally(() => { });
+}
 
 </script>

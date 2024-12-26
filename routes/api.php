@@ -40,11 +40,6 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 // Route::apiResource('users', UserController::class);
 
 
-
-
-
-
-
 Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
