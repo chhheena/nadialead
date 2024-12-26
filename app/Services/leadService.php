@@ -13,11 +13,8 @@ class leadService
     public function getList($inputs)
     {
         try {
-            $userRole = Auth::user();
-            dd($userRole);
             $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
             $leads = Lead::latest();
-
             if (!empty($inputs['filters'])) {
                 if (!empty($inputs['filters']['leadTag'])) {
                     $lead_tags = $inputs['filters']['leadTag'];

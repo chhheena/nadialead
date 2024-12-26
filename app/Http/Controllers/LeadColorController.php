@@ -68,18 +68,17 @@ class LeadColorController extends Controller
      */
     public function store(Request $request)
     {
-
         $responseArr = [];
         $inputs = $request->all();
-        // try {
+        try {
             $responseArr['data'] = $this->leadColorService->store($inputs);
             $responseArr['message'] = 'Lead Color Created Successfully.';
             return $this->successResponse($responseArr);
-        // } catch (\Exception $e) {
-        //     Log::error('Lead Color store api', ['error' => $e->getMessage()]);
-        //     report($e);
-        //     return $this->failResponse();
-        // }
+        } catch (\Exception $e) {
+            Log::error('Lead Color store api', ['error' => $e->getMessage()]);
+            report($e);
+            return $this->failResponse();
+        }
     }
 
     /**

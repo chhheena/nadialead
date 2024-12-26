@@ -1,11 +1,13 @@
 import Login from "@/Pages/Auth/Login.vue";
 import Register from "@/Pages/Auth/Register.vue";
-import ForgotPassword from "@/Pages/Auth/ForgotPassword.vue";
-import ResetPassword from "@/Pages/Auth/ResetPassword.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Dashboard from "@/Pages/Dashboard.vue";
 import Role from "@/Pages/Role/Index.vue";
+import Lead from "@/Pages/Lead/Index.vue";
+import LeadColor from "@/Pages/Lead/LeadColor.vue";
+import LeadImport from "@/Pages/Lead/Import.vue";
+
 
 
 
@@ -55,6 +57,21 @@ const routes = [
         path: "/roles",
         name: "roles",
         component: Role,
+      },
+      {
+        path: "/leads",
+        name: "leads",
+        component: Lead,
+      },
+      {
+        path: "/lead-colors",
+        name: "lead-colors",
+        component: LeadColor,
+      },
+      {
+        path: "/lead-import",
+        name: "lead-import",
+        component: LeadImport,
       }
     ],
   },

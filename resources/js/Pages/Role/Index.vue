@@ -25,7 +25,6 @@
                         Add User
                     </Link> -->
                 </div>
-
                 <!-- Second Line: Show Entries and Search Bar -->
                 <div class="flex flex-wrap items-center justify-between">
                     <!-- Entries Per Page -->
@@ -100,29 +99,14 @@
                             <th
                                 class="py-4 px-4 font-medium text-black dark:text-white"
                             >
-                                Email
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                Role
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
-                                Team (If Client)
-                            </th>
-                            <th
-                                class="py-4 px-4 font-medium text-black dark:text-white"
-                            >
                                 Action
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            v-for="(user, index) in users"
-                            :key="user"
+                            v-for="(role, index) in roles"
+                            :key="role"
                             class="border-t last:border-b hover:bg-gray-50 dark:hover:bg-gray-700"
                         >
                             <td
@@ -137,23 +121,11 @@
                             </td>
                             <td
                                 class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                                {{ user.name }}
-                            </td>
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                                {{ user.email }}
-                            </td>
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 capitalize">
-                                {{ Object.values(user.role).join(', ') }}
-                            </td>
-                            <td
-                                class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                                {{ user.parent }}
+                                {{ role.name }}
                             </td>
                             <td class="px-4 py-3 text-right">
                                 <div class="flex items-end space-x-3.5">
-                                    <!-- <Link :href="route('user.add-edit', user.id)" class="hover:text-primary">
+                                    <!-- <Link :href="route('role.add-edit', role.id)" class="hover:text-primary">
                                         <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -204,7 +176,7 @@ const appStore = useAppStore();
 provide("appStore", appStore);
 
 const searchTimeout = ref(null);
-const users = ref([]);
+const roles = ref([]);
 const search = ref("");
 const perPage = ref(10);
 const pageData = ref([]);
@@ -229,14 +201,13 @@ const setPagination = (response) => {
 
 const createTable = (page) => {
     queryData.value.page = page;
-    let endPoint = `${import.meta.env.VITE_API_BASE_URL}users`;
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}roles`;
     HTTP
         .get(endPoint, {
             params: queryData.value,
         })
         .then((response) => {
-            consoel.log(response, 'response');
-            users.value = response.data.data;
+            roles.value = response.data.data;
             pageData.value = response.data.meta;
             setPagination(response);
         })
