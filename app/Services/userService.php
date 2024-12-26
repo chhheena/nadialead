@@ -15,9 +15,18 @@ class userService
     public function getList($inputs)
     {
         try {
-
             $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
-            $users = User::with(['roles', 'team'])->has('roles')->orderBy('id','DESC');
+            $sortOrder = !empty($inputs['sortOrder']) ? $inputs['sortOrder'] : 'DESC';
+            $sortBy = !empty($inputs['sortBy']) ? $inputs['sortBy'] : 'id';
+            $users = User::with(['roles', 'team'])->has('roles')->orderBy($sortBy, $sortOrder);
+            if (!empty($inputs['filters'])) {
+                if (!empty($inputs['filters']['role'])) {
+                    $role = $inputs['filters']['role'];
+                    $users->whereHas('roles', function ($query) use ($role) {
+                        $query->where('name', $role);
+                    });
+                }
+            }
             if (isset($inputs["search"])) {
                 $search = trim($inputs["search"]);
                 $users = $users->where(function ($q) use ($search) {
