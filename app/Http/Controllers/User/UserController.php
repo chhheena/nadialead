@@ -110,15 +110,12 @@ class UserController
         {
 
             $responseArr = [];
-            $inputs = $request->only('id','name','email','role','parent_id','password');
             $request->validate([
                 'name' => 'required',
                 'email' => 'required|email',
                 'role' => 'required'
             ]);
-            //$inputs = $request->all();
-            //dd($inputs);
-
+            $inputs = $request->all();
             try {
                 $responseArr['data'] = $this->userService->update($inputs,$id);
                 $responseArr['message'] = 'User Updated Successfully.';
