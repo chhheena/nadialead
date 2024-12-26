@@ -7,9 +7,8 @@ import Role from "@/Pages/Role/Index.vue";
 import Lead from "@/Pages/Lead/Index.vue";
 import LeadColor from "@/Pages/Lead/LeadColor.vue";
 import LeadImport from "@/Pages/Lead/Import.vue";
-
-
-
+import User from "@/Pages/User/Index.vue"
+import AddEditUser from "@/Pages/User/Add-Edit.vue"
 
 
 
@@ -72,6 +71,19 @@ const routes = [
         path: "/lead-import",
         name: "lead-import",
         component: LeadImport,
+        path: "/users",
+        name: "users",
+        component: User,
+      },
+      {
+        path: "/add/user",
+        name: "add.user",
+        component: AddEditUser,
+      },
+      {
+        path: "/edit/user/:id",
+        name: "edit.user",
+        component: AddEditUser,
       }
     ],
   },
