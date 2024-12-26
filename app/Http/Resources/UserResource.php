@@ -16,7 +16,6 @@ class UserResource extends JsonResource
 
     public function toArray(Request $request) : array
     {
-        dd(Auth::user());
         return [
             'id'            => $this->id,
             'name'          => $this->name,

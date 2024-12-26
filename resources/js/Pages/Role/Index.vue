@@ -1,8 +1,5 @@
 <template>
-    <Head title="Dashboard" />
-
-    <AuthenticatedLayout>
-        <div
+    <div
             class="rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800"
         >
             <!-- Filter and Actions -->
@@ -21,12 +18,12 @@
                     </select>
 
                     <!-- Alternative Button -->
-                    <Link
+                    <!-- <Link
                         :href="route('user.add-edit')"
                         class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                     >
                         Add User
-                    </Link>
+                    </Link> -->
                 </div>
 
                 <!-- Second Line: Show Entries and Search Bar -->
@@ -156,7 +153,7 @@
                             </td>
                             <td class="px-4 py-3 text-right">
                                 <div class="flex items-end space-x-3.5">
-                                    <Link :href="route('user.add-edit', user.id)" class="hover:text-primary">
+                                    <!-- <Link :href="route('user.add-edit', user.id)" class="hover:text-primary">
                                         <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -166,7 +163,7 @@
                                                 d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
                                                 fill="" />
                                         </svg>
-                                    </Link>
+                                    </Link> -->
                                 </div>
                             </td>
                         </tr>
@@ -192,7 +189,6 @@
                 />
             </div>
         </div>
-    </AuthenticatedLayout>
 </template>
 
 <script setup>
@@ -201,7 +197,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Pagination from "@/Components/Pagination.vue";
 import { useAppStore } from "@/stores";
 import BreadcrumbDefault from "@/components/Breadcrumbs/BreadcrumbDefault.vue";
-import axios from "axios";
+import HTTP from "../../axios.js";
 import { Link } from "@inertiajs/vue3";
 
 const appStore = useAppStore();
@@ -233,11 +229,13 @@ const setPagination = (response) => {
 
 const createTable = (page) => {
     queryData.value.page = page;
-    axios
-        .get(route("users.index"), {
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}users`;
+    HTTP
+        .get(endPoint, {
             params: queryData.value,
         })
         .then((response) => {
+            consoel.log(response, 'response');
             users.value = response.data.data;
             pageData.value = response.data.meta;
             setPagination(response);

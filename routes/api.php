@@ -27,8 +27,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
-Route::apiResource('users', UserController::class);
+    Route::apiResource('users', UserController::class);
+});
+
+// Route::apiResource('users', UserController::class);
 Route::post('/import/lead', [LeadController::class, 'importLead'])->name('import.lead');
 Route::apiResource('leads', LeadController::class);
 Route::apiResource('leadcolors', LeadColorController::class);

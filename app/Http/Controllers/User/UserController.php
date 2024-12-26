@@ -34,7 +34,6 @@ class UserController
          * @return \Illuminate\Http\Response
         */
         public function index(Request $request){
-            dd(Auth::user());
             try {
                 $responseArr = [];
                 $inputs = $request->all();
