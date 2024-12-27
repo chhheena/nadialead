@@ -19,7 +19,8 @@ const logoutHandler = () => {
     router.push({name: 'login'});
 }
 
-const userName = computed(() => authStore.getUser.name);
+const userName = computed(() => authStore.getUser?.name);
+const userRole = computed(() => authStore?.getUserRole);
 
 </script>
 
@@ -29,7 +30,7 @@ const userName = computed(() => authStore.getUser.name);
         <div class="flex items-center gap-4"  @click.prevent="dropdownOpen = !dropdownOpen">
             <span class="hidden text-right lg:block">
                 <span class="block text-sm font-medium text-black dark:text-white">{{userName}}</span>
-                <span class="block text-xs font-medium">dd</span>
+                <span class="block text-xs font-medium">{{userRole}}</span>
             </span>
 
             <span class="h-12 w-12 rounded-full">

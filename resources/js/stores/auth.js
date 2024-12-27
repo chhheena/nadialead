@@ -11,11 +11,13 @@ export const useAuthStore = defineStore('auth', {
         token: null,
         loading: false,
         error: null,
+        userRole: ''
     }),
     getters: {
         isAuthenticated: (state) => !!state.token,
         getUser: (state) => state.user,
-        getErrors: (state) => state.error
+        getErrors: (state) => state.error,
+        getUserRole: (state) => state.userRole
     },
     actions: {
         async login(formData) {
@@ -26,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
                 const response = await axios.post(endPoint, formData);
                 this.token = response.data.data.token;
                 this.user = response.data.data.user_detail;
-                console.log(this.user, 'user-details')
+                this.userRole = this.user?.roles[0]?.name;
                 localStorage.setItem('token', this.token);
                 http.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
                 return response.data.status;
@@ -41,6 +43,7 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             this.user = null;
             this.token = null;
+            this.userRole = '';
             localStorage.removeItem('token');
             return;
         },

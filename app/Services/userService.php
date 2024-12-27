@@ -48,6 +48,7 @@ class userService
         try {
             DB::beginTransaction();
             $model = User::create($inputs);
+            $model->assignRole($inputs['role']);
             DB::commit();
             return $model;
         } catch (\Exception  | RequestException $e) {
@@ -82,7 +83,9 @@ class userService
     {
         try {
             $user = User::where('email', $request->email)->first();
-
+            info([
+                'user-details' => $user->getRoleNames()->toarray()
+            ]);
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return ApiResponse::error('The provided credentials are incorrect.', 500);
             }
@@ -163,6 +166,7 @@ class userService
     {
         try {
             $userDetail = $request->all();
+            // $user->assignRole($validatedData['role']);
             $createUser = User::create($userDetail);
             if ($createUser) {
                 $message = 'User created successfully';
