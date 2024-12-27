@@ -6,6 +6,7 @@ import UpdateProfileInformationForm from './Partials/UpdateProfileInformationFor
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
 import { Head } from '@inertiajs/vue3';
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
+import { ref } from 'vue';
 
 defineProps({
     mustVerifyEmail: {
@@ -15,14 +16,16 @@ defineProps({
         type: String,
     },
 });
+
+const pageTitle = ref('Profile');
+
+
 </script>
 
 <template>
-    <Head title="Profile" />
 
-    <AuthenticatedLayout>
-
-        <BreadcrumbDefault :pageTitle="pageTitle" />
+    <!-- <Head title="Profile" />-->
+    <BreadcrumbDefault :pageTitle="pageTitle" />
 
 
         <div>
@@ -48,7 +51,7 @@ defineProps({
                 </DefaultCard>
             </div>
 
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <DefaultCard cardTitle="Delete Account">
                     <div
                         class="bg-white p-4 shadow sm:rounded-lg sm:p-8"
@@ -56,7 +59,6 @@ defineProps({
                         <DeleteUserForm class="max-w-xl" />
                     </div>
                 </DefaultCard>
-            </div>
+            </div> -->
         </div>
-    </AuthenticatedLayout>
 </template>

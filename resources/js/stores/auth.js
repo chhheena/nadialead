@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import axios from 'axios'; // Assuming you're using Axios for HTTP requests
 import { useRouter } from 'vue-router';
 const router = useRouter();
+import http from "@/axios.js"
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -12,6 +14,8 @@ export const useAuthStore = defineStore('auth', {
     }),
     getters: {
         isAuthenticated: (state) => !!state.token,
+        getUser: (state) => state.user,
+        getErrors: (state) => state.error
     },
     actions: {
         async login(formData) {
@@ -28,6 +32,7 @@ export const useAuthStore = defineStore('auth', {
                 // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
             } catch (err) {
                 this.error = err.response?.data?.message || 'Login failed';
+                
             } finally {
                 this.loading = false;
             }
@@ -52,17 +57,39 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async fetchUser() {
+        async updateProfileInfo(payload) {
             this.loading = true;
             this.error = null;
+            let endPoint = `${this.baseURL}update/profile`;
             try {
-                const response = await axios.get('/api/auth/user');
-                this.user = response.data.user;
+                let response = await http.post(endPoint, payload);
+                this.user = response.data.data;
+                return response
             } catch (err) {
-                this.error = err.response?.data?.message || 'Could not fetch user';
+                this.error = err.response?.data?.message || 'Request failed';
             } finally {
                 this.loading = false;
             }
         },
+
+        async updateProfilePassword(payload) {
+            this.loading = true;
+            this.error = null;
+            let endPoint = `${this.baseURL}update/profile/password`;
+            try {
+                let response = await http.post(endPoint, payload);
+                this.error = null;
+                this.logout();
+                return response
+            } catch (err) {
+                this.error = err.response?.data?.errors || 'Request failed';
+            } finally {
+                this.loading = false;
+            }
+        },
+    },
+    persist: {
+        key: 'auth', // Optional: Key to use in localStorage
+        storage: localStorage, // Default is localStorage; you can use sessionStorage too
     },
 });

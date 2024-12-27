@@ -56,6 +56,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const authStore = useAuthStore();
+import { notificationMessage } from '@/helpers';
 defineProps({
     canResetPassword: {
         type: Boolean,
@@ -74,6 +75,10 @@ const form = useForm({
 
 const submit = async () => {
     let userDetail = await authStore.login({ email: form.email, password: form.password });
+    let errors = authStore.error;
+    if(errors){
+        notificationMessage('error', errors)
+    }
     if (userDetail) {
         router.push({ name: 'dashboard' });
     }

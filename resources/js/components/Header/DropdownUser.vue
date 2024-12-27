@@ -2,7 +2,7 @@
 import { onClickOutside } from '@vueuse/core'
 import DropdownLink from '@/Components/DropdownLink.vue'
 import TransParentButton from '@/Components/TransParentButton.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -19,6 +19,7 @@ const logoutHandler = () => {
     router.push({name: 'login'});
 }
 
+const userName = computed(() => authStore.getUser.name);
 
 </script>
 
@@ -27,7 +28,7 @@ const logoutHandler = () => {
     <div class="relative" ref="target">
         <div class="flex items-center gap-4"  @click.prevent="dropdownOpen = !dropdownOpen">
             <span class="hidden text-right lg:block">
-                <span class="block text-sm font-medium text-black dark:text-white">dfd</span>
+                <span class="block text-sm font-medium text-black dark:text-white">{{userName}}</span>
                 <span class="block text-xs font-medium">dd</span>
             </span>
 

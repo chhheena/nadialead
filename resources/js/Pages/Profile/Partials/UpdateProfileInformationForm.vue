@@ -1,26 +1,3 @@
-<script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
-
-defineProps({
-    mustVerifyEmail: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
-    },
-});
-
-const user = usePage().props.auth.user;
-
-const form = useForm({
-    name: user.name,
-    email: user.email,
-});
-</script>
 
 <template>
     <section>
@@ -29,7 +6,7 @@ const form = useForm({
         </p>
 
         <form
-            @submit.prevent="form.patch(route('profile.update'))"
+            @submit.prevent="submitHandler"
             class="mt-6 space-y-6"
         >
             <div>
@@ -63,7 +40,7 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div v-if="mustVerifyEmail && user.email_verified_at === null">
+            <!-- <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="mt-2 text-sm text-gray-800">
                     Your email address is unverified.
                     <Link
@@ -82,7 +59,7 @@ const form = useForm({
                 >
                     A new verification link has been sent to your email address.
                 </div>
-            </div>
+            </div> -->
 
             <div class="flex items-center gap-4">
                 <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
@@ -104,3 +81,43 @@ const form = useForm({
         </form>
     </section>
 </template>
+
+<script setup>
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { notificationMessage } from '@/helpers';
+const store = useAuthStore();
+defineProps({
+    mustVerifyEmail: {
+        type: Boolean,
+    },
+    status: {
+        type: String,
+    },
+});
+
+// const user = usePage().props.auth.user;
+const user = store.getUser;
+
+const form = useForm({
+    id: user.id ?? '',
+    name: user.name ?? '',
+    email: user.email ?? '',
+});
+
+const submitHandler = async () => {
+    const {id, name, email} = form;
+    let response = await store.updateProfileInfo({id, name, email})
+    if(response?.status){
+        notificationMessage('success', 'User updated successfully')
+    }
+    console.log();
+}
+
+
+</script>

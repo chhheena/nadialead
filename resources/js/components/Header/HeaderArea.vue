@@ -60,7 +60,7 @@ const sidebarStore = useSidebarStore()
         </Link>
       </div>
       <div class="hidden sm:block">
-        <form action="https://formbold.com/s/unique_form_id" method="POST">
+        <!-- <form action="https://formbold.com/s/unique_form_id" method="POST">
           <div class="relative">
             <button class="absolute top-1/2 left-0 -translate-y-1/2">
               <svg
@@ -92,7 +92,7 @@ const sidebarStore = useSidebarStore()
               class="w-full xl:w-125 bg-transparent pr-4 pl-9 focus:outline-none focus:outline-0 border-0 py-0 focus:ring-0"
             />
           </div>
-        </form>
+        </form> -->
       </div>
 
       <div class="flex items-center gap-3 2xsm:gap-7">
@@ -104,11 +104,11 @@ const sidebarStore = useSidebarStore()
           </li>
 
           <!-- Notification Menu Area -->
-          <DropdownNotification />
+          <!-- <DropdownNotification /> -->
           <!-- Notification Menu Area -->
 
           <!-- Chat Notification Area -->
-          <DropdownMessage />
+          <!-- <DropdownMessage /> -->
           <!-- Chat Notification Area -->
         </ul>
 
