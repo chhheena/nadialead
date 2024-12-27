@@ -35,6 +35,9 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::apiResource('leadcolors', LeadColorController::class);
     Route::post('import/lead', [LeadController::class, 'importLead']);
     Route::apiResource('roles', RolePermissionController::class)->only('index');
+    Route::get('user/profile', [AuthController::class, 'userProfile']);
+    Route::post('update/profile', [AuthController::class, 'updateProfile']);
+    Route::post('update/profile/password', [AuthController::class, 'updateProfilePassword']);
 });
 
 // Route::apiResource('users', UserController::class);

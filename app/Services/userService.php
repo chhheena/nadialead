@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Models\User;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -47,6 +48,7 @@ class userService
         try {
             DB::beginTransaction();
             $model = User::create($inputs);
+            $model->assignRole($inputs['role']);
             DB::commit();
             return $model;
         } catch (\Exception  | RequestException $e) {
@@ -81,7 +83,9 @@ class userService
     {
         try {
             $user = User::where('email', $request->email)->first();
-
+            info([
+                'user-details' => $user->getRoleNames()->toarray()
+            ]);
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return ApiResponse::error('The provided credentials are incorrect.', 500);
             }
@@ -162,6 +166,7 @@ class userService
     {
         try {
             $userDetail = $request->all();
+            // $user->assignRole($validatedData['role']);
             $createUser = User::create($userDetail);
             if ($createUser) {
                 $message = 'User created successfully';
@@ -172,4 +177,34 @@ class userService
         }
     }
 
+    public function getUserProfile()
+    {
+        $userDetail = Auth::user();
+        return ApiResponse::success($userDetail);
+    }
+
+    public function updateProfile($request)
+    {
+        $isUserExist = User::find($request->id);
+        if(!isset($isUserExist)){
+            return ApiResponse::error('User is not exist in our database', 500);
+        }
+        $isUserExist->update([
+            'name' => $request->name,
+            'email' => $request->email
+        ]);
+        return ApiResponse::success($isUserExist->refresh());
+    }
+
+    public function updateProfilePassword($request)
+    {
+        $isUserExist = User::find($request->id);
+        if(!isset($isUserExist)){
+            return ApiResponse::error('User is not exist in our database', 500);
+        }
+        $isUserExist->update([
+            'password' => $request->new_password,
+        ]);
+        return ApiResponse::success($isUserExist->refresh());
+    }
 }

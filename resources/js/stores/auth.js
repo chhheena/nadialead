@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import axios from 'axios'; // Assuming you're using Axios for HTTP requests
 import { useRouter } from 'vue-router';
 const router = useRouter();
+import http from "@/axios.js"
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -9,9 +11,13 @@ export const useAuthStore = defineStore('auth', {
         token: null,
         loading: false,
         error: null,
+        userRole: ''
     }),
     getters: {
         isAuthenticated: (state) => !!state.token,
+        getUser: (state) => state.user,
+        getErrors: (state) => state.error,
+        getUserRole: (state) => state.userRole
     },
     actions: {
         async login(formData) {
@@ -22,12 +28,13 @@ export const useAuthStore = defineStore('auth', {
                 const response = await axios.post(endPoint, formData);
                 this.token = response.data.data.token;
                 this.user = response.data.data.user_detail;
-                console.log(this.user, 'user-details')
+                this.userRole = this.user?.roles[0]?.name;
                 localStorage.setItem('token', this.token);
+                http.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
                 return response.data.status;
-                // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
             } catch (err) {
                 this.error = err.response?.data?.message || 'Login failed';
+                
             } finally {
                 this.loading = false;
             }
@@ -36,6 +43,7 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             this.user = null;
             this.token = null;
+            this.userRole = '';
             localStorage.removeItem('token');
             return;
         },
@@ -52,17 +60,39 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async fetchUser() {
+        async updateProfileInfo(payload) {
             this.loading = true;
             this.error = null;
+            let endPoint = `${this.baseURL}update/profile`;
             try {
-                const response = await axios.get('/api/auth/user');
-                this.user = response.data.user;
+                let response = await http.post(endPoint, payload);
+                this.user = response.data.data;
+                return response
             } catch (err) {
-                this.error = err.response?.data?.message || 'Could not fetch user';
+                this.error = err.response?.data?.message || 'Request failed';
             } finally {
                 this.loading = false;
             }
         },
+
+        async updateProfilePassword(payload) {
+            this.loading = true;
+            this.error = null;
+            let endPoint = `${this.baseURL}update/profile/password`;
+            try {
+                let response = await http.post(endPoint, payload);
+                this.error = null;
+                this.logout();
+                return response
+            } catch (err) {
+                this.error = err.response?.data?.errors || 'Request failed';
+            } finally {
+                this.loading = false;
+            }
+        },
+    },
+    persist: {
+        key: 'auth', // Optional: Key to use in localStorage
+        storage: localStorage, // Default is localStorage; you can use sessionStorage too
     },
 });

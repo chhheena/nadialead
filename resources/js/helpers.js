@@ -2,6 +2,8 @@
 import _ from "lodash";
 import {useToast} from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
+import { menus } from "./menus";
+
 const $toast = useToast();
 
 export const trans = (string, args) => {
@@ -66,4 +68,8 @@ export const notificationMessage = (type, message) => {
         dismissible: true
     });
     return toast;
+}
+
+export const getMenuBaseOnRole = (role) => {
+    return menus[role];
 }

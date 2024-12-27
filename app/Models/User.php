@@ -27,6 +27,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -55,4 +57,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'team_id','id');
     }
+
+    // public function getUserRoleAttribute()
+    // {
+    //     if($this->getRoleNames()){
+    //         return $this->getRoleNames()[0];
+    //     }
+    //     return "";
+    // }
 }

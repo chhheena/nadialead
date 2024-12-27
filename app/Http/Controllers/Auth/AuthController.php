@@ -8,6 +8,8 @@ use App\Http\Requests\LoginRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 // use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\UpdateProfileInfoRequest;
+use App\Http\Requests\UpdateProfilePasswordRequest;
 
 class AuthController extends Controller
 {
@@ -38,9 +40,17 @@ class AuthController extends Controller
         return $this->userService->logout($request);
     }
 
-    // public function userProfile(){
-    //     return $this->userService->getUserProfile();
-    // }
+    public function userProfile(){
+        return $this->userService->getUserProfile();
+    }
+
+    public function updateProfile(UpdateProfileInfoRequest $request){
+        return $this->userService->updateProfile($request);
+    }
+
+    public function updateProfilePassword(UpdateProfilePasswordRequest $request){
+        return $this->userService->updateProfilePassword($request);
+    }
 
     // public function resetPassword(ResetPasswordRequest $request){
     //     return $this->userService->resetPassword($request);

@@ -42,9 +42,12 @@ import { createApp } from "vue";
 import app from "./App.vue";
 import router from "./Router/router";
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 const vueApp = createApp(app);
-vueApp.use(createPinia()); // Initialize Pinia
+vueApp.use(pinia); // Initialize Pinia
 vueApp.use(router);
 vueApp.mount('#app');
 
