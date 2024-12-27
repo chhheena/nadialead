@@ -64,21 +64,12 @@
                             Name
                         </th>
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
-                            Email
-                        </th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">
-                            Role
-                        </th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">
-                            Team (If Client)
-                        </th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(user, index) in users" :key="user"
+                    <tr v-for="(role, index) in roles" :key="role"
                         class="border-t last:border-b hover:bg-gray-50 dark:hover:bg-gray-700">
                         <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                             {{
@@ -89,16 +80,7 @@
                             }}
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                            {{ user.name }}
-                        </td>
-                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                            {{ user.email }}
-                        </td>
-                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 capitalize">
-                            {{ Object.values(user.role).join(', ') }}
-                        </td>
-                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                            {{ user.parent }}
+                            {{ role.name }}
                         </td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex items-end space-x-3.5">

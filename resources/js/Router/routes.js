@@ -9,7 +9,7 @@ import LeadColor from "@/Pages/Lead/LeadColor.vue";
 import LeadImport from "@/Pages/Lead/Import.vue";
 import User from "@/Pages/User/Index.vue"
 import AddEditUser from "@/Pages/User/Add-Edit.vue"
-
+import Profile from "@/Pages/Profile/Edit.vue"
 
 
 const routes = [
@@ -70,7 +70,9 @@ const routes = [
       {
         path: "/lead-import",
         name: "lead-import",
-        component: LeadImport,
+        component: LeadImport
+      },
+      {
         path: "/users",
         name: "users",
         component: User,
@@ -84,6 +86,11 @@ const routes = [
         path: "/edit/user/:id",
         name: "edit.user",
         component: AddEditUser,
+      },
+      {
+        path: "/edit/profile",
+        name: "edit.profile",
+        component: Profile,
       }
     ],
   },
