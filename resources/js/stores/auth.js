@@ -28,8 +28,8 @@ export const useAuthStore = defineStore('auth', {
                 this.user = response.data.data.user_detail;
                 console.log(this.user, 'user-details')
                 localStorage.setItem('token', this.token);
+                http.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
                 return response.data.status;
-                // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
             } catch (err) {
                 this.error = err.response?.data?.message || 'Login failed';
                 

@@ -20,9 +20,9 @@ class UserResource extends JsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'email'         => $this->email,
-            'role'          => $this->roles->pluck('name'),
-            'parent_id'     => $this->parent,
-            'parent'        => $this->parent? 'testing':'',
+            'role'          => $this->roles->first()?->name,
+            'team_id'       => $this->team_id,
+            'team'          => $this->team ? ucfirst($this->team->name) :'No Team Assigned'
         ];
     }
 

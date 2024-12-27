@@ -131,7 +131,8 @@ const menuGroups = ref([
       </Link> -->
 
             <router-link to="/dashboard">
-                <ApplicationLogo class="block h-9 w-auto fill-current text-white" />
+                <span class="text-white m-4">Client Portal</span>
+                <!-- <ApplicationLogo class="block h-9 w-auto fill-current text-white" /> -->
             </router-link>
 
             <button class="block lg:hidden" @click="sidebarStore.isSidebarOpen = false">

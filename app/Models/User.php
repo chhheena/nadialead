@@ -55,6 +55,6 @@ class User extends Authenticatable
 
     public function team()
     {
-        return $this->belongsTo(User::class, 'parent');
+        return $this->belongsTo(User::class, 'team_id','id');
     }
 }
