@@ -7,10 +7,10 @@ import Role from "@/Pages/Role/Index.vue";
 import Lead from "@/Pages/Lead/Index.vue";
 import LeadColor from "@/Pages/Lead/LeadColor.vue";
 import LeadImport from "@/Pages/Lead/Import.vue";
-import User from "@/Pages/User/Index.vue"
-import AddEditUser from "@/Pages/User/Add-Edit.vue"
-import Profile from "@/Pages/Profile/Edit.vue"
-
+import User from "@/Pages/User/Index.vue";
+import AddEditUser from "@/Pages/User/Add-Edit.vue";
+import Profile from "@/Pages/Profile/Edit.vue";
+import LeadUpdate from "@/Pages/Lead/Update.vue";
 
 const routes = [
   {
@@ -63,14 +63,19 @@ const routes = [
         component: Lead,
       },
       {
-        path: "/lead-colors",
-        name: "lead-colors",
+        path: "/lead/colors",
+        name: "lead.colors",
         component: LeadColor,
       },
       {
-        path: "/lead-import",
-        name: "lead-import",
+        path: "/lead/import",
+        name: "lead.import",
         component: LeadImport
+      },
+      {
+        path: "/lead/update/:id",
+        name: "lead.update",
+        component: LeadUpdate
       },
       {
         path: "/users",

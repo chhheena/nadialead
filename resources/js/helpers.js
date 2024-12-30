@@ -3,6 +3,7 @@ import _ from "lodash";
 import {useToast} from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import { menus } from "./menus";
+import { mappingFields } from "@/LeadFilters/fields"
 
 const $toast = useToast();
 
@@ -72,4 +73,8 @@ export const notificationMessage = (type, message) => {
 
 export const getMenuBaseOnRole = (role) => {
     return menus[role];
+}
+
+export const getFieldsBaseOnRole = (role) => {
+    return mappingFields[role]
 }
