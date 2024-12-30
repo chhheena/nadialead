@@ -103,7 +103,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(user, index) in users" :key="user"
+                    <tr v-if="serverBusy">
+                        <td colspan="6">
+                            <Loader />
+                        </td>
+                    </tr>
+                    <tr v-else v-for="(user, index) in users" :key="user"
                         class="border-t last:border-b hover:bg-gray-50 dark:hover:bg-gray-700">
                         <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                             {{
@@ -165,7 +170,7 @@
 import { ref, watch, onMounted, onUnmounted } from "vue";
 import Pagination from "@/Components/Pagination.vue";
 import axios from '../../axios.js';
-
+import Loader from "@/components/Loader.vue";
 const sortBy = ref(null); // Column currently sorted by
 const sortOrder = ref("asc"); // 'asc' or 'desc'
 const searchTimeout = ref(null);
@@ -191,7 +196,7 @@ const pagination = ref({
     total: 0,
     perPage: 10,
 });
-
+const serverBusy = ref(true);
 const setPagination = (response) => {
     pagination.value.total = response.data.meta.total;
     pagination.value.lastPage = response.data.meta.last_page;
@@ -208,6 +213,7 @@ const createTable = (page) => {
         .then((response) => {
             users.value = response.data.data;
             pageData.value = response.data.meta;
+            serverBusy.value = false;
             setPagination(response);
         })
         .catch((error) => { })
@@ -223,8 +229,10 @@ watch(
     [search, () => queryData.value.filters.role, () => queryData.value.sortBy, () => queryData.value.sortOrder],
     (newValues, oldValues) => {
         clearTimeout(searchTimeout.value);
+        serverBusy.value = true;
         searchTimeout.value = setTimeout(() => {
             queryData.value.search = search.value;
+            serverBusy.value = false;
             createTable(1);
         }, 700);
     },
