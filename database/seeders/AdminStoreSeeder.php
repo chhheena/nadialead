@@ -20,6 +20,15 @@ class AdminStoreSeeder extends Seeder
         Role::create(['name' =>'admin']);
         Role::create(['name' =>'team']);
         Role::create(['name' =>'client']);
+
+        $user = User::create([
+            'name' => 'admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('admin@123'),
+            'parent' => 111
+        ]);
+
+        $user->assignRole('admin');
         
         foreach(range(1, 10) as $team) {
             $this->runLoop();
