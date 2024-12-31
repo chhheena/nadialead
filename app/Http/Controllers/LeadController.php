@@ -13,6 +13,7 @@ use App\Services\LeadService;
 use App\Http\Resources\LeadCollection;
 use App\Http\Resources\LeadResource;
 use App\Models\Lead;
+use Illuminate\Support\Facades\Auth;
 
 class LeadController extends Controller
 {

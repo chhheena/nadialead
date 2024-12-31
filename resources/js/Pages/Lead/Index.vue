@@ -31,10 +31,10 @@
                     </select>
                 </div>
                 <div class="gap-5">
-                    <router-link :to="{name: 'lead.colors'}"
+                    <!-- <router-link :to="{name: 'lead.colors'}"
                         class="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         Lead color
-                    </router-link>
+                    </router-link> -->
                     <!-- Alternative Button -->
                     <router-link v-if="roleType != 'client'" :to="{name: 'lead.import'}"
                         class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
