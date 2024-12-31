@@ -31,14 +31,14 @@
                     </select>
                 </div>
                 <div class="gap-5">
-                    <router-link  to="/lead-colors"
+                    <!-- <router-link :to="{name: 'lead.colors'}"
                         class="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Lead color
-                    </router-link>
+                        Lead color
+                    </router-link> -->
                     <!-- Alternative Button -->
-                    <router-link  to="/lead-import"
+                    <router-link v-if="roleType != 'client'" :to="{name: 'lead.import'}"
                         class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    Import Lead
+                        Import Lead
                     </router-link>
                 </div>
             </div>
@@ -120,7 +120,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="whitespace-nowrap" v-for="(lead, index) in leads" :key="lead">
+                    <tr v-if="serverBusy" class="whitespace-nowrap">
+                        <td colspan="13">
+                            <Loader />
+                        </td>
+                    </tr>
+                    <tr v-else class="whitespace-nowrap" v-for="(lead, index) in leads" :key="lead">
                         <td class="py-5 px-4 pl-9 xl:pl-11">
                             {{ (pagination.currentPage - 1) * pagination.perPage + index + 1 }}
                         </td>
@@ -174,25 +179,24 @@
                                 {{ lead.start_time }}
                             </p>
                         </td>
-
                         <td class="py-5 px-4">
                             <p class="text-black dark:text-white">
                                 {{ lead.status }}
                             </p>
                         </td>
-
                         <td class="py-5 px-4">
                             <div class="flex items-center space-x-3.5">
-                                <router-link  href="" class="hover:text-primary">
-                                <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                                        fill="" />
-                                    <path
-                                        d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                                        fill="" />
-                                </svg>
+                                <!-- :to="{name: 'lead.update', params: lead.id}" -->
+                                <router-link :to="{name: 'lead.update', params: {id: lead.id}}" class="hover:text-primary">
+                                    <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
+                                            fill="" />
+                                        <path
+                                            d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
+                                            fill="" />
+                                    </svg>
                                 </router-link>
                             </div>
                         </td>
@@ -215,16 +219,27 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from "vue";
+import { ref, watch, onMounted, onUnmounted, computed } from "vue";
 import Pagination from "@/Components/Pagination.vue";
 import HTTP from "../../axios.js";
+import { useAuthStore } from "@/stores/auth.js";
+const store = useAuthStore();
+let roleType = computed(() => store.getUserRole);
+import LeadFilters from "@/LeadFilters/filters.js"
+import Loader from "@/components/Loader.vue";
 
-const props = defineProps({
-    leadTags: Array,
-    leadRatings: Array,
-    noteStrikeFirst: Array,
-    statuses: Array
-});
+const statuses = computed(() => LeadFilters.leadStatus);
+const leadTags = computed(() => LeadFilters.leadTags);
+const leadRatings = computed(() => LeadFilters.leadRating);
+const noteStrikeFirst = computed(() => LeadFilters.leadStrike);
+
+// const props = defineProps({
+//     leadTags: Array,
+//     leadRatings: Array,
+//     noteStrikeFirst: Array,
+//     statuses: Array
+// });
+
 
 const searchTimeout = ref(null);
 const leads = ref([]);
@@ -248,6 +263,8 @@ const pagination = ref({
     perPage: 10,
 });
 
+const serverBusy = ref(true);
+
 const setPagination = (response) => {
     pagination.value.total = response.data.meta.total;
     pagination.value.lastPage = response.data.meta.last_page;
@@ -262,7 +279,8 @@ const createTable = (page) => {
             params: queryData.value,
         })
         .then((response) => {
-            leads.value = response.data.data;
+            serverBusy.value = false;
+            leads.value = response.data.data;            
             pageData.value = response.data.meta;
             setPagination(response);
         })
@@ -284,10 +302,12 @@ watch(
     [search, () => queryData.value.filters.leadTag, () => queryData.value.filters.rating,
         () => queryData.value.filters.noteStrikeFirst, () => queryData.value.filters.status],
     (newValues, oldValues) => {
+        serverBusy.value = true;
         clearTimeout(searchTimeout.value);
         searchTimeout.value = setTimeout(() => {
             queryData.value.search = search.value;
             createTable(1);
+            serverBusy.value = false;
         }, 700);
     },
     { immediate: true }

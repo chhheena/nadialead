@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LeadUpdateRequest extends FormRequest
 {
@@ -21,6 +22,14 @@ class LeadUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = Auth::user();
+        $userRole = $user->getRoleNames();
+        if(isset($userRole)){
+            $userRole = $userRole->first();
+        }
+        info([
+            'user-role-request' => $userRole
+        ]);
         return [
             //
         ];

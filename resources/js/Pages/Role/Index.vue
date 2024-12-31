@@ -5,12 +5,12 @@
             <!-- First Line: Filter and Alternative Button -->
             <div class="flex flex-wrap items-center justify-between">
                 <!-- Course Filter -->
-                <select @change="changeFilter($event)" id="course"
+                <!-- <select @change="changeFilter($event)" id="course"
                     class="block w-full lg:w-64 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option selected disabled>Select Role</option>
                     <option value="client">Client</option>
                     <option value="team">Team</option>
-                </select>
+                </select> -->
 
                 <!-- Alternative Button -->
                 <!-- <Link
@@ -25,7 +25,7 @@
             <div class="flex flex-wrap items-center justify-between">
                 <!-- Entries Per Page -->
                 <div class="flex items-center space-x-2">
-                    <label for="perPage" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <!-- <label for="perPage" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                         Show
                     </label>
                     <select id="perPage" v-model="perPage" @change="pageChange"
@@ -35,7 +35,7 @@
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
-                    <span class="text-sm text-gray-600 dark:text-gray-400">Entries</span>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Entries</span> -->
                 </div>
 
                 <!-- Search Bar -->
