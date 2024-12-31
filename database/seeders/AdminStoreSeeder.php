@@ -25,16 +25,13 @@ class AdminStoreSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin@123'),
-            'parent' => 111
         ]);
 
         $user->assignRole('admin');
-        
         foreach(range(1, 10) as $team) {
             $this->runLoop();
             self::$num++;
         }
-        
     }
 
     private function runLoop()
@@ -42,8 +39,7 @@ class AdminStoreSeeder extends Seeder
         $user = User::create([
             'name' => 'client '. self::$num,
             'email' => 'client_'.self::$num.'@gmail.com',
-            'password' => Hash::make('admin@123'),
-            'parent' => 111
+            'password' => Hash::make('admin@123')
         ]);
 
         $user->assignRole('client');
@@ -51,8 +47,7 @@ class AdminStoreSeeder extends Seeder
         $team = User::create([
             'name' => 'team '. self::$num,
             'email' => 'team_'.self::$num.'@gmail.com',
-            'password' => Hash::make('admin@123'),
-            'parent' => 111
+            'password' => Hash::make('admin@123')
         ]);
 
         $team->assignRole('team');

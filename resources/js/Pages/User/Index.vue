@@ -93,10 +93,6 @@
                             class="py-4 px-4 font-medium text-black dark:text-white cursor-pointer">
                             Role
                         </th>
-                        <th
-                            class="py-4 px-4 font-medium text-black dark:text-white cursor-pointer">
-                            Team (If Client)
-                        </th>
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Action
                         </th>
@@ -126,10 +122,6 @@
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 capitalize">
                             {{ user.role }}
-                        </td>
-                        <td
-                            :class="`px-4 py-3 text-sm ${user.team_id ? 'text-gray-700' : 'text-red-500'} dark:${user.team_id ? 'text-gray-300' : 'text-red-300'}`">
-                            {{ user.team }}
                         </td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex items-end space-x-3.5">

@@ -8,16 +8,18 @@
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
                     <InputLabel for="name" value="Name" class="text-gray-600" />
-                    <TextInput id="name" type="text" :disabled="true"
-                        class="mt-1 block w-full bg-gray-200 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    <TextInput id="name" type="text" :disabled="isFieldEnable('name')"
+                        class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
                         v-model="form.name" required placeholder="Enter lead name" />
                 </div>
 
                 <!-- Lead Phone -->
                 <div class="col-span-6">
                     <InputLabel for="phone" value="Phone" class="text-gray-600" />
-                    <TextInput id="phone" type="text" :disabled="true"
-                        class="mt-1 block w-full bg-gray-200 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    <TextInput id="phone" type="text" :disabled="isFieldEnable('phone')"
+                        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
                         v-model="form.phone" required placeholder="Enter lead phone" />
                 </div>
             </div>
@@ -26,15 +28,17 @@
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
                     <InputLabel for="city" value="City" class="text-gray-600" />
-                    <TextInput id="city" type="text" :disabled="true"
-                        class="mt-1 block w-full bg-gray-200 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    <TextInput id="city" type="text" :disabled="isFieldEnable('city')"
+                        class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
                         v-model="form.city" required placeholder="Enter lead city" />
                 </div>
 
                 <div class="col-span-6">
                     <InputLabel for="state" value="State" class="text-gray-600" />
-                    <TextInput id="state" type="text" :disabled="true"
-                        class="mt-1 block w-full bg-gray-200 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    <TextInput id="state" type="text" :disabled="isFieldEnable('state')"
+                        class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
                         v-model="form.state" required placeholder="Enter lead state" />
                 </div>
             </div>
@@ -43,8 +47,9 @@
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
                     <InputLabel for="source" value="Source" class="text-gray-600" />
-                    <TextInput id="source" type="text" :disabled="true"
-                        class="mt-1 block w-full bg-gray-200 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    <TextInput id="source" type="text" :disabled="isFieldEnable('source')"
+                        class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
                         v-model="form.source" required placeholder="Enter lead source" />
                 </div>
                 <div class="col-span-6">
@@ -121,8 +126,9 @@
             <!-- Lead Start Time -->
             <div class="mb-6">
                 <InputLabel for="start_time" value="Start Time" class="text-gray-600" />
-                <TextInput id="start_time" type="datetime-local" :disabled="true"
-                    class="mt-1 block w-full bg-gray-200 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                <TextInput id="start_time" type="datetime-local" :disabled="isFieldEnable('start_time')"
+                    class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
                     v-model="form.start_time" required />
             </div>
             <!-- Submit Button -->
@@ -190,13 +196,6 @@ const show = () => {
         })
         .catch((error) => { })
         .finally(() => { });
-    // axios
-    //     .get(route("leads.show", { id: props.id }))
-    //     .then((response) => {
-    //         form.value = response.data.data;
-    //     })
-    //     .catch((error) => { })
-    //     .finally(() => { });
 };
 
 const submitForm = () => {

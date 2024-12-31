@@ -1,5 +1,5 @@
 <template>
-    <DefaultCard cardTitle="User Add Form">
+    <DefaultCard :cardTitle="`User ${formType} Form`">
             <div class="p-8 rounded-lg shadow-md">
                 <div class="grid grid-cols-12 gap-6 mb-6">
                     <div class="col-span-6">
@@ -38,7 +38,6 @@
                         <InputError class="mt-2" :message="errors.email ? errors.email[0] : '' " />
                     </div>
                 </div>
-
                 <div class="grid grid-cols-12 gap-6 mb-6">
                     <div class="col-span-6">
                         <InputLabel
@@ -84,18 +83,6 @@
                     </SelectInput>
                     <InputError class="mt-2" :message="errors.role ? errors.role[0] : '' " />
                 </div>
-
-
-                <div class="mt-4" v-if="form.role == 'client'">
-                    <InputLabel for="parent" value="Assign Team" class="text-gray-600" />
-                    <SelectInput
-                        v-model="form.team_id"
-                        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    >
-                        <option value="" selected>Select team</option>
-                        <option :value="user.id" v-for="(user) in team" :key="user">{{ user.name }}</option>
-                    </SelectInput>
-                </div>
                 <div class="mt-8 flex justify-end">
                     <!-- <a class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300" :href="route('users')">Cancel </a> -->
                     <router-link
@@ -128,7 +115,6 @@ let userId = ref("");
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const pageTitle = ref("User");
 const form = ref({});
-const team = ref([]);
 let formType = ref('Add');
 
 const props = defineProps({
@@ -144,8 +130,7 @@ const show = () => {
     axios
         .get(endpoint)
         .then((response) => {
-            form.value = response.data.data.row;
-            team.value = response.data.data.team
+            form.value = response.data.data;
         })
         .catch((error) => {})
         .finally(() => {});

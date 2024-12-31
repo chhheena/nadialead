@@ -19,7 +19,7 @@ class userService
             $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
             $sortOrder = !empty($inputs['sortOrder']) ? $inputs['sortOrder'] : 'DESC';
             $sortBy = !empty($inputs['sortBy']) ? $inputs['sortBy'] : 'id';
-            $users = User::with(['roles', 'team'])->has('roles')->orderBy($sortBy, $sortOrder);
+            $users = User::with(['roles'])->has('roles')->orderBy($sortBy, $sortOrder);
             if (!empty($inputs['filters'])) {
                 if (!empty($inputs['filters']['role'])) {
                     $role = $inputs['filters']['role'];
@@ -46,34 +46,30 @@ class userService
     public function store($inputs)
     {
         try {
-            DB::beginTransaction();
             $model = User::create($inputs);
             $model->assignRole($inputs['role']);
-            DB::commit();
             return $model;
         } catch (\Exception  | RequestException $e) {
-            DB::rollback();
             Log::error('user store service', ['error' => $e->getMessage()]);
             throw $e;
         }
     }
 
-    public function show($id)
+    public function show($user)
     {
-        $row = User::with(['roles', 'team'])->find($id);
-        return $row;
+        return $user;
     }
 
     public function update($inputs, $id)
     {
         try {
-            DB::beginTransaction();
             $user = User::find($id);
-            $model = $user->update($inputs);
-            DB::commit();
-            return $model;
+            if(isset($inputs['password'])) {
+                unset($inputs['password']);
+            }
+            $user->update($inputs);
+            return $user;
         } catch (\Exception  | RequestException $e) {
-            DB::rollback();
             Log::error('user update service', ['error' => $e->getMessage()]);
             throw $e;
         }

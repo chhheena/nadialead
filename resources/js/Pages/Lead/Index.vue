@@ -81,19 +81,22 @@
                         <th width="40" class="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                             #
                         </th>
-                        <th class="py-4 px-4 bg-gray-200 font-medium text-black dark:text-white">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                            Assign Status
+                        </th>
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Name
                         </th>
-                        <th class="py-4 px-4 bg-gray-200 font-medium text-black dark:text-white">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Phone
                         </th>
-                        <th class="py-4 px-4 bg-gray-200 font-medium text-black dark:text-white">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
                             State
                         </th>
-                        <th class="py-4 px-4 bg-gray-200 font-medium text-black dark:text-white">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
                             City
                         </th>
-                        <th class="py-4 px-4 bg-gray-200 font-medium text-black dark:text-white">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Source
                         </th>
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
@@ -108,13 +111,13 @@
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Notes (Strike First)
                         </th>
-                        <th class="py-4 px-4 bg-gray-200 font-medium text-black dark:text-white xl:pl-11">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                             Start Time
                         </th>
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Status
                         </th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white min-w-[250px]">
                             Actions
                         </th>
                     </tr>
@@ -129,27 +132,32 @@
                         <td class="py-5 px-4 pl-9 xl:pl-11">
                             {{ (pagination.currentPage - 1) * pagination.perPage + index + 1 }}
                         </td>
-                        <td class="py-5 px-4 bg-gray-200">
+                        <td class="py-5 px-4">
+                            <PrimaryButton class="ms-4 bg-red-400">
+                                Not Assigned
+                            </PrimaryButton>
+                        </td>
+                        <td class="py-5 px-4">
                             <p class="text-black dark:text-white">
                                 {{ lead.name }}
                             </p>
                         </td>
-                        <td class="py-5 px-4 bg-gray-200">
+                        <td class="py-5 px-4">
                             <p class="text-black dark:text-white">
                                 {{ lead.phone }}
                             </p>
                         </td>
-                        <td class="py-5 px-4 bg-gray-200">
+                        <td class="py-5 px-4">
                             <p class="text-black dark:text-white">
                                 {{ lead.state }}
                             </p>
                         </td>
-                        <td class="py-5 px-4 bg-gray-200">
+                        <td class="py-5 px-4">
                             <p class="text-black dark:text-white">
                                 {{ lead.city }}
                             </p>
                         </td>
-                        <td class="py-5 px-4 bg-gray-200">
+                        <td class="py-5 px-4">
                             <p class="text-black dark:text-white">
                                 {{ lead.source }}
                             </p>
@@ -174,7 +182,7 @@
                                 {{ lead.note_strike_first }}
                             </p>
                         </td>
-                        <td class="py-5 px-4 bg-gray-200">
+                        <td class="py-5 px-4">
                             <p class="text-black dark:text-white">
                                 {{ lead.start_time }}
                             </p>
@@ -198,6 +206,11 @@
                                             fill="" />
                                     </svg>
                                 </router-link>
+                                <select
+                                    class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="" >Select Client</option>
+                                    <option v-for="user in users" :key="user" :value="user_id">{{ user.name }}</option>
+                                </select>
                             </div>
                         </td>
                     </tr>
@@ -227,6 +240,8 @@ const store = useAuthStore();
 let roleType = computed(() => store.getUserRole);
 import LeadFilters from "@/LeadFilters/filters.js"
 import Loader from "@/components/Loader.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { all } from "axios";
 
 const statuses = computed(() => LeadFilters.leadStatus);
 const leadTags = computed(() => LeadFilters.leadTags);
@@ -240,7 +255,7 @@ const noteStrikeFirst = computed(() => LeadFilters.leadStrike);
 //     statuses: Array
 // });
 
-
+const users = ref([]);
 const searchTimeout = ref(null);
 const leads = ref([]);
 const search = ref("");
@@ -280,9 +295,23 @@ const createTable = (page) => {
         })
         .then((response) => {
             serverBusy.value = false;
-            leads.value = response.data.data;            
+            leads.value = response.data.data;
             pageData.value = response.data.meta;
             setPagination(response);
+        })
+        .catch((error) => { })
+        .finally(() => { });
+};
+
+const getUsers = (page) => {
+    queryData.value.page = page;
+    let endpoint = `${import.meta.env.VITE_API_BASE_URL}users`;
+    axios
+        .get(endpoint, {
+            params: queryData.value,
+        })
+        .then((response) => {
+            users.value = response.data.data;
         })
         .catch((error) => { })
         .finally(() => { });
@@ -314,7 +343,7 @@ watch(
 );
 
 onMounted(() => {
-
+    getUsers()
 });
 
 onUnmounted(() => {

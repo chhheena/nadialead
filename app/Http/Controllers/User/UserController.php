@@ -85,11 +85,10 @@ class UserController
          * @param int $id
          * @return \Illuminate\Http\Response
         */
-        public function show($id) {
+        public function show(User $user) {
             try {
                 $responseArr = [];
-                $responseArr['data']['row'] = new UserResource($this->userService->show($id));
-                $responseArr['data']['team'] = User::select('id','name')->role('team')->get();
+                $responseArr['data'] = new UserResource($this->userService->show($user));
                 $responseArr['message'] = 'User fetched Successfully.';
                 return $this->successResponse($responseArr);
             } catch (\Exception $e) {
@@ -116,15 +115,15 @@ class UserController
                 'role' => 'required'
             ]);
             $inputs = $request->all();
-            try {
+            // try {
                 $responseArr['data'] = $this->userService->update($inputs,$id);
                 $responseArr['message'] = 'User Updated Successfully.';
                 return $this->successResponse($responseArr);
-            } catch (\Exception $e) {
-                Log::error('User update api', ['error' => $e->getMessage()]);
-                report($e);
-                return $this->failResponse();
-            }
+            // } catch (\Exception $e) {
+            //     Log::error('User update api', ['error' => $e->getMessage()]);
+            //     report($e);
+            //     return $this->failResponse();
+            // }
         }
 
 }

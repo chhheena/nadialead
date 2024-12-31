@@ -18,11 +18,9 @@ class UserResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'name'          => $this->name,
+            'name'          => ucfirst($this->name),
             'email'         => $this->email,
-            'role'          => $this->roles->first()?->name,
-            'team_id'       => $this->team_id,
-            'team'          => $this->team ? ucfirst($this->team->name) :'No Team Assigned'
+            'role'          => $this->roles->first()?->name
         ];
     }
 

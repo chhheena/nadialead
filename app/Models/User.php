@@ -53,16 +53,4 @@ class User extends Authenticatable
         return $this->status->label();
     }
 
-    public function team()
-    {
-        return $this->belongsTo(User::class, 'team_id','id');
-    }
-
-    // public function getUserRoleAttribute()
-    // {
-    //     if($this->getRoleNames()){
-    //         return $this->getRoleNames()[0];
-    //     }
-    //     return "";
-    // }
 }

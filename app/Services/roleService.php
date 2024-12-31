@@ -14,7 +14,7 @@ class roleService
         try {
 
             $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
-            $roles = Role::latest();
+            $roles = Role::where('name','!=','admin');
             if (isset($inputs["search"])) {
                 $search = trim($inputs["search"]);
                 $roles = $roles->where(function ($q) use ($search) {
