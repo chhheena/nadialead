@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RolePermissionController;
+use App\Exports\LeadsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+
+    Route::get('leads/export', function() {
+        return Excel::download(new LeadsExport, 'leads.xlsx');
+    });
+
     // Admin-specific routes
     Route::middleware('isAdmin')->group(function () {
         Route::apiResource('users', UserController::class);

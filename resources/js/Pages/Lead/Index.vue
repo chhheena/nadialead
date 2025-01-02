@@ -30,12 +30,10 @@
                         <option v-for="status in statuses" :key="status" :value="status">{{ status }}</option>
                     </select>
                 </div>
-                <div class="gap-5">
-                    <!-- <router-link :to="{name: 'lead.colors'}"
-                        class="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        Lead color
-                    </router-link> -->
-                    <!-- Alternative Button -->
+                <div class="gap-5 flex">
+                    <PrimaryButton @click="exportLeads()">
+                        Export Lead
+                    </PrimaryButton>
                     <router-link v-if="roleType != 'client'" :to="{ name: 'lead.import' }"
                         class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         Import Lead
@@ -132,8 +130,8 @@
                             {{ (pagination.currentPage - 1) * pagination.perPage + index + 1 }}
                         </td>
                         <td class="py-5 px-4">
-                            <router-link v-if="lead.client_id "
-                                :to=" roleType == 'admin' ? { name: 'edit.user', params: { id: lead.client_id } } : ''">
+                            <router-link v-if="lead.client_id"
+                                :to="roleType == 'admin' ? { name: 'edit.user', params: { id: lead.client_id } } : ''">
                                 <PrimaryButton class="ms-4">
                                     {{ lead.client_name }}
                                 </PrimaryButton>
@@ -286,6 +284,22 @@ const setPagination = (response) => {
     pagination.value.lastPage = response.data.meta.last_page;
     pagination.value.currentPage = response.data.meta.current_page;
 };
+
+const exportLeads = () => {
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}leads/export`;
+    HTTP.get(endPoint, {
+        responseType: 'blob'
+    })
+        .then((response) => {
+            const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'leads.xlsx';
+            link.click();
+        })
+        .catch((error) => { })
+        .finally(() => { });
+}
 
 const createTable = (page) => {
     queryData.value.page = page;
