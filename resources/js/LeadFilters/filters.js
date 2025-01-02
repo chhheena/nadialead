@@ -11,7 +11,7 @@ const leadTags = [
 ];
 const leadRating = [
     'Very satisfied',
-    'Neither satisfied nor dissatisfied',
+    'Neither satisfied nor dissatified',
     'Somewhat satisfied',
     'Somewhat dissatisfied',
 ];
