@@ -1,6 +1,8 @@
 <?php
 
 use App\CallRailService\Facades\CallRail;
+use App\Http\Middleware\CheckLeadAssigned;
+use App\Http\Middleware\isAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+        ]);
+        $middleware->alias([
+            'isAdmin' => isAdmin::class,
+            'CheckLeadAssigned' => CheckLeadAssigned::class,  // Alias your custom middleware here
         ]);
 
         $middleware->statefulApi();

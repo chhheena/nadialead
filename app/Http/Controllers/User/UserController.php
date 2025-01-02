@@ -115,15 +115,15 @@ class UserController
                 'role' => 'required'
             ]);
             $inputs = $request->all();
-            // try {
+            try {
                 $responseArr['data'] = $this->userService->update($inputs,$id);
                 $responseArr['message'] = 'User Updated Successfully.';
                 return $this->successResponse($responseArr);
-            // } catch (\Exception $e) {
-            //     Log::error('User update api', ['error' => $e->getMessage()]);
-            //     report($e);
-            //     return $this->failResponse();
-            // }
+            } catch (\Exception $e) {
+                Log::error('User update api', ['error' => $e->getMessage()]);
+                report($e);
+                return $this->failResponse();
+            }
         }
 
 }

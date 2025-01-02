@@ -30,11 +30,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('leads', LeadController::class);
-    Route::apiResource('leadcolors', LeadColorController::class);
+    // Admin-specific routes
+    Route::middleware('isAdmin')->group(function () {
+        Route::apiResource('users', UserController::class);
+        Route::apiResource('leadcolors', LeadColorController::class);
+        Route::apiResource('roles', RolePermissionController::class)->only('index');
+    });
+
+    // Apply the custom CheckLeadAssigned middleware to the update route
+    Route::apiResource('leads', LeadController::class)->only('index');
+    Route::put('leads/{id}', [LeadController::class, 'update'])->middleware('CheckLeadAssigned');
+    Route::get('leads/{id}', [LeadController::class, 'show'])->name('leads.edit')->middleware('CheckLeadAssigned');
+
+    // Other routes
     Route::post('import/lead', [LeadController::class, 'importLead']);
-    Route::apiResource('roles', RolePermissionController::class)->only('index');
     Route::get('user/profile', [AuthController::class, 'userProfile']);
     Route::post('update/profile', [AuthController::class, 'updateProfile']);
     Route::post('update/profile/password', [AuthController::class, 'updateProfilePassword']);

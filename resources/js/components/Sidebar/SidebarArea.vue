@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/sidebar'
 import { onClickOutside } from '@vueuse/core'
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { ref, computed } from 'vue'
 import SidebarItem from './SidebarItem.vue'
-import { Link } from '@inertiajs/vue3';
 import { useRouter } from 'vue-router';
 import {getMenuBaseOnRole} from "@/helpers.js";
 import {useAuthStore} from '@/stores/auth.js';

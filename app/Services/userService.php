@@ -16,31 +16,47 @@ class userService
     public function getList($inputs)
     {
         try {
-            $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
-            $sortOrder = !empty($inputs['sortOrder']) ? $inputs['sortOrder'] : 'DESC';
-            $sortBy = !empty($inputs['sortBy']) ? $inputs['sortBy'] : 'id';
-            $users = User::with(['roles'])->has('roles')->orderBy($sortBy, $sortOrder);
-            if (!empty($inputs['filters'])) {
-                if (!empty($inputs['filters']['role'])) {
-                    $role = $inputs['filters']['role'];
-                    $users->whereHas('roles', function ($query) use ($role) {
-                        $query->where('name', $role);
-                    });
-                }
-            }
-            if (isset($inputs["search"])) {
-                $search = trim($inputs["search"]);
-                $users = $users->where(function ($q) use ($search) {
-                    $q->where('email', 'LIKE', '%' . $search . '%');
+            // Set default values for parameters
+            $perPage = $inputs["perPage"] ?? ($inputs["params"] ?? 10);
+            $sortOrder = $inputs['sortOrder'] ?? 'DESC';
+            $sortBy = $inputs['sortBy'] ?? 'id';
+
+            // Initialize query
+            $users = User::with(['roles'])
+                ->whereHas('roles', function ($q) {
+                    $q->where('name', '!=', 'admin');
+                })
+                ->has('roles')
+                ->orderBy($sortBy, $sortOrder);
+
+            // Apply role filters
+            if (!empty($inputs['filters']['role'])) {
+                $users->whereHas('roles', function ($query) use ($inputs) {
+                    $query->where('name', $inputs['filters']['role']);
                 });
             }
-            $perPage = !empty($inputs["perPage"]) ? $inputs["perPage"] : $perPage;
+
+            // Apply user type filter
+            if (!empty($inputs['user_type'])) {
+                $users->whereHas('roles', function ($query) use ($inputs) {
+                    $query->where('name', $inputs['user_type']);
+                });
+            }
+
+            // Apply search filter
+            if (!empty($inputs["search"])) {
+                $search = trim($inputs["search"]);
+                $users->where('email', 'LIKE', '%' . $search . '%');
+            }
+
+            // Return paginated or all results based on perPage value
             return $perPage != 'all' ? $users->paginate($perPage) : $users->get();
 
-        } catch (\Exception  | RequestException $e) {
-            Log::error('user fetched service', ['error' => $e->getMessage()]);
+        } catch (\Exception | RequestException $e) {
+            Log::error('User fetch service failed', ['error' => $e->getMessage()]);
             throw $e;
         }
+
     }
 
     public function store($inputs)
@@ -79,9 +95,6 @@ class userService
     {
         try {
             $user = User::where('email', $request->email)->first();
-            info([
-                'user-details' => $user->getRoleNames()->toarray()
-            ]);
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return ApiResponse::error('The provided credentials are incorrect.', 500);
             }
@@ -89,6 +102,7 @@ class userService
             $response = [
                 'user_detail' => $user,
                 'token' => $token,
+                'roles' => $user->roles
             ];
             return ApiResponse::success($response);
         } catch (\Exception $e) {

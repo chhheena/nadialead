@@ -3,80 +3,101 @@
 namespace App\Services;
 
 use App\Models\Lead;
-use Illuminate\Support\Facades\Log;
+use App\Models\LeadAssigned;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class leadService
 {
     public function getList($inputs)
     {
         try {
-            $perPage = !empty($inputs["params"]) ? $inputs["params"] : 10;
+            // Set default value for perPage
+            $perPage = $inputs["perPage"] ?? $inputs["params"] ?? 10;
+            // Initialize the Lead query
             $leads = Lead::latest();
-            if (!empty($inputs['filters'])) {
-                if (!empty($inputs['filters']['leadTag'])) {
-                    $lead_tags = $inputs['filters']['leadTag'];
-                    $leads->where('lead_tag', $lead_tags);
-                }
-                if (!empty($inputs['filters']['rating'])) {
-                    $lead_tags = $inputs['filters']['rating'];
-                    $leads->where('rating', $lead_tags);
-                }
-                if (!empty($inputs['filters']['noteStrikeFirst'])) {
-                    $lead_tags = $inputs['filters']['noteStrikeFirst'];
-                    $leads->where('note_strike_first', $lead_tags);
-                }
-                if (!empty($inputs['filters']['status'])) {
-                    $lead_tags = $inputs['filters']['status'];
-                    $leads->where('status', $lead_tags);
-                }
+            // Apply filters if they exist
+            if (!empty($inputs['filters']['leadTag'])) {
+                $leads->where('lead_tag', $inputs['filters']['leadTag']);
             }
-            if (isset($inputs["search"])) {
-                $search = trim($inputs["search"]);
-                $leads = $leads->where(function ($q) use ($search) {
-                    $q->where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('phone',$search)->orWhere('phone',$search);
+            if (!empty($inputs['filters']['rating'])) {
+                $leads->where('rating', $inputs['filters']['rating']);
+            }
+            if (!empty($inputs['filters']['noteStrikeFirst'])) {
+                $leads->where('note_strike_first', $inputs['filters']['noteStrikeFirst']);
+            }
+            if (!empty($inputs['filters']['status'])) {
+                $leads->where('status', $inputs['filters']['status']);
+            }
+            // If the user is a client, apply the assigned lead filter
+            if (Auth::user()->roles->first()?->name === 'client') {
+                $leads->whereHas('assigned_lead', function ($query) {
+                    $query->where('user_id', Auth::id());
                 });
             }
-            $perPage = !empty($inputs["perPage"]) ? $inputs["perPage"] : $perPage;
-            return $perPage != 'all' ? $leads->paginate($perPage) : $leads->get();
+            // Apply search filter
+            if (!empty($inputs["search"])) {
+                $search = trim($inputs["search"]);
+                $leads->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('phone', $search);
+                });
+            }
+            // Return paginated results or all results
+            return $perPage !== 'all' ? $leads->paginate($perPage) : $leads->get();
         } catch (\Exception | RequestException $e) {
-            Log::error('leads fetched service', ['error' => $e->getMessage()]);
+            Log::error('Leads fetch service', ['error' => $e->getMessage()]);
             throw $e;
         }
+
     }
 
     public function store($inputs)
     {
         try {
             return Lead::create($inputs);
-        } catch (\Exception | RequestException $e) {
+        } catch (\Exception  | RequestException $e) {
             DB::rollback();
             Log::error('lead store service', ['error' => $e->getMessage()]);
             throw $e;
         }
     }
 
-    public function show($lead)
+    public function show($id)
     {
         try {
-            return $lead;
-        } catch (\Exception | RequestException $e) {
+            return Lead::find($id);
+        } catch (\Exception  | RequestException $e) {
             Log::error('lead fetched service', ['error' => $e->getMessage()]);
             throw $e;
         }
     }
 
-    public function update($inputs, $lead)
+    public function update($inputs, $id)
     {
         try {
-            return $lead->update($inputs);
-        } catch (\Exception | RequestException $e) {
-            DB::rollback();
-            Log::error('lead update service', ['error' => $e->getMessage()]);
+            $lead = lead::find($id);
+            if (!empty($inputs['client_id']) && Auth::user()->roles->first()?->name == 'admin' ) {
+                LeadAssigned::updateOrCreate(
+                    ['lead_id' => $lead->id],
+                    ['user_id' => $inputs['client_id']]
+                );
+            }
+            $lead->fill($inputs);
+            if ($lead->isDirty()) {
+                return $lead->save();
+            }
+            return true;
+        } catch (\Exception  | RequestException $e) {
+            Log::error('lead update service', [
+                'error' => $e->getMessage(),
+                'lead_id' => $lead->id,
+                'inputs' => $inputs,
+            ]);
             throw $e;
         }
+
     }
 }

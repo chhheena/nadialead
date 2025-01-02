@@ -10,8 +10,8 @@
                     <InputLabel for="name" value="Name" class="text-gray-600" />
                     <TextInput id="name" type="text" :disabled="isFieldEnable('name')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
-                        v-model="form.name" required placeholder="Enter lead name" />
+                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.name" required
+                        placeholder="Enter lead name" />
                 </div>
 
                 <!-- Lead Phone -->
@@ -19,8 +19,8 @@
                     <InputLabel for="phone" value="Phone" class="text-gray-600" />
                     <TextInput id="phone" type="text" :disabled="isFieldEnable('phone')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
-                        v-model="form.phone" required placeholder="Enter lead phone" />
+                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.phone" required
+                        placeholder="Enter lead phone" />
                 </div>
             </div>
 
@@ -30,16 +30,16 @@
                     <InputLabel for="city" value="City" class="text-gray-600" />
                     <TextInput id="city" type="text" :disabled="isFieldEnable('city')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
-                        v-model="form.city" required placeholder="Enter lead city" />
+                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.city" required
+                        placeholder="Enter lead city" />
                 </div>
 
                 <div class="col-span-6">
                     <InputLabel for="state" value="State" class="text-gray-600" />
                     <TextInput id="state" type="text" :disabled="isFieldEnable('state')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
-                        v-model="form.state" required placeholder="Enter lead state" />
+                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.state" required
+                        placeholder="Enter lead state" />
                 </div>
             </div>
 
@@ -49,8 +49,8 @@
                     <InputLabel for="source" value="Source" class="text-gray-600" />
                     <TextInput id="source" type="text" :disabled="isFieldEnable('source')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
-                        v-model="form.source" required placeholder="Enter lead source" />
+                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.source" required
+                        placeholder="Enter lead source" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="lead_tag" value="Lead Tag" class="text-gray-600" />
@@ -67,8 +67,7 @@
                     <InputLabel for="qualification_status" value="Qualification Status" class="text-gray-600" />
                     <SelectInput v-model="form.qualification_status" :disabled="isFieldEnable('qualificationstatus')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('qualificationstatus') ? 'bg-gray-200' : '' "
-                        >
+                        :class="isFieldEnable('qualificationstatus') ? 'bg-gray-200' : ''">
                         <option value="" selected>Select qualification status</option>
                         <option value="0">Unqualified</option>
                         <option value="1">Qualified</option>
@@ -78,7 +77,7 @@
                     <InputLabel for="rating" value="Rating" class="text-gray-600" />
                     <SelectInput v-model="form.rating" :disabled="isFieldEnable('leadrating')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadrating') ? 'bg-gray-200' : '' ">
+                        :class="isFieldEnable('leadrating') ? 'bg-gray-200' : ''">
                         <option v-for="rating in leadRatings" :key="rating" :value="rating">{{ rating }}</option>
                     </SelectInput>
                 </div>
@@ -90,8 +89,8 @@
                     <InputLabel for="additonal_note" value="Additional Notes" class="text-gray-600" />
                     <TextInput id="additonal_note" type="text" :disabled="isFieldEnable('additionalnotes')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('additionalnotes') ? 'bg-gray-200' : '' "
-                        v-model="form.note" required placeholder="Enter additional Notes" />
+                        :class="isFieldEnable('additionalnotes') ? 'bg-gray-200' : ''" v-model="form.note" required
+                        placeholder="Enter additional Notes" />
                 </div>
 
                 <div class="col-span-6">
@@ -111,8 +110,8 @@
                     <InputLabel for="action" value="Listen to Recording" class="text-gray-600" />
                     <TextInput id="action" type="text" :disabled="isFieldEnable('listentorecording')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('listentorecording') ? 'bg-gray-200' : ''"
-                        v-model="form.action" required placeholder="Enter action" />
+                        :class="isFieldEnable('listentorecording') ? 'bg-gray-200' : ''" v-model="form.action" required
+                        placeholder="Enter action" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="status" value="Status" class="text-gray-600" />
@@ -123,14 +122,25 @@
                     </SelectInput>
                 </div>
             </div>
-            <!-- Lead Start Time -->
-            <div class="mb-6">
-                <InputLabel for="start_time" value="Start Time" class="text-gray-600" />
-                <TextInput id="start_time" type="datetime-local" :disabled="isFieldEnable('start_time')"
-                    class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                     :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''"
-                    v-model="form.start_time" required />
+
+
+            <div class="grid grid-cols-12 gap-6 mb-6">
+                <div :class="`${userRole == 'admin' ?  'col-span-6' : 'col-span-12'}`">
+                    <InputLabel for="start_time" value="Start Time" class="text-gray-600" />
+                    <TextInput id="start_time" type="datetime-local" :disabled="isFieldEnable('start_time')"
+                        class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.start_time" required />
+                </div>
+                <div class="col-span-6" v-if="userRole == 'admin'">
+                    <InputLabel for="assigned_client" value="Assigned Client" class="text-gray-600" />
+                    <SelectInput v-model="form.client_id" :disabled="isFieldEnable('client_id')"
+                        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        :class="isFieldEnable('client_id') ? 'bg-gray-200' : ''">
+                        <option v-for="client in clients" :key="client" :value="client.id">{{ client.name }}</option>
+                    </SelectInput>
+                </div>
             </div>
+
             <!-- Submit Button -->
             <div class="mt-8 flex justify-end">
                 <router-link :to="{ name: 'leads' }"
@@ -170,21 +180,22 @@ const routes = useRoute();
 const router = useRouter();
 const form = ref({});
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-
 const statuses = computed(() => LeadFilters.leadStatus);
 const leadTags = computed(() => LeadFilters.leadTags);
 const leadRatings = computed(() => LeadFilters.leadRating);
 const noteStrikeFirst = computed(() => LeadFilters.leadStrike);
 const userRole = computed(() => store.getUserRole);
-
 const userId = ref();
-// const props = defineProps({
-//     id: Number,
-//     leadTags: Array,
-//     leadRatings: Array,
-//     noteStrikeFirst: Array,
-//     statuses: Array
-// });
+
+const clients = ref([]);
+
+
+
+const queryData = ref({
+    sortOrder: "ASC",
+    perPage: "all"
+});
+
 
 
 const show = () => {
@@ -212,8 +223,22 @@ const submitForm = () => {
         .then((response) => {
             if (response.status) {
                 notificationMessage('success', 'Lead updated successfully');
-                router.push({name: 'leads'});
+                router.push({ name: 'leads' });
             }
+        })
+        .catch((error) => { })
+        .finally(() => { });
+};
+
+const createTable = () => {
+    queryData.value.user_type = 'client';
+    let endpoint = `${import.meta.env.VITE_API_BASE_URL}users`;
+    axios
+        .get(endpoint, {
+            params: queryData.value,
+        })
+        .then((response) => {
+            clients.value = response.data.data;
         })
         .catch((error) => { })
         .finally(() => { });
@@ -223,6 +248,7 @@ onMounted(() => {
     userId.value = routes.params.id
     if (routes.params.id) {
         show();
+        createTable();
     }
 });
 

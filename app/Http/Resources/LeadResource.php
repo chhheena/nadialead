@@ -31,7 +31,9 @@ class LeadResource extends JsonResource
             'status'                => $this->status,
             'start_time'            => $this->start_time,
             'lead_id'               => $this->lead_id,
-            'lead_assigned'         => $this->lead_assigned ? $this->lead_assigned : 'Not Assigned'
+            'lead_assigned'         => $this->lead_assigned ? $this->lead_assigned : 'Not Assigned',
+            'client_id'             => $this->assigned_lead ? $this->assigned_lead->user_id : '',
+            'client_name'           => $this->assigned_lead ? ($this->assigned_lead->user ? $this->assigned_lead->user->name : '' ) : ''
         ];
     }
 }

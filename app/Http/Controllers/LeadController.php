@@ -87,11 +87,11 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Lead $lead)
+    public function show($id)
     {
         try {
             $responseArr = [];
-            $responseArr['data'] = new LeadResource($this->leadService->show($lead));
+            $responseArr['data'] = new LeadResource($this->leadService->show($id));
             $responseArr['message'] = 'Lead fetched Successfully.';
             return $this->successResponse($responseArr);
         } catch (\Exception $e) {
@@ -108,11 +108,12 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LeadUpdateRequest $request, Lead $lead)
+    public function update(LeadUpdateRequest $request, $id)
     {
         $responseArr = [];
+        $inputs = $request->filteredData();
         try {
-            $responseArr['data'] = $this->leadService->update($request->all(), $lead);
+            $responseArr['data'] = $this->leadService->update($inputs, $id);
             $responseArr['message'] = 'Lead Updated Successfully.';
             return $this->successResponse($responseArr);
         } catch (\Exception $e) {

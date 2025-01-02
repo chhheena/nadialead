@@ -36,7 +36,7 @@
                         Lead color
                     </router-link> -->
                     <!-- Alternative Button -->
-                    <router-link v-if="roleType != 'client'" :to="{name: 'lead.import'}"
+                    <router-link v-if="roleType != 'client'" :to="{ name: 'lead.import' }"
                         class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         Import Lead
                     </router-link>
@@ -71,7 +71,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Table Section -->
         <div class="mt-3 overflow-x-auto">
             <table
@@ -82,7 +81,7 @@
                             #
                         </th>
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
-                            Assign Status
+                            Assigned To
                         </th>
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Name
@@ -117,7 +116,7 @@
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Status
                         </th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white min-w-[250px]">
+                        <th class="py-4 px-4 font-medium text-black dark:text-white">
                             Actions
                         </th>
                     </tr>
@@ -133,7 +132,13 @@
                             {{ (pagination.currentPage - 1) * pagination.perPage + index + 1 }}
                         </td>
                         <td class="py-5 px-4">
-                            <PrimaryButton class="ms-4 bg-red-400">
+                            <router-link v-if="lead.client_id "
+                                :to=" roleType == 'admin' ? { name: 'edit.user', params: { id: lead.client_id } } : ''">
+                                <PrimaryButton class="ms-4">
+                                    {{ lead.client_name }}
+                                </PrimaryButton>
+                            </router-link>
+                            <PrimaryButton v-else class="ms-4 bg-red-400">
                                 Not Assigned
                             </PrimaryButton>
                         </td>
@@ -195,7 +200,8 @@
                         <td class="py-5 px-4">
                             <div class="flex items-center space-x-3.5">
                                 <!-- :to="{name: 'lead.update', params: lead.id}" -->
-                                <router-link :to="{name: 'lead.update', params: {id: lead.id}}" class="hover:text-primary">
+                                <router-link :to="{ name: 'lead.update', params: { id: lead.id } }"
+                                    class="hover:text-primary">
                                     <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -206,11 +212,6 @@
                                             fill="" />
                                     </svg>
                                 </router-link>
-                                <select
-                                    class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="" >Select Client</option>
-                                    <option v-for="user in users" :key="user" :value="user_id">{{ user.name }}</option>
-                                </select>
                             </div>
                         </td>
                     </tr>
@@ -303,20 +304,6 @@ const createTable = (page) => {
         .finally(() => { });
 };
 
-const getUsers = (page) => {
-    queryData.value.page = page;
-    let endpoint = `${import.meta.env.VITE_API_BASE_URL}users`;
-    axios
-        .get(endpoint, {
-            params: queryData.value,
-        })
-        .then((response) => {
-            users.value = response.data.data;
-        })
-        .catch((error) => { })
-        .finally(() => { });
-};
-
 
 const pageChange = (event) => {
     queryData.value.perPage = event.target.value;
@@ -343,7 +330,6 @@ watch(
 );
 
 onMounted(() => {
-    getUsers()
 });
 
 onUnmounted(() => {
