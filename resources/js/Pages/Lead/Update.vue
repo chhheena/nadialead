@@ -98,8 +98,7 @@
                     <SelectInput v-model="form.note_strike_first" :disabled="isFieldEnable('strikefirst')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('strikefirst') ? 'bg-gray-200' : ''">
-                        <option v-for="note in noteStrikeFirst" :key="note" :value="note">{{ note }} {{
-                            isFieldEnable('strikefirst') }} </option>
+                        <option v-for="note in noteStrikeFirst" :key="note" :value="note">{{ note }} </option>
                     </SelectInput>
                 </div>
             </div>
