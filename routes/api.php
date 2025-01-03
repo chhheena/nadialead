@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RolePermissionController;
 use App\Exports\LeadsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\AssignLeadFieldController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,13 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('user/profile', [AuthController::class, 'userProfile']);
     Route::post('update/profile', [AuthController::class, 'updateProfile']);
     Route::post('update/profile/password', [AuthController::class, 'updateProfilePassword']);
+
+
+    Route::controller(AssignLeadFieldController::class)->group(function() {  
+        Route::get('get/fields', 'getFields');
+        Route::get('get/assign/fields/{id}', 'getAssignFields');
+        Route::post('assign/fields', 'assignFields');
+    });
 });
 
 // Route::apiResource('users', UserController::class);

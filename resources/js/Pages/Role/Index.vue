@@ -29,7 +29,7 @@
                         </td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex items-end space-x-3.5">
-                                <PrimaryButton class="ms-4">
+                                <PrimaryButton @click="openModal(role.id)" class="ms-4">
                                     Assign Permission
                                 </PrimaryButton>
                             </div>
@@ -38,15 +38,34 @@
                 </tbody>
             </table>
         </div>
+        <AssignFieldsModal
+            v-show="showModal"
+            :showModal="showModal"
+            :getFields="fieldsData"
+            @close="showModal=false"
+            :roleId="roleId"
+        />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import HTTP from "../../axios.js";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Modal from "@/Components/Modal.vue";
+import { useAuthStore } from "@/stores/auth.js";
+import DefaultCard from "@/components/Forms/DefaultCard.vue";
+import AssignFieldsModal from "@/components/AssignFieldsModal.vue";
 
 const roles = ref([]);
+const fieldsData = ref([]);
+const showModal = ref(false);
+const assignFields = ref([]);
+const store = useAuthStore();
+const roleId  = ref('');
+
+const getUserRoleId = computed(() => store.getUser.id);
+
 
 const createTable = (page) => {
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}roles`;
@@ -59,9 +78,44 @@ const createTable = (page) => {
         .finally(() => { });
 };
 
+const getLeadFields = () => {
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields`;
+    HTTP
+        .get(endPoint)
+        .then((response) => {
+            let status = response.data?.status;
+            if (status) {
+                fieldsData.value = response.data.data;
+            }
+        })
+        .catch((error) => { })
+        .finally(() => { });
+}
+
+const getAssignLeadFields = () => {
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields`;
+    HTTP
+        .get(endPoint)
+        .then((response) => {
+            let status = response.data?.status;
+            if (status) {
+                fieldsData.value = response.data.data;
+            }
+        })
+        .catch((error) => { })
+        .finally(() => { });
+}
 
 onMounted(() => {
     createTable(1);
+    getLeadFields();
+    getAssignLeadFields();
 });
+
+const openModal = (userId) => {
+
+    roleId.value = userId;
+    showModal.value = true;
+}
 
 </script>
