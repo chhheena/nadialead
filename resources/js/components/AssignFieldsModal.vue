@@ -13,7 +13,7 @@
                 <form id="permissionsForm">
                     <div class="flex flex-wrap gap-4">
                         <div v-for="(field, index) in getFields" :key="index" class="flex items-center">
-                            <input type="checkbox" :id="index" v-model="permissions[index]" value="id" class="mr-2">
+                            <input type="checkbox" :id="index" v-model="permissions[index]" value="id" class="mr-2" :checked="assignedFileds.includes(field)" >
                             <label :for="index">{{ field }}</label>
                         </div>
                     </div>
@@ -60,21 +60,27 @@ const props = defineProps({
     roleId: {
         type: [String, Number],
         required: true,
+    },
+    assignedFileds : {
+        type: Array,
+        default: [],
     }
 });
 
 const getUserRoleId = computed(() => store.getUser.id);
 const getAssignLeadFields = computed(() => store.getAssignedFields);
 const getCheckedFields = computed(() => {
-    return props.getFields.filter((field, index) => {
-        return permissions.value[index] === true;  // Check if the corresponding permission is true
+    const checkedFields = props.getFields.filter((field, index) => {
+        return permissions.value[index] === true;
     });
+    const mergedFields = [...new Set([...checkedFields, ...props.assignedFileds])];
+    return mergedFields;
 });
 
 
 
 onMounted(() => {
-    
+
 });
 
 const submitHandler = () => {

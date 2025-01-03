@@ -24,12 +24,13 @@
                         <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                             {{ index + 1 }}
                         </td>
+
                         <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                             {{ role.name }}
                         </td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex items-end space-x-3.5">
-                                <PrimaryButton @click="openModal(role.id)" class="ms-4">
+                                <PrimaryButton @click="openModal(role)" class="ms-4">
                                     Assign Permission
                                 </PrimaryButton>
                             </div>
@@ -44,6 +45,7 @@
             :getFields="fieldsData"
             @close="showModal=false"
             :roleId="roleId"
+            :assignedFileds ="assignedFileds"
         />
     </div>
 </template>
@@ -63,6 +65,7 @@ const showModal = ref(false);
 const assignFields = ref([]);
 const store = useAuthStore();
 const roleId  = ref('');
+const assignedFileds = ref([]);
 
 const getUserRoleId = computed(() => store.getUser.id);
 
@@ -112,10 +115,10 @@ onMounted(() => {
     getAssignLeadFields();
 });
 
-const openModal = (userId) => {
-
-    roleId.value = userId;
+const openModal = (role) => {
+    roleId.value = role.id;
     showModal.value = true;
+    assignedFileds.value = role.assigned_fields
 }
 
 </script>
