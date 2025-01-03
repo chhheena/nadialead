@@ -104,13 +104,6 @@ const routes = [
                 path: "/lead/update/:id",
                 name: "lead.update",
                 component: LeadUpdate,
-                beforeEnter: (to, from, next) => {
-                    const isAuthenticated = localStorage.getItem('token');
-                    if (!isAuthenticated) {
-                        return next({ name: 'login' });
-                    }
-                    next();
-                }
             },
             {
                 path: "/users",
@@ -158,13 +151,6 @@ const routes = [
                 path: "/edit/profile",
                 name: "edit.profile",
                 component: Profile,
-                beforeEnter: (to, from, next) => {
-                    const isAuthenticated = localStorage.getItem('token');
-                    if (!isAuthenticated) {
-                        return next({ name: 'login' });
-                    }
-                    next();
-                }
             }
         ],
     }
