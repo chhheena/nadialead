@@ -12,7 +12,12 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="mt-8 justify-end">
+            <div class="mt-8 flex justify-end">
+                <router-link
+                    class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300"
+                    :to="{ name: 'leads' }">
+                    Cancel
+                </router-link>
                 <PrimaryButton @click="submitForm()"
                     class="py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
                     Add Lead
@@ -39,7 +44,10 @@ const handleFileChange = (event) => {
 };
 
 const submitForm = () => {
-
+    if(!form.value.leadFile){
+        notificationMessage('error', 'Please select the import file');
+        return;
+    }
     const formData = new FormData();
     formData.append("lead_file", form.value.leadFile);
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}import/lead`;
