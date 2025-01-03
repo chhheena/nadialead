@@ -37,7 +37,8 @@ import HTTP from "@/axios";
 import Modal from "@/Components/Modal.vue";
 import { useAuthStore } from "@/stores/auth.js";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
-
+import { notificationMessage } from "@/helpers";
+const emit = defineEmits();
 const roles = ref([]);
 const fieldsData = ref([]);
 const assignFields = ref([]);
@@ -96,22 +97,17 @@ const submitHandler = () => {
         'leadAssignFields': getCheckedFields.value
     }
 
-    console.log(payload, 'payload-data');
-    
-
-
-    // console.log(payload, 'payload');
-    // HTTP
-    //     .post(endPoint)
-    //     .then((response) => {
-    //         let status = response.data?.status;
-    //         if (status) {
-    //             console.log(response, 'response-data');
-    //             // fieldsData.value = response.data.data;
-    //         }
-    //     })
-    //     .catch((error) => { })
-    //     .finally(() => { });
+    HTTP
+        .post(endPoint, payload)
+        .then((response) => {
+            let status = response.data?.status;
+            if (status) {
+                notificationMessage('success', 'Permission added successfully');
+                emit('close');
+            }
+        })
+        .catch((error) => { })
+        .finally(() => { });
 }
 
 </script>
