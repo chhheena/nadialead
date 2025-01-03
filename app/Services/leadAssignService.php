@@ -37,8 +37,14 @@ class  leadAssignService
     }
 
     public function assignFields($request){
+        info([
+            'request' => $request->all()
+        ]);
         try {
-            $addPermissionColumn = AssignLeadField::create([
+            $addPermissionColumn = AssignLeadField::updateOrCreate([
+                'role_id' => $request->roleId,
+            ],
+            [
                 'role_id' => $request->roleId,
                 'lead_assign_fields' => $request->leadAssignFields,
             ]);
