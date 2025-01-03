@@ -23,7 +23,7 @@ class UpdateProfileInfoRequest extends FormRequest
     {
         return [
             'id' => 'required',
-            'email' => 'required|email',
+            // 'email' => 'required|email',
             'name' => 'required',
         ];
     }
@@ -31,8 +31,8 @@ class UpdateProfileInfoRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Email is required',
-            'email.email' => 'Please profide the valid email address',
+            // 'email.required' => 'Email is required',
+            // 'email.email' => 'Please profide the valid email address',
             'name.required' => 'Name is required',
             'id.required' => 'User id is required'
         ];

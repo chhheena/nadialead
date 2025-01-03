@@ -202,7 +202,7 @@ class userService
         }
         $isUserExist->update([
             'name' => $request->name,
-            'email' => $request->email
+            // 'email' => $request->email
         ]);
         return ApiResponse::success($isUserExist->refresh());
     }

@@ -35,6 +35,7 @@
                     v-model="form.email"
                     required
                     autocomplete="username"
+                    readonly="true"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -112,11 +113,10 @@ const form = useForm({
 
 const submitHandler = async () => {
     const {id, name, email} = form;
-    let response = await store.updateProfileInfo({id, name, email})
+    let response = await store.updateProfileInfo({id, name})
     if(response?.status){
         notificationMessage('success', 'User updated successfully')
     }
-    console.log();
 }
 
 

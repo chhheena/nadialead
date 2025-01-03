@@ -125,6 +125,11 @@
                             <Loader />
                         </td>
                     </tr>
+                    <tr v-else-if="isDataExist">
+                        <td colspan="13">
+                            No records found.
+                        </td>
+                    </tr>
                     <tr v-else class="whitespace-nowrap" v-for="(lead, index) in leads" :key="lead">
                         <td class="py-5 px-4 pl-9 xl:pl-11">
                             {{ (pagination.currentPage - 1) * pagination.perPage + index + 1 }}
@@ -273,7 +278,7 @@ const pagination = ref({
 });
 
 const serverBusy = ref(true);
-
+const isDataExist = ref(false);
 const setPagination = (response) => {
     pagination.value.total = response.data.meta.total;
     pagination.value.lastPage = response.data.meta.last_page;
@@ -304,10 +309,15 @@ const createTable = (page) => {
             params: queryData.value,
         })
         .then((response) => {
-            serverBusy.value = false;
-            leads.value = response.data.data;
-            pageData.value = response.data.meta;
-            setPagination(response);
+            if (response.data.data.length > 0) {
+                serverBusy.value = isDataExist.value = false;
+                leads.value = response.data.data;
+                pageData.value = response.data.meta;
+                setPagination(response);
+            } else {
+                serverBusy.value = false;
+                isDataExist.value = true;
+            }
         })
         .catch((error) => { })
         .finally(() => { });
@@ -339,7 +349,7 @@ watch(
 );
 
 onMounted(() => {
-    
+
 });
 
 onUnmounted(() => {
