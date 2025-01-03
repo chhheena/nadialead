@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Requests\UserPostRequest;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -54,21 +55,12 @@ class UserController
          * @param \Illuminate\Http\Resquest $request
          * @return \Illuminate\Http\Response
         */
-        public function store(Request $request)
+        public function store(UserPostRequest $request)
         {
-            $request->validate([
-                'name' => 'required',
-                'email' => 'required|email',
-                'password' => 'required',
-                'confirmPassword' => 'required',
-                'role' => 'required'
-            ]);
-
             $responseArr = [];
             $inputs = $request->all();
             try {
                 $responseArr['data'] = $this->userService->store($inputs);
-
                 $responseArr['message'] = 'User Created Successfully.';
                 return $this->successResponse($responseArr);
             } catch (\Exception $e) {
@@ -105,15 +97,10 @@ class UserController
          * @param int $id
          * @return \Illuminate\Http\Response
         */
-        public function update(Request $request , $id)
+        public function update(UserPostRequest $request , $id)
         {
 
             $responseArr = [];
-            $request->validate([
-                'name' => 'required',
-                'email' => 'required|email',
-                'role' => 'required'
-            ]);
             $inputs = $request->all();
             try {
                 $responseArr['data'] = $this->userService->update($inputs,$id);

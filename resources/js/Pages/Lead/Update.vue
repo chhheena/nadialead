@@ -12,6 +12,7 @@
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.name" required
                         placeholder="Enter lead name" />
+                        <InputError class="mt-2" :message="errors.name ? errors.name[0] : ''" />
                 </div>
 
                 <!-- Lead Phone -->
@@ -21,9 +22,9 @@
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.phone" required
                         placeholder="Enter lead phone" />
+                        <InputError class="mt-2" :message="errors.phone ? errors.phone[0] : ''" />
                 </div>
             </div>
-
             <!-- City and State -->
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
@@ -32,6 +33,7 @@
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.city" required
                         placeholder="Enter lead city" />
+                        <InputError class="mt-2" :message="errors.city ? errors.city[0] : ''" />
                 </div>
 
                 <div class="col-span-6">
@@ -40,6 +42,7 @@
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.state" required
                         placeholder="Enter lead state" />
+                        <InputError class="mt-2" :message="errors.state ? errors.state[0] : ''" />
                 </div>
             </div>
 
@@ -51,6 +54,7 @@
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.source" required
                         placeholder="Enter lead source" />
+                        <InputError class="mt-2" :message="errors.source ? errors.source[0] : ''" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="lead_tag" value="Lead Tag" class="text-gray-600" />
@@ -59,6 +63,7 @@
                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''">
                         <option v-for="tag in leadTags" :key="tag" :value="tag">{{ tag }}</option>
                     </SelectInput>
+                    <InputError class="mt-2" :message="errors.lead_tag ? errors.lead_tag[0] : ''" />
                 </div>
             </div>
             <!-- Qualification Status and Rating -->
@@ -72,6 +77,7 @@
                         <option value="0">Unqualified</option>
                         <option value="1">Qualified</option>
                     </SelectInput>
+                    <InputError class="mt-2" :message="errors.qualification_status ? errors.qualification_status[0] : ''" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="rating" value="Rating" class="text-gray-600" />
@@ -80,6 +86,7 @@
                         :class="isFieldEnable('leadrating') ? 'bg-gray-200' : ''">
                         <option v-for="rating in leadRatings" :key="rating" :value="rating">{{ rating }}</option>
                     </SelectInput>
+                    <InputError class="mt-2" :message="errors.rating ? errors.rating[0] : ''" />
                 </div>
             </div>
 
@@ -91,6 +98,7 @@
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('additionalnotes') ? 'bg-gray-200' : ''" v-model="form.note" required
                         placeholder="Enter additional Notes" />
+                    <InputError class="mt-2" :message="errors.note ? errors.note[0] : ''" />
                 </div>
 
                 <div class="col-span-6">
@@ -100,6 +108,7 @@
                         :class="isFieldEnable('strikefirst') ? 'bg-gray-200' : ''">
                         <option v-for="note in noteStrikeFirst" :key="note" :value="note">{{ note }} </option>
                     </SelectInput>
+                    <InputError class="mt-2" :message="errors.note_strike_first ? errors.note_strike_first[0] : ''" />
                 </div>
             </div>
 
@@ -111,6 +120,7 @@
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('listentorecording') ? 'bg-gray-200' : ''" v-model="form.action" required
                         placeholder="Enter action" />
+                        <InputError class="mt-2" :message="errors.action ? errors.action[0] : ''" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="status" value="Status" class="text-gray-600" />
@@ -119,16 +129,16 @@
                         :class="isFieldEnable('leadstatus') ? 'bg-gray-200' : ''">
                         <option v-for="status in statuses" :key="status" :value="status">{{ status }}</option>
                     </SelectInput>
+                    <InputError class="mt-2" :message="errors.status ? errors.status[0] : ''" />
                 </div>
             </div>
-
-
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div :class="`${userRole == 'admin' ?  'col-span-6' : 'col-span-12'}`">
                     <InputLabel for="start_time" value="Start Time" class="text-gray-600" />
                     <TextInput id="start_time" type="datetime-local" :disabled="isFieldEnable('start_time')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.start_time" required />
+                        <InputError class="mt-2" :message="errors.start_time ? errors.start_time[0] : ''" />
                 </div>
                 <div class="col-span-6" v-if="userRole == 'admin'">
                     <InputLabel for="assigned_client" value="Assigned Client" class="text-gray-600" />
@@ -137,19 +147,14 @@
                         :class="isFieldEnable('client_id') ? 'bg-gray-200' : ''">
                         <option v-for="client in clients" :key="client" :value="client.id">{{ client.name }}</option>
                     </SelectInput>
+                    <InputError class="mt-2" :message="errors.client_id ? errors.client_id[0] : ''" />
                 </div>
             </div>
-
-            <!-- Submit Button -->
             <div class="mt-8 flex justify-end">
                 <router-link :to="{ name: 'leads' }"
                     class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300">
                     Cancel
                 </router-link>
-                <!-- <Link :href="route('leads')"
-                        class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300">
-                    Cancel
-                    </Link> -->
                 <PrimaryButton @click="submitForm()"
                     class="py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
                     Update Lead
@@ -159,22 +164,20 @@
     </DefaultCard>
 </template>
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref, onMounted, computed } from "vue";
-// import axios from "axios";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import { convertJsonToFormData, notificationMessage, getFieldsBaseOnRole } from "@/helpers";
-// import { router, Link } from '@inertiajs/vue3';
 import axios from "@/axios";
 import LeadFilters from "@/LeadFilters/filters.js"
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from "@/stores/auth";
-const store = useAuthStore();
+import InputError from '@/Components/InputError.vue';
 
+const store = useAuthStore();
 const routes = useRoute();
 const router = useRouter();
 const form = ref({});
@@ -184,21 +187,17 @@ const leadTags = computed(() => LeadFilters.leadTags);
 const leadRatings = computed(() => LeadFilters.leadRating);
 const noteStrikeFirst = computed(() => LeadFilters.leadStrike);
 const userRole = computed(() => store.getUserRole);
-const userId = ref();
-
+const leadId = ref();
 const clients = ref([]);
-
-
+const errors = ref([]);
 
 const queryData = ref({
     sortOrder: "ASC",
     perPage: "all"
 });
 
-
-
 const show = () => {
-    let endpoint = `${baseUrl}leads/${userId.value}`
+    let endpoint = `${baseUrl}leads/${leadId.value}`
     axios
         .get(endpoint)
         .then((response) => {
@@ -217,7 +216,7 @@ const submitForm = () => {
     };
     formData = convertJsonToFormData(form.value);
     formData.append("_method", "PUT");
-    let endpoint = `${baseUrl}leads/${userId.value}`
+    let endpoint = `${baseUrl}leads/${leadId.value}`
     axios.post(endpoint, formData, config)
         .then((response) => {
             if (response.status) {
@@ -225,7 +224,9 @@ const submitForm = () => {
                 router.push({ name: 'leads' });
             }
         })
-        .catch((error) => { })
+        .catch((error) => {
+            errors.value = error.response.data.errors;
+         })
         .finally(() => { });
 };
 
@@ -244,7 +245,7 @@ const createTable = () => {
 };
 
 onMounted(() => {
-    userId.value = routes.params.id
+    leadId.value = routes.params.id
     if (routes.params.id) {
         show();
         createTable();

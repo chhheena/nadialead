@@ -80,7 +80,7 @@ class userService
     {
         try {
             $user = User::find($id);
-            if(isset($inputs['password'])) {
+            if(empty($inputs['password'])) {
                 unset($inputs['password']);
             }
             $user->update($inputs);
