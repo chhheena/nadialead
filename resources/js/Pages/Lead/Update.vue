@@ -10,7 +10,7 @@
                     <InputLabel for="name" value="Name" class="text-gray-600" />
                     <TextInput id="name" type="text" :disabled="isFieldEnable('name')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.name" required
+                        :class="isFieldEnable('name') ? 'bg-gray-200' : ''" v-model="form.name" required
                         placeholder="Enter lead name" />
                         <InputError class="mt-2" :message="errors.name ? errors.name[0] : ''" />
                 </div>
@@ -20,7 +20,7 @@
                     <InputLabel for="phone" value="Phone" class="text-gray-600" />
                     <TextInput id="phone" type="text" :disabled="isFieldEnable('phone')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.phone" required
+                        :class="isFieldEnable('phone') ? 'bg-gray-200' : ''" v-model="form.phone" required
                         placeholder="Enter lead phone" />
                         <InputError class="mt-2" :message="errors.phone ? errors.phone[0] : ''" />
                 </div>
@@ -31,7 +31,7 @@
                     <InputLabel for="city" value="City" class="text-gray-600" />
                     <TextInput id="city" type="text" :disabled="isFieldEnable('city')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.city" required
+                        :class="isFieldEnable('city') ? 'bg-gray-200' : ''" v-model="form.city" required
                         placeholder="Enter lead city" />
                         <InputError class="mt-2" :message="errors.city ? errors.city[0] : ''" />
                 </div>
@@ -40,7 +40,7 @@
                     <InputLabel for="state" value="State" class="text-gray-600" />
                     <TextInput id="state" type="text" :disabled="isFieldEnable('state')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.state" required
+                        :class="isFieldEnable('state') ? 'bg-gray-200' : ''" v-model="form.state" required
                         placeholder="Enter lead state" />
                         <InputError class="mt-2" :message="errors.state ? errors.state[0] : ''" />
                 </div>
@@ -52,15 +52,15 @@
                     <InputLabel for="source" value="Source" class="text-gray-600" />
                     <TextInput id="source" type="text" :disabled="isFieldEnable('source')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.source" required
+                        :class="isFieldEnable('source') ? 'bg-gray-200' : ''" v-model="form.source" required
                         placeholder="Enter lead source" />
                         <InputError class="mt-2" :message="errors.source ? errors.source[0] : ''" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="lead_tag" value="Lead Tag" class="text-gray-600" />
-                    <SelectInput v-model="form.lead_tag" :disabled="isFieldEnable('leadtag')"
+                    <SelectInput v-model="form.lead_tag" :disabled="isFieldEnable('lead_tag')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''">
+                        :class="isFieldEnable('lead_tag') ? 'bg-gray-200' : ''">
                         <option v-for="tag in leadTags" :key="tag" :value="tag">{{ tag }}</option>
                     </SelectInput>
                     <InputError class="mt-2" :message="errors.lead_tag ? errors.lead_tag[0] : ''" />
@@ -70,9 +70,9 @@
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
                     <InputLabel for="qualification_status" value="Qualification Status" class="text-gray-600" />
-                    <SelectInput v-model="form.qualification_status" :disabled="isFieldEnable('qualificationstatus')"
+                    <SelectInput v-model="form.qualification_status" :disabled="isFieldEnable('qualification_status')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('qualificationstatus') ? 'bg-gray-200' : ''">
+                        :class="isFieldEnable('qualification_status') ? 'bg-gray-200' : ''">
                         <option value="" selected>Select qualification status</option>
                         <option value="0">Unqualified</option>
                         <option value="1">Qualified</option>
@@ -81,9 +81,9 @@
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="rating" value="Rating" class="text-gray-600" />
-                    <SelectInput v-model="form.rating" :disabled="isFieldEnable('leadrating')"
+                    <SelectInput v-model="form.rating" :disabled="isFieldEnable('rating')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadrating') ? 'bg-gray-200' : ''">
+                        :class="isFieldEnable('rating') ? 'bg-gray-200' : ''">
                         <option v-for="rating in leadRatings" :key="rating" :value="rating">{{ rating }}</option>
                     </SelectInput>
                     <InputError class="mt-2" :message="errors.rating ? errors.rating[0] : ''" />
@@ -94,18 +94,18 @@
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
                     <InputLabel for="additonal_note" value="Additional Notes" class="text-gray-600" />
-                    <TextInput id="additonal_note" type="text" :disabled="isFieldEnable('additionalnotes')"
+                    <TextInput id="additonal_note" type="text" :disabled="isFieldEnable('note')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('additionalnotes') ? 'bg-gray-200' : ''" v-model="form.note" required
+                        :class="isFieldEnable('note') ? 'bg-gray-200' : ''" v-model="form.note" required
                         placeholder="Enter additional Notes" />
                     <InputError class="mt-2" :message="errors.note ? errors.note[0] : ''" />
                 </div>
 
                 <div class="col-span-6">
                     <InputLabel for="note_strike_first" value="Note Strike First" class="text-gray-600" />
-                    <SelectInput v-model="form.note_strike_first" :disabled="isFieldEnable('strikefirst')"
+                    <SelectInput v-model="form.note_strike_first" :disabled="isFieldEnable('note_strike_first')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('strikefirst') ? 'bg-gray-200' : ''">
+                        :class="isFieldEnable('note_strike_first') ? 'bg-gray-200' : ''">
                         <option v-for="note in noteStrikeFirst" :key="note" :value="note">{{ note }} </option>
                     </SelectInput>
                     <InputError class="mt-2" :message="errors.note_strike_first ? errors.note_strike_first[0] : ''" />
@@ -116,17 +116,17 @@
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
                     <InputLabel for="action" value="Listen to Recording" class="text-gray-600" />
-                    <TextInput id="action" type="text" :disabled="isFieldEnable('listentorecording')"
+                    <TextInput id="action" type="text" :disabled="isFieldEnable('action')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('listentorecording') ? 'bg-gray-200' : ''" v-model="form.action" required
+                        :class="isFieldEnable('action') ? 'bg-gray-200' : ''" v-model="form.action" required
                         placeholder="Enter action" />
                         <InputError class="mt-2" :message="errors.action ? errors.action[0] : ''" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="status" value="Status" class="text-gray-600" />
-                    <SelectInput v-model="form.status" :disabled="isFieldEnable('leadstatus')"
+                    <SelectInput v-model="form.status" :disabled="isFieldEnable('status')"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadstatus') ? 'bg-gray-200' : ''">
+                        :class="isFieldEnable('status') ? 'bg-gray-200' : ''">
                         <option v-for="status in statuses" :key="status" :value="status">{{ status }}</option>
                     </SelectInput>
                     <InputError class="mt-2" :message="errors.status ? errors.status[0] : ''" />
@@ -137,7 +137,7 @@
                     <InputLabel for="start_time" value="Start Time" class="text-gray-600" />
                     <TextInput id="start_time" type="datetime-local" :disabled="isFieldEnable('start_time')"
                         class="mt-1 block w-full  border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        :class="isFieldEnable('leadtag') ? 'bg-gray-200' : ''" v-model="form.start_time" required />
+                        :class="isFieldEnable('start_time') ? 'bg-gray-200' : ''" v-model="form.start_time" required />
                         <InputError class="mt-2" :message="errors.start_time ? errors.start_time[0] : ''" />
                 </div>
                 <div class="col-span-6" v-if="userRole == 'admin'">
@@ -190,7 +190,7 @@ const userRole = computed(() => store.getUserRole);
 const leadId = ref();
 const clients = ref([]);
 const errors = ref([]);
-
+const getAssignedFields = computed(() => store.getAssignedFields)
 const queryData = ref({
     sortOrder: "ASC",
     perPage: "all"
@@ -256,7 +256,7 @@ const isFieldEnable = (field) => {
     if (userRole.value != 'admin') {
         let getFields = getFieldsBaseOnRole(userRole.value);
         if (getFields) {
-            let isFieldEnable = getFields.includes(field);
+            let isFieldEnable = getAssignedFields.value.includes(field);
             return !isFieldEnable;
         }
     }

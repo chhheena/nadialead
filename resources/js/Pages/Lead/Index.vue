@@ -78,7 +78,7 @@
                         <th width="40" class="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                             #
                         </th>
-                        <th class="py-4 px-4 font-medium text-black dark:text-white">
+                        <th v-if="roleType != 'client'" class="py-4 px-4 font-medium text-black dark:text-white">
                             Assigned To
                         </th>
                         <th class="py-4 px-4 font-medium text-black dark:text-white">
@@ -129,7 +129,7 @@
                         <td class="py-5 px-4 pl-9 xl:pl-11">
                             {{ (pagination.currentPage - 1) * pagination.perPage + index + 1 }}
                         </td>
-                        <td class="py-5 px-4">
+                        <td v-if="roleType != 'client'" class="py-5 px-4">
                             <router-link v-if="lead.client_id"
                                 :to="roleType == 'admin' ? { name: 'edit.user', params: { id: lead.client_id } } : ''">
                                 <PrimaryButton class="ms-4">

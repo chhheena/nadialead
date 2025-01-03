@@ -16,13 +16,13 @@ class AssignLeadField extends Model
     ];
 
 
-    protected function leadAssignFields(): Attribute
-    {
-        return Attribute::make(
-            get: fn(string $value) => unserialize($value),
-            set: fn($value) => serialize($value)
-        );
-    }
+    // protected function leadAssignFields(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn(string $value) => unserialize($value),
+    //         set: fn($value) => serialize($value)
+    //     );
+    // }
 
     public function getAssignFields(): BelongsTo
     {

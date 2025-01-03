@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -55,11 +57,12 @@ class User extends Authenticatable
     }
     public static function user_assigned_lead_fields($roles)
     {
-        $role_id = $roles->first()?->id;
-        if (!$role_id) {
-            return [];
+        $role = $roles->first();
+        if($role->name == 'admin'){
+            $columns = Schema::getColumnListing('leads');
+            return array_keys(Arr::except(array_flip($columns), ['created_at', 'updated_at', 'id']));
         }
-        return AssignLeadField::where('role_id', $role_id)->pluck('lead_assign_fields')->toArray();
+        return AssignLeadField::where('role_id', $role->id)->pluck('lead_assign_fields')->toArray();
     }
 
 }

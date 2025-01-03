@@ -11,13 +11,15 @@ export const useAuthStore = defineStore('auth', {
         token: null,
         loading: false,
         error: null,
-        userRole: ''
+        userRole: '',
+        assignedFields: []
     }),
     getters: {
         isAuthenticated: (state) => !!state.token,
         getUser: (state) => state.user,
         getErrors: (state) => state.error,
-        getUserRole: (state) => state.userRole
+        getUserRole: (state) => state.userRole,
+        getAssignedFields: (state) => state.assignedFields,
     },
     actions: {
         async login(formData) {
@@ -29,6 +31,7 @@ export const useAuthStore = defineStore('auth', {
                 this.token = response.data.data.token;
                 this.user = response.data.data.user_detail;
                 this.userRole = this.user?.roles[0]?.name;
+                this.assignedFields = response.data.data.fields;
                 localStorage.setItem('token', this.token);
                 http.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
                 return response.data.status;

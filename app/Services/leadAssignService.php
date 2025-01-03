@@ -37,21 +37,17 @@ class  leadAssignService
     }
 
     public function assignFields($request){
-        info([
-            'request' => $request->all()
-        ]);
+        
         try {
-            $addPermissionColumn = AssignLeadField::updateOrCreate([
-                'role_id' => $request->roleId,
-            ],
-            [
-                'role_id' => $request->roleId,
-                'lead_assign_fields' => $request->leadAssignFields,
-            ]);
-            if ($addPermissionColumn) {
-                return ApiResponse::success('Permission added successfully', 201);
+            AssignLeadField::where('role_id', $request->roleId)->delete();
+            foreach($request->leadAssignFields as $fields){
+                AssignLeadField::create(
+                [
+                    'role_id' => $request->roleId,
+                    'lead_assign_fields' => $fields,
+                ]);
             }
-            return ApiResponse::success('Data not found', 204);
+            return ApiResponse::success('Permission added successfully', 201);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 500);
         }
