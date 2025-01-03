@@ -102,7 +102,8 @@ class userService
             $response = [
                 'user_detail' => $user,
                 'token' => $token,
-                'roles' => $user->roles
+                'roles' => $user->roles,
+                'fields' => User::user_assigned_lead_fields($user->roles),
             ];
             return ApiResponse::success($response);
         } catch (\Exception $e) {

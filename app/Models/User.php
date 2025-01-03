@@ -8,6 +8,7 @@ use App\Models\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
@@ -51,6 +52,14 @@ class User extends Authenticatable
             return '';
         }
         return $this->status->label();
+    }
+    public static function user_assigned_lead_fields($roles)
+    {
+        $role_id = $roles->first()?->id;
+        if (!$role_id) {
+            return [];
+        }
+        return AssignLeadField::where('role_id', $role_id)->pluck('lead_assign_fields')->toArray();
     }
 
 }
