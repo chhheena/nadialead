@@ -26,8 +26,8 @@ class  leadAssignService
 
     public function getAssignFields($roleId){
         try {
-            $getAssignColumn = AssignLeadField::where('role_id', $roleId)->first();
-            if (is_array($getAssignColumn)) {
+            $getAssignColumn = AssignLeadField::where('role_id', $roleId)->pluck('lead_assign_fields')->toarray();
+            if ($getAssignColumn) {
                 return ApiResponse::success($getAssignColumn);
             }
             return ApiResponse::success('Data not found', 204);

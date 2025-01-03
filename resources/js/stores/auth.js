@@ -92,6 +92,20 @@ export const useAuthStore = defineStore('auth', {
                 this.loading = false;
             }
         },
+
+        async updateFieldPermission(roleId){
+            let endPoint = `${this.baseURL}get/assign/fields/${roleId}`;
+            try {
+                let response = await http.get(endPoint);
+                if(response.data.status){
+                    this.assignedFields = response.data.data;                    
+                }
+            } catch (err) {
+                this.error = err.response?.data?.errors || 'Request failed';
+            } finally {
+                this.loading = false;
+            }
+        }
     },
     persist: {
         key: 'auth', // Optional: Key to use in localStorage
