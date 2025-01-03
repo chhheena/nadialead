@@ -39,7 +39,7 @@ class UserPostRequest extends FormRequest
                 'required_if:id,null',
                 'string',
                 'min:8',
-                // 'confirmed:confirmPassword'
+                'confirmed:confirmPassword'
             ]
         ];
     }
