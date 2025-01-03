@@ -235,24 +235,19 @@ import { ref, watch, onMounted, onUnmounted, computed } from "vue";
 import Pagination from "@/Components/Pagination.vue";
 import HTTP from "../../axios.js";
 import { useAuthStore } from "@/stores/auth.js";
-const store = useAuthStore();
-let roleType = computed(() => store.getUserRole);
 import LeadFilters from "@/LeadFilters/filters.js"
 import Loader from "@/components/Loader.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { all } from "axios";
 
+
 const statuses = computed(() => LeadFilters.leadStatus);
 const leadTags = computed(() => LeadFilters.leadTags);
 const leadRatings = computed(() => LeadFilters.leadRating);
 const noteStrikeFirst = computed(() => LeadFilters.leadStrike);
+const store = useAuthStore();
+const roleType = computed(() => store.getUserRole);
 
-// const props = defineProps({
-//     leadTags: Array,
-//     leadRatings: Array,
-//     noteStrikeFirst: Array,
-//     statuses: Array
-// });
 
 const users = ref([]);
 const searchTimeout = ref(null);
@@ -344,6 +339,7 @@ watch(
 );
 
 onMounted(() => {
+    
 });
 
 onUnmounted(() => {

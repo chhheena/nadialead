@@ -195,6 +195,7 @@ const queryData = ref({
     sortOrder: "ASC",
     perPage: "all"
 });
+const roleId = computed(() => store.getUser?.roles[0]?.id);
 
 const show = () => {
     let endpoint = `${baseUrl}leads/${leadId.value}`
@@ -250,6 +251,7 @@ onMounted(() => {
         show();
         createTable();
     }
+    store.updateFieldPermission(roleId.value);
 });
 
 const isFieldEnable = (field) => {
