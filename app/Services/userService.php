@@ -84,6 +84,7 @@ class userService
                 unset($inputs['password']);
             }
             $user->update($inputs);
+            $user->syncRoles($inputs['role']);
             return $user;
         } catch (\Exception  | RequestException $e) {
             Log::error('user update service', ['error' => $e->getMessage()]);

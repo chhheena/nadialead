@@ -23,6 +23,8 @@ class UserPostRequest extends FormRequest
      */
     public function rules(): array
     {
+        $method = $this->method();
+        // dd($method);
         $id = $this->route('user');
         return [
             'name' => ['required', 'string', 'max:255'],

@@ -15,11 +15,11 @@
 
         <div class="mt-4">
             <InputLabel for="password" value="Password" />
-            <div class="flex">
+            <div class="flex relative">
                 <TextInput id="password" :type="passwordType" class="mt-1 block w-full" v-model="form.password" required
                     autocomplete="current-password" />
 
-                <svg @click="viewPassword" class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
+                <svg @click="viewPassword" class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
@@ -100,3 +100,6 @@ const viewPassword = () => {
     passwordType.value = (passwordType.value == 'password') ? 'text' : 'password';
 }
 </script>
+
+<style scoped="">
+</style>

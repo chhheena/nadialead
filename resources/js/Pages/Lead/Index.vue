@@ -126,7 +126,7 @@
                         </td>
                     </tr>
                     <tr v-else-if="isDataExist">
-                        <td colspan="13">
+                        <td colspan="13" class="text-center pt-1 pb-1">
                             No records found.
                         </td>
                     </tr>
