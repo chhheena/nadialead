@@ -21,7 +21,6 @@
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
                     <InputLabel for="password" value="Password" class="text-gray-600" />
-                    <p>{{ form.password }}</p>
                     <div class="flex relative">
                         <TextInput id="password" :type="passwordType"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
