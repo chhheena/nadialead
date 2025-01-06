@@ -61,7 +61,7 @@
                 <div class="relative w-full md:w-64">
                     <input type="search" v-model="search" placeholder="Search..."
                         class="block w-full px-4 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500" />
-                    <svg class="absolute right-3 top-3 h-4 w-4 text-gray-500 dark:text-gray-400"
+                    <svg class="absolute right-3 top-2 h-6 w-6 text-gray-500 dark:text-gray-400"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 15l-4.35-4.35M10.5 7.5a3 3 0 11-6 0 3 3 0 016 0z" />
