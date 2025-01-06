@@ -13,8 +13,9 @@
                 <form id="permissionsForm">
                     <div class="flex flex-wrap gap-4">
                         <div v-for="(field, index) in getFields" :key="index" class="flex items-center">
-                            <input type="checkbox" :id="index" v-model="permissions[index]" value="id" class="mr-2" :checked="assignedFileds.includes(field)" >
-                            <label :for="index">{{ field }}</label>
+                            <input type="checkbox" :id="index" v-model="permissions[index]" value="id" class="mr-2"
+                                :checked="assignedFileds.includes(field)">
+                            <label :for="index">{{ formatLabel(field) }}</label>
                         </div>
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
@@ -61,7 +62,7 @@ const props = defineProps({
         type: [String, Number],
         required: true,
     },
-    assignedFileds : {
+    assignedFileds: {
         type: Array,
         default: [],
     }
@@ -102,6 +103,13 @@ const submitHandler = () => {
         })
         .catch((error) => { })
         .finally(() => { });
+}
+
+const formatLabel = (label) => {
+    return label
+        .split('_') // Split string into an array by underscore
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+        .join(' '); // Join the array back into a string with spaces
 }
 
 </script>

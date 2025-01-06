@@ -57,7 +57,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
 
     Route::controller(AssignLeadFieldController::class)->group(function() {  
-        Route::get('get/fields', 'getFields');
+        Route::get('get/fields/{id}', 'getFields');
         Route::get('get/assign/fields/{id}', 'getAssignFields');
         Route::post('assign/fields', 'assignFields');
     });

@@ -16,8 +16,8 @@ class AssignLeadFieldController extends Controller
         return $this->leadAssignService->assignFields($request);
     }
 
-    public function getFields(){
-        return $this->leadAssignService->getFields();
+    public function getFields($id){
+        return $this->leadAssignService->getFields($id);
     }
 
     public function getAssignFields($id){

@@ -81,8 +81,8 @@ const createTable = (page) => {
         .finally(() => { });
 };
 
-const getLeadFields = () => {
-    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields`;
+const getLeadFields = (roleId) => {
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields/${roleId}`;
     HTTP
         .get(endPoint)
         .then((response) => {
@@ -95,9 +95,9 @@ const getLeadFields = () => {
         .finally(() => { });
 }
 
-const getAssignLeadFields = () => {
+const getAssignLeadFields = async () => {
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields`;
-    HTTP
+   await HTTP
         .get(endPoint)
         .then((response) => {
             let status = response.data?.status;
@@ -111,12 +111,12 @@ const getAssignLeadFields = () => {
 
 onMounted(() => {
     createTable(1);
-    getLeadFields();
-    getAssignLeadFields();
 });
 
 const openModal = (role) => {
     roleId.value = role.id;
+    getLeadFields(role.id);
+    getAssignLeadFields(role.id);
     showModal.value = true;
     assignedFileds.value = role.assigned_fields
 }

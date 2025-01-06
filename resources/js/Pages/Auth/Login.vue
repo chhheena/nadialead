@@ -86,7 +86,7 @@ const form = useForm({
 
 
 const submit = async () => {
-    let userDetail = await authStore.login({ email: form.email, password: form.password });
+    let userDetail = await authStore.login({ email: form.email, password: form.password, remember: form.remember });
     let errors = authStore.error;
     if (errors) {
         notificationMessage('error', errors)

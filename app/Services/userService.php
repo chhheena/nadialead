@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cookie;
 
 class userService
 {
@@ -96,17 +97,21 @@ class userService
     {
         try {
             $user = User::where('email', $request->email)->first();
+            $credentials = $request->only('email', 'password');
+            $remember = $request->boolean('remember');
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return ApiResponse::error('The provided credentials are incorrect.', 500);
             }
-            $token = $user->createToken(env('APP_NAME'))->plainTextToken;
-            $response = [
-                'user_detail' => $user,
-                'token' => $token,
-                'roles' => $user->roles,
-                'fields' => User::user_assigned_lead_fields($user->roles),
-            ];
-            return ApiResponse::success($response);
+            if (Auth::attempt($credentials, $remember)) {
+                $token = $user->createToken(env('APP_NAME'))->plainTextToken;
+                $response = [
+                    'user_detail' => $user,
+                    'token' => $token,
+                    'roles' => $user->roles,
+                    'fields' => User::user_assigned_lead_fields($user->roles),
+                ];
+                return ApiResponse::success($response);
+            }            
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 500);
         }

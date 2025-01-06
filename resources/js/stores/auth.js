@@ -33,6 +33,7 @@ export const useAuthStore = defineStore('auth', {
                 this.userRole = this.user?.roles[0]?.name;
                 this.assignedFields = response.data.data.fields;
                 localStorage.setItem('token', this.token);
+                localStorage.setItem('activeMenu', 'dashboard');
                 http.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
                 return response.data.status;
             } catch (err) {
@@ -84,7 +85,7 @@ export const useAuthStore = defineStore('auth', {
             try {
                 let response = await http.post(endPoint, payload);
                 this.error = null;
-                this.logout();
+                // this.logout();
                 return response
             } catch (err) {
                 this.error = err.response?.data?.errors || 'Request failed';

@@ -10,11 +10,28 @@ use Illuminate\Support\Arr;
 
 class  leadAssignService
 {
-    public function getFields()
+    public function getFields($roleId)
     {
         try {
             $columns = Schema::getColumnListing('leads');
-            $columnsFields = array_keys(Arr::except(array_flip($columns), ['created_at', 'updated_at', 'id']));
+            $removeTeamFields = [
+                'lead_tag',
+                'note',
+                'qualification_status',
+                'rating',
+            ];
+            $removeClientFields = [
+                'note_strike_first',
+                'action',
+                'status',
+            ];
+            $removeColumn = ['created_at', 'updated_at', 'id'];
+            if($roleId == 2){
+                $removeColumn = array_merge($removeTeamFields, $removeColumn);
+            }else{
+                $removeColumn = array_merge($removeClientFields, $removeColumn);
+            }
+            $columnsFields = array_keys(Arr::except(array_flip($columns), $removeColumn));
             if (is_array($columns)) {
                 return ApiResponse::success($columnsFields);
             }
@@ -24,7 +41,8 @@ class  leadAssignService
         }
     }
 
-    public function getAssignFields($roleId){
+    public function getAssignFields($roleId)
+    {
         try {
             $getAssignColumn = AssignLeadField::where('role_id', $roleId)->pluck('lead_assign_fields')->toarray();
             if ($getAssignColumn) {
@@ -36,16 +54,18 @@ class  leadAssignService
         }
     }
 
-    public function assignFields($request){
-        
+    public function assignFields($request)
+    {
+
         try {
             AssignLeadField::where('role_id', $request->roleId)->delete();
-            foreach($request->leadAssignFields as $fields){
+            foreach ($request->leadAssignFields as $fields) {
                 AssignLeadField::create(
-                [
-                    'role_id' => $request->roleId,
-                    'lead_assign_fields' => $fields,
-                ]);
+                    [
+                        'role_id' => $request->roleId,
+                        'lead_assign_fields' => $fields,
+                    ]
+                );
             }
             return ApiResponse::success('Permission added successfully', 201);
         } catch (\Exception $e) {
