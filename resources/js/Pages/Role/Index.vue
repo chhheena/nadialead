@@ -43,7 +43,7 @@
             v-show="showModal"
             :showModal="showModal"
             :getFields="fieldsData"
-            @close="showModal=false"
+            @close="closeModal"
             :roleId="roleId"
             :assignedFileds ="assignedFileds"
         />
@@ -121,4 +121,9 @@ const openModal = (role) => {
     assignedFileds.value = role.assigned_fields
 }
 
+const closeModal = () => {
+    showModal.value=false;
+    fieldsData.value = [];
+    assignedFileds.value = [];
+}
 </script>

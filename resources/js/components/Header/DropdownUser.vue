@@ -33,9 +33,9 @@ const userRole = computed(() => authStore?.getUserRole);
                 <span class="block text-xs font-medium">{{userRole}}</span>
             </span>
 
-            <span class="h-12 w-12 rounded-full">
+            <!-- <span class="h-12 w-12 rounded-full">
                 <img src="@/assets/images/user/user-01.png" alt="User" />
-            </span>
+            </span> -->
 
             <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block" width="12" height="8"
                 viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">

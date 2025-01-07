@@ -122,4 +122,8 @@ class LeadController extends Controller
             return $this->failResponse();
         }
     }
+
+    public function destroy($id){
+        return $this->leadService->destroy($id);
+    }
 }

@@ -51,7 +51,7 @@ const closeOnEscape = (e) => {
         }
     }
 };
-
+console.log("Click")
 onMounted(() => document.addEventListener('keydown', closeOnEscape));
 onUnmounted(() => {
     document.removeEventListener('keydown', closeOnEscape);

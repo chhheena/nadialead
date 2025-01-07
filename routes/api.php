@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     });
 
     // Apply the custom CheckLeadAssigned middleware to the update route
-    Route::apiResource('leads', LeadController::class)->only('index');
+    Route::apiResource('leads', LeadController::class)->only(['index', 'destroy']);
     Route::put('leads/{id}', [LeadController::class, 'update'])->middleware('CheckLeadAssigned');
     Route::get('leads/{id}', [LeadController::class, 'show'])->name('leads.edit')->middleware('CheckLeadAssigned');
 

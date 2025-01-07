@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\ApiResponse;
 use App\Models\Lead;
 use App\Models\LeadAssigned;
 use GuzzleHttp\Exception\RequestException;
@@ -99,5 +100,17 @@ class leadService
             throw $e;
         }
 
+    }
+
+    public function destroy($leadId){
+        try {
+            $lead = lead::find($leadId);
+            if($lead){
+                $lead->delete();
+                return  ApiResponse::success('Lead Deleted successfully');
+            }            
+        } catch (\Exception  | RequestException $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
 }

@@ -23,35 +23,10 @@ const handleItemClick = () => {
     return props.item.children.some((child: SidebarItem) => sidebarStore.selected === child.label)
   }
 }
-
-const getActiveMenu = (menuType) => {
-    if( localStorage.getItem('activeMenu') == menuType.toLowerCase()){
-      console.log('in');
-      return true;
-    }
-}
-
-const makeActiveMenu = (activeMenu) =>{
-  routeName.value = activeMenu.toLowerCase();
-  localStorage.setItem('activeMenu', activeMenu.toLowerCase());
-  
-}
-
-
-watch(routeName, (newValue, oldValue) => {
-  if(newValue){
-    getActiveMenu(newValue);
-  }
-});
-
-
-
 </script>
 
 <template>
-  <li @click="makeActiveMenu(item.label)" :class="{
-    'bg-graydark dark:bg-meta-4': getActiveMenu(item.label)
-  }">
+  <li>
     <router-link :to="{ name: `${item.route}` }"
       class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
       <!-- <Link :href="item.route"

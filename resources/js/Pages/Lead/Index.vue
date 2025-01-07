@@ -201,7 +201,7 @@
                             </p>
                         </td>
                         <td class="py-5 px-4">
-                            <div class="flex items-center space-x-3.5">
+                            <div class="flex items-center space-x-2">
                                 <!-- :to="{name: 'lead.update', params: lead.id}" -->
                                 <router-link :to="{ name: 'lead.update', params: { id: lead.id } }"
                                     class="hover:text-primary">
@@ -215,7 +215,15 @@
                                             fill="" />
                                     </svg>
                                 </router-link>
+
+                                <svg v-if="roleType == 'admin'" @click="destroyLead('confirmation', lead.id)"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M6 18.75A2.25 2.25 0 008.25 21h7.5A2.25 2.25 0 0018 18.75V7.5H6v11.25zm3-9.75h6m1.5-6H6m12 0a.75.75 0 00-.75-.75h-1.5a2.25 2.25 0 00-4.5 0H6.75a.75.75 0 00-.75.75m6 6h-6" />
+                                </svg>
                             </div>
+
                         </td>
                     </tr>
                 </tbody>
@@ -232,6 +240,35 @@
             <Pagination v-if="pagination.lastPage != 1" @refreshTable="createTable"
                 :currentPage="pagination.currentPage" :lastPage="pagination.lastPage" :total="pagination.total" />
         </div>
+
+        <Modal ref="modal" v-show="showModal" :show="showModal" @click="showModal=false">
+        <button @click="showList" class="absolute right-1 top-1 sm:right-5 sm:top-5">
+            <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M11.8913 9.99599L19.5043 2.38635C20.032 1.85888 20.032 1.02306 19.5043 0.495589C18.9768 -0.0317329 18.141 -0.0317329 17.6135 0.495589L10.0001 8.10559L2.38673 0.495589C1.85917 -0.0317329 1.02343 -0.0317329 0.495873 0.495589C-0.0318274 1.02306 -0.0318274 1.85888 0.495873 2.38635L8.10887 9.99599L0.495873 17.6056C-0.0318274 18.1331 -0.0318274 18.9689 0.495873 19.4964C0.717307 19.7177 1.05898 19.9001 1.4413 19.9001C1.75372 19.9001 2.13282 19.7971 2.40606 19.4771L10.0001 11.8864L17.6135 19.4964C17.8349 19.7177 18.1766 19.9001 18.5589 19.9001C18.8724 19.9001 19.2531 19.7964 19.5265 19.4737C20.0319 18.9452 20.0245 18.1256 19.5043 17.6056L11.8913 9.99599Z"
+                    fill=""></path>
+            </svg>
+        </button>
+        <DefaultCard cardTitle="Delete Item Confirmation" @click.stop>
+            <div class="p-4 shadow sm:rounded-lg sm:p-8">
+                <form id="permissionsForm">
+                    <div class="flex flex-wrap gap-4">
+                        <p>Are you want to sure to delete this lead?</p>
+                    </div>
+                    <div class="mt-4 flex justify-end space-x-1">
+                        <button type="button" class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300" @click="showModal=false">
+                            Cancel
+                        </button>
+                        <button type="submit" @click.prevent="destroyLead"
+                            class="lex items-center gap-2 mx-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
+                            Delete Lead
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </DefaultCard>
+    </Modal>
     </div>
 </template>
 
@@ -244,8 +281,9 @@ import LeadFilters from "@/LeadFilters/filters.js"
 import Loader from "@/components/Loader.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { all } from "axios";
-
-
+import Modal from "@/Components/Modal.vue"
+import DefaultCard from "@/components/Forms/DefaultCard.vue";
+import {notificationMessage} from '@/helpers.js';
 const statuses = computed(() => LeadFilters.leadStatus);
 const leadTags = computed(() => LeadFilters.leadTags);
 const leadRatings = computed(() => LeadFilters.leadRating);
@@ -260,6 +298,7 @@ const leads = ref([]);
 const search = ref("");
 const perPage = ref(10);
 const pageData = ref([]);
+const destroyLeadId = ref();
 const queryData = ref({
     page: 1,
     search: "",
@@ -279,6 +318,7 @@ const pagination = ref({
 
 const serverBusy = ref(true);
 const isDataExist = ref(false);
+const showModal = ref(false);
 const setPagination = (response) => {
     pagination.value.total = response.data.meta.total;
     pagination.value.lastPage = response.data.meta.last_page;
@@ -348,9 +388,25 @@ watch(
     { immediate: true }
 );
 
-onMounted(() => {
-
-});
+const destroyLead = (type='',leadId='') => {
+    if(type == 'confirmation'){
+        showModal.value = true;
+        destroyLeadId.value = leadId;
+        return;
+    }
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}leads/${destroyLeadId.value}`;
+    HTTP
+        .delete(endPoint)
+        .then((response) => {
+            if(response.data.status){
+                showModal.value = false;
+                createTable(1);
+                notificationMessage('success', 'Lead deleted successfully');
+            }
+        })
+        .catch((error) => { })
+        .finally(() => { });
+}
 
 onUnmounted(() => {
     clearTimeout(searchTimeout.value);

@@ -12,18 +12,21 @@
             <div class="p-4 shadow sm:rounded-lg sm:p-8">
                 <form id="permissionsForm">
                     <div class="flex flex-wrap gap-4">
-                        <div v-for="(field, index) in getFields" :key="index" class="flex items-center">
+                        <div v-if="getFields.length > 0" v-for="(field, index) in getFields" :key="index" class="flex items-center">
                             <input type="checkbox" :id="index" v-model="permissions[index]" value="id" class="mr-2"
                                 :checked="assignedFileds.includes(field)">
                             <label :for="index">{{ formatLabel(field) }}</label>
                         </div>
+                        <div v-else>
+                            <Loader  />
+                        </div>
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
-                        <button type="button" class="bg-gray-300 px-4 py-2 rounded" @click="$emit('close')">
+                        <button type="button" class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300" @click="$emit('close')">
                             Cancel
                         </button>
                         <button type="submit" @click.prevent="submitHandler"
-                            class="bg-blue-500 text-white px-4 py-2 rounded">
+                            class="lex items-center gap-2 mx-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
                             Update Permission
                         </button>
                     </div>
@@ -40,6 +43,8 @@ import Modal from "@/Components/Modal.vue";
 import { useAuthStore } from "@/stores/auth.js";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import { notificationMessage } from "@/helpers";
+import Loader from "./Loader.vue";
+
 const emit = defineEmits();
 const roles = ref([]);
 const fieldsData = ref([]);

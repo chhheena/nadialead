@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\AssignLeadField;
 class LeadUpdateRequest extends FormRequest
 {
     /**
@@ -88,12 +88,26 @@ class LeadUpdateRequest extends FormRequest
     public function filteredData(): array
     {
         $inputs = $this->all();
-        $userRole = Auth::user()->roles->first()?->name;
-        if ($userRole === 'client') {
+        $userRole = Auth::user()->roles->first();        
+        $userRoleId = $userRole?->id;
+        if ($userRole?->name === 'client') {
+            $fields = $this->getEditableFieldsByRoleId($userRoleId);
+            if($fields){
+                return $this->only($fields);
+            }
             return $this->only('action', 'status', 'note_strike_first');
         } elseif ($userRole === 'team') {
+            $fields = $this->getEditableFieldsByRoleId($userRoleId);
+            if($fields){
+                return $this->only($fields);
+            }
             return $this->only('lead_tag', 'qualification_status', 'rating', 'note');
         }
         return $inputs;
+    }
+
+
+    public function getEditableFieldsByRoleId($roleId){
+        return AssignLeadField::where('role_id', $roleId)->pluck('lead_assign_fields')->toarray();
     }
 }
