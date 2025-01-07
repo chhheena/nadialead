@@ -17,7 +17,7 @@
                                 :checked="assignedFileds.includes(field)">
                             <label :for="index">{{ formatLabel(field) }}</label>
                         </div>
-                        <div v-else>
+                        <div v-else class="flex-1">
                             <Loader  />
                         </div>
                     </div>

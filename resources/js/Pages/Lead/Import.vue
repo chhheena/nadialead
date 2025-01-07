@@ -4,9 +4,9 @@
             <!-- Lead Field -->
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-12">
-                    <InputLabel for="lead" value="Lead" class="text-gray-600" />
+                    <!-- <InputLabel for="lead" value="Lead" class="text-gray-600" /> -->
                     <TextInput id="lead" type="file" @change="handleFileChange"
-                        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:outline-0"
                         v-model="form.lead" required autofocus placeholder="Enter the lead name" />
                 </div>
             </div>
