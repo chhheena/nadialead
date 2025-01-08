@@ -175,9 +175,11 @@ import axios from "@/axios";
 import LeadFilters from "@/LeadFilters/filters.js"
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from "@/stores/auth";
+import { useLeadsStore } from "@/stores/leadsStore";
 import InputError from '@/Components/InputError.vue';
 
 const store = useAuthStore();
+const leadStore = useLeadsStore();
 const routes = useRoute();
 const router = useRouter();
 const form = ref({});
@@ -196,16 +198,21 @@ const queryData = ref({
     perPage: "all"
 });
 const roleId = computed(() => store.getUser?.roles[0]?.id);
+const currentLead = computed(() => leadStore.getCurrentLead);
 
 const show = () => {
-    let endpoint = `${baseUrl}leads/${leadId.value}`
-    axios
-        .get(endpoint)
-        .then((response) => {
-            form.value = response.data.data;
-        })
-        .catch((error) => { })
-        .finally(() => { });
+    if(currentLead){
+        form.value = currentLead.value
+    }
+    // console.log(currentLead.value, 'show-method');
+    // let endpoint = `${baseUrl}leads/${leadId.value}`
+    // axios
+    //     .get(endpoint)
+    //     .then((response) => {
+    //         form.value = response.data.data;
+    //     })
+    //     .catch((error) => { })
+    //     .finally(() => { });
 };
 
 const submitForm = () => {

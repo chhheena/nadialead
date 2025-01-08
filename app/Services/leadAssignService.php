@@ -26,9 +26,9 @@ class  leadAssignService
                 'status',
             ];
             $removeColumn = ['created_at', 'updated_at', 'id'];
-            if($roleId == 2){
+            if ($roleId == 2) {
                 $removeColumn = array_merge($removeTeamFields, $removeColumn);
-            }else{
+            } else {
                 $removeColumn = array_merge($removeClientFields, $removeColumn);
             }
             $columnsFields = array_keys(Arr::except(array_flip($columns), $removeColumn));
@@ -56,9 +56,23 @@ class  leadAssignService
 
     public function assignFields($request)
     {
-
         try {
+            // $this->isRequestHaveData($request);
+            // $teamFields = [
+            //     'lead_tag',
+            //     'note',
+            //     'qualification_status',
+            //     'rating',
+            // ];
+            // $clientFields = [
+            //     'note_strike_first',
+            //     'action',
+            //     'status',
+            // ];
+            // $defaultFields = ($request->roleId == 2) ? $teamFields : $clientFields;
             AssignLeadField::where('role_id', $request->roleId)->delete();
+            // ->whereNotIn('lead_assign_fields', $defaultFields)
+            
             foreach ($request->leadAssignFields as $fields) {
                 AssignLeadField::create(
                     [
@@ -71,5 +85,29 @@ class  leadAssignService
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 500);
         }
+    }
+
+    public function isRequestHaveData($request){
+        if(count($request->leadAssignFields) == 0){
+            $teamFields = [
+                'lead_tag',
+                'note',
+                'qualification_status',
+                'rating',
+            ];
+            $clientFields = [
+                'note_strike_first',
+                'action',
+                'status',
+            ];
+            $defaultFields = ($request->roleId == 2) ? $teamFields : $clientFields;
+            AssignLeadField::where('role_id', $request->roleId)
+            ->whereNotIn('lead_assign_fields', $defaultFields)
+            ->delete();
+            return;
+        }
+        AssignLeadField::where('role_id', $request->roleId)
+        ->delete();
+        return;
     }
 }

@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Helpers\ApiResponse;
 class CheckLeadAssigned
 {
     /**
@@ -32,13 +32,13 @@ class CheckLeadAssigned
 
             if (!$assignedLead) {
                 // Lead doesn't exist
-                return response()->json(['error' => 'Lead not found.'], 404);
+                return ApiResponse::error('Lead not found.', 404);
             }
 
             // Check if the current user is assigned to this lead
             if ($assignedLead->user_id !== $user->id) {
                 // User is not assigned to this lead
-                return response()->json(['error' => 'You are not authorized to edit this lead.'], 403);
+                return ApiResponse::error('You are not authorized to edit this lead.', 403);
             }
         }
 

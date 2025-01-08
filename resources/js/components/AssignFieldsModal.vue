@@ -12,17 +12,19 @@
             <div class="p-4 shadow sm:rounded-lg sm:p-8">
                 <form id="permissionsForm">
                     <div class="flex flex-wrap gap-4">
-                        <div v-if="getFields.length > 0" v-for="(field, index) in getFields" :key="index" class="flex items-center">
-                            <input type="checkbox" :id="index" v-model="permissions[index]" value="id" class="mr-2"
-                                :checked="assignedFileds.includes(field)">
+                        <div v-if="getFields.length > 0" v-for="(field, index) in getFields" :key="index"
+                            class="flex items-center">
+                            <input type="checkbox" :id="index" v-model="permissions" :value="field" class="mr-2">
                             <label :for="index">{{ formatLabel(field) }}</label>
                         </div>
                         <div v-else class="flex-1">
-                            <Loader  />
+                            <Loader />
                         </div>
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
-                        <button type="button" class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300" @click="$emit('close')">
+                        <button type="button"
+                            class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300"
+                            @click="$emit('close')">
                             Cancel
                         </button>
                         <button type="submit" @click.prevent="submitHandler"
@@ -37,22 +39,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import { ref, watch } from "vue";
 import HTTP from "@/axios";
 import Modal from "@/Components/Modal.vue";
-import { useAuthStore } from "@/stores/auth.js";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import { notificationMessage } from "@/helpers";
 import Loader from "./Loader.vue";
 
 const emit = defineEmits();
-const roles = ref([]);
-const fieldsData = ref([]);
-const assignFields = ref([]);
-const store = useAuthStore();
-
 const permissions = ref([]);
-
 const props = defineProps({
     getFields: {
         type: Array,
@@ -73,37 +68,30 @@ const props = defineProps({
     }
 });
 
-const getUserRoleId = computed(() => store.getUser.id);
-const getAssignLeadFields = computed(() => store.getAssignedFields);
-const getCheckedFields = computed(() => {
-    const checkedFields = props.getFields.filter((field, index) => {
-        return permissions.value[index] === true;
-    });
-    const mergedFields = [...new Set([...checkedFields, ...props.assignedFileds])];
-    return mergedFields;
-});
-
-
-
-onMounted(() => {
-
-});
+watch(
+    () => props.assignedFileds,
+    (newVal) => {
+        if (newVal && newVal.length) {
+            permissions.value = [...newVal];
+        }
+    },
+    { immediate: true }
+);
 
 const submitHandler = () => {
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}assign/fields`;
 
     let payload = {
         'roleId': props.roleId,
-        'leadAssignFields': getCheckedFields.value
+        'leadAssignFields': permissions.value
     }
-
     HTTP
         .post(endPoint, payload)
         .then((response) => {
             let status = response.data?.status;
             if (status) {
                 notificationMessage('success', 'Permission added successfully');
-                emit('close');
+                emit('close', props.roleId);
             }
         })
         .catch((error) => { })
@@ -112,9 +100,9 @@ const submitHandler = () => {
 
 const formatLabel = (label) => {
     return label
-        .split('_') // Split string into an array by underscore
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-        .join(' '); // Join the array back into a string with spaces
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 }
 
 </script>

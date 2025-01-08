@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/auth.js';
+import { useLeadsStore } from '@/stores/leadsStore';
 import Login from "@/Pages/Auth/Login.vue";
 import Register from "@/Pages/Auth/Register.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
@@ -104,6 +105,16 @@ const routes = [
                 path: "/lead/update/:id",
                 name: "lead.update",
                 component: LeadUpdate,
+                beforeEnter: async (to, from, next) => {
+                    const leadStore = useLeadsStore();
+                    const leadId = to?.params?.id || null;
+                    const isUserCanEditLead = await leadStore.protectEditRoute(leadId);
+                    if (isUserCanEditLead) {
+                        next();
+                    } else {
+                        next({ path: 'leads' });
+                    }                    
+                }
             },
             {
                 path: "/users",

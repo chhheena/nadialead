@@ -95,8 +95,8 @@ const getLeadFields = (roleId) => {
         .finally(() => { });
 }
 
-const getAssignLeadFields = async () => {
-    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields`;
+const getAssignLeadFields = async (roleId) => {
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields/${roleId}`;
    await HTTP
         .get(endPoint)
         .then((response) => {
@@ -121,9 +121,9 @@ const openModal = (role) => {
     assignedFileds.value = role.assigned_fields
 }
 
-const closeModal = () => {
+const closeModal = (roleId) => {
     showModal.value=false;
-    fieldsData.value = [];
-    assignedFileds.value = [];
+    getLeadFields(roleId);
+    getAssignLeadFields(roleId);
 }
 </script>
