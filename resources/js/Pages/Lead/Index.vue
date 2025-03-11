@@ -267,14 +267,14 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted, computed } from "vue";
-import Pagination from "@/Components/Pagination.vue";
+import Pagination from "@/components/Pagination.vue";
 import HTTP from "../../axios.js";
 import { useAuthStore } from "@/stores/auth.js";
 import LeadFilters from "@/LeadFilters/filters.js"
 import Loader from "@/components/Loader.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
 import { all } from "axios";
-import Modal from "@/Components/Modal.vue"
+import Modal from "@/components/Modal.vue"
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import {notificationMessage} from '@/helpers.js';
 const statuses = computed(() => LeadFilters.leadStatus);

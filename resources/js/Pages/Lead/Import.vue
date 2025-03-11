@@ -29,9 +29,9 @@
 <script setup>
 import { ref } from "vue";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/components/InputLabel.vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
+import TextInput from "@/components/TextInput.vue";
 import { useRouter } from 'vue-router';
 import { notificationMessage } from "@/helpers";
 import HTTP from "../../axios.js";

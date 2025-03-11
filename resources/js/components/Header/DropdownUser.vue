@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import DropdownLink from '@/Components/DropdownLink.vue'
-import TransParentButton from '@/Components/TransParentButton.vue'
+import DropdownLink from '@/components/DropdownLink.vue'
+import TransParentButton from '@/components/TransParentButton.vue'
 import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';

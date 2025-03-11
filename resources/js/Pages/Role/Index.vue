@@ -53,8 +53,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import HTTP from "../../axios.js";
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import Modal from "@/Components/Modal.vue";
+import PrimaryButton from '@/components/PrimaryButton.vue';
+import Modal from "@/components/Modal.vue";
 import { useAuthStore } from "@/stores/auth.js";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import AssignFieldsModal from "@/components/AssignFieldsModal.vue";

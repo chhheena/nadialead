@@ -209,14 +209,14 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from "vue";
-import InputError from "@/Components/InputError.vue";
-import Modal from "@/Components/Modal.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import SelectInput from "@/Components/SelectInput.vue";
+import InputError from "@/components/InputError.vue";
+import Modal from "@/components/Modal.vue";
+import InputLabel from "@/components/InputLabel.vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
+import TextInput from "@/components/TextInput.vue";
+import SelectInput from "@/components/SelectInput.vue";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
-import Pagination from "@/Components/Pagination.vue";
+import Pagination from "@/components/Pagination.vue";
 import BreadcrumbDefault from "@/components/Breadcrumbs/BreadcrumbDefault.vue";
 import axios from "axios";
 import { notificationMessage } from "@/helpers";

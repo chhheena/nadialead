@@ -88,13 +88,13 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref, onMounted } from "vue";
 // import axios from "axios";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import SelectInput from "@/Components/SelectInput.vue";
+import InputLabel from "@/components/InputLabel.vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
+import TextInput from "@/components/TextInput.vue";
+import SelectInput from "@/components/SelectInput.vue";
 import { convertJsonToFormData, notificationMessage } from "@/helpers";
 // import { router } from '@inertiajs/vue3'
-import InputError from '@/Components/InputError.vue';
+import InputError from '@/components/InputError.vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from "../../axios.js";
 const routes = useRoute();

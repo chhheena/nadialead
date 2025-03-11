@@ -41,7 +41,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import HTTP from "@/axios";
-import Modal from "@/Components/Modal.vue";
+import Modal from "@/components/Modal.vue";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import { notificationMessage } from "@/helpers";
 import Loader from "./Loader.vue";

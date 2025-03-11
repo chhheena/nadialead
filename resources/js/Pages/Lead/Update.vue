@@ -166,17 +166,17 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import SelectInput from "@/Components/SelectInput.vue";
+import InputLabel from "@/components/InputLabel.vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
+import TextInput from "@/components/TextInput.vue";
+import SelectInput from "@/components/SelectInput.vue";
 import { convertJsonToFormData, notificationMessage, getFieldsBaseOnRole } from "@/helpers";
 import axios from "@/axios";
 import LeadFilters from "@/LeadFilters/filters.js"
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from "@/stores/auth";
 import { useLeadsStore } from "@/stores/leadsStore";
-import InputError from '@/Components/InputError.vue';
+import InputError from '@/components/InputError.vue';
 
 const store = useAuthStore();
 const leadStore = useLeadsStore();

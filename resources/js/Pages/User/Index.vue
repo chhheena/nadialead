@@ -163,7 +163,7 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from "vue";
-import Pagination from "@/Components/Pagination.vue";
+import Pagination from "@/components/Pagination.vue";
 import axios from '../../axios.js';
 import Loader from "@/components/Loader.vue";
 const sortBy = ref(null); // Column currently sorted by

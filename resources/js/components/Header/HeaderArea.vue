@@ -4,7 +4,7 @@ import DarkModeSwitcher from './DarkModeSwitcher.vue'
 import DropdownMessage from './DropdownMessage.vue'
 import DropdownNotification from './DropdownNotification.vue'
 import DropdownUser from './DropdownUser.vue'
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import ApplicationLogo from '@/components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
 
 const { toggleSidebar } = useSidebarStore()
