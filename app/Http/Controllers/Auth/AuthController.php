@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-// use App\Http\Requests\RegistrationRequest;
 use App\Http\Requests\LoginRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-// use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\UpdateProfileInfoRequest;
 use App\Http\Requests\UpdateProfilePasswordRequest;
 

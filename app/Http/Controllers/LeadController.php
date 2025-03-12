@@ -33,21 +33,16 @@ class LeadController extends Controller
     // Import leads from the uploaded Excel file
     public function importLead(Request $request)
     {
-
-        // Validate the incoming request to ensure a file is uploaded and it is an Excel or CSV file
         $validator = Validator::make($request->all(), [
-            'lead_file' => 'required|file|mimes:xlsx,csv',  // Validate for Excel or CSV files
+            'lead_file' => 'required|file|mimes:xlsx,csv',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => $validator->errors()
-            ], 422); // Unprocessable Entity
+            ], 422);
         }
-
-        // Import the leads from the Excel file
         try {
-            // The 'lead_file' comes from the frontend, handle the import
             Excel::import(new LeadImport, $request->file('lead_file'));
             return response()->json([
                 'status'  => true,

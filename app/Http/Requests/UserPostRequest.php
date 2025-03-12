@@ -24,7 +24,6 @@ class UserPostRequest extends FormRequest
     public function rules(): array
     {
         $method = $this->method();
-        // dd($method);
         $id = $this->route('user');
         return [
             'name' => ['required', 'string', 'max:255'],
@@ -37,8 +36,7 @@ class UserPostRequest extends FormRequest
                 Rule::unique(User::class)->ignore($id),
             ],
             'password' => [
-                'nullable',
-                'required_if:id,null',
+                ($id == '' ? 'required' : 'nullable'),
                 'string',
                 'min:8',
                 'confirmed:confirmPassword'

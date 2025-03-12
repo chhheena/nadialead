@@ -57,22 +57,7 @@ class  leadAssignService
     public function assignFields($request)
     {
         try {
-            // $this->isRequestHaveData($request);
-            // $teamFields = [
-            //     'lead_tag',
-            //     'note',
-            //     'qualification_status',
-            //     'rating',
-            // ];
-            // $clientFields = [
-            //     'note_strike_first',
-            //     'action',
-            //     'status',
-            // ];
-            // $defaultFields = ($request->roleId == 2) ? $teamFields : $clientFields;
             AssignLeadField::where('role_id', $request->roleId)->delete();
-            // ->whereNotIn('lead_assign_fields', $defaultFields)
-            
             foreach ($request->leadAssignFields as $fields) {
                 AssignLeadField::create(
                     [

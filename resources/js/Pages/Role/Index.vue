@@ -51,24 +51,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import HTTP from "../../axios.js";
 import PrimaryButton from '@/components/PrimaryButton.vue';
-import Modal from "@/components/Modal.vue";
-import { useAuthStore } from "@/stores/auth.js";
-import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import AssignFieldsModal from "@/components/AssignFieldsModal.vue";
 
 const roles = ref([]);
 const fieldsData = ref([]);
 const showModal = ref(false);
-const assignFields = ref([]);
-const store = useAuthStore();
 const roleId  = ref('');
 const assignedFileds = ref([]);
-
-const getUserRoleId = computed(() => store.getUser.id);
-
 
 const createTable = (page) => {
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}roles`;
@@ -81,19 +73,7 @@ const createTable = (page) => {
         .finally(() => { });
 };
 
-const getLeadFields = (roleId) => {
-    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields/${roleId}`;
-    HTTP
-        .get(endPoint)
-        .then((response) => {
-            let status = response.data?.status;
-            if (status) {
-                fieldsData.value = response.data.data;
-            }
-        })
-        .catch((error) => { })
-        .finally(() => { });
-}
+
 
 const getAssignLeadFields = async (roleId) => {
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields/${roleId}`;
@@ -115,7 +95,6 @@ onMounted(() => {
 
 const openModal = (role) => {
     roleId.value = role.id;
-    getLeadFields(role.id);
     getAssignLeadFields(role.id);
     showModal.value = true;
     assignedFileds.value = role.assigned_fields
@@ -123,7 +102,6 @@ const openModal = (role) => {
 
 const closeModal = (roleId) => {
     showModal.value=false;
-    getLeadFields(roleId);
     getAssignLeadFields(roleId);
 }
 </script>

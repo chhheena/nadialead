@@ -3,7 +3,7 @@
         <div class="p-8 rounded-lg shadow-md">
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
-                    <InputLabel for="name" value="Name" class="text-gray-600" />
+                    <InputLabel for="name" value="Name" :isRequired="true" class="text-gray-600" />
                     <TextInput id="name" type="text"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         v-model="form.name" required autofocus autocomplete="name" placeholder="Enter your name" />
@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="col-span-6">
-                    <InputLabel for="email" value="Email" class="text-gray-600" />
+                    <InputLabel for="email" value="Email" class="text-gray-600" :isRequired="true" />
                     <TextInput id="email" type="email"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         v-model="form.email" required placeholder="Enter your email" />
@@ -20,11 +20,12 @@
             </div>
             <div class="grid grid-cols-12 gap-6 mb-6">
                 <div class="col-span-6">
-                    <InputLabel for="password" value="Password" class="text-gray-600" />
+                    <InputLabel for="password" value="Password" class="text-gray-600"
+                        :isRequired="form.id ? false : true" />
                     <div class="flex relative">
                         <TextInput id="password" :type="passwordType"
-                        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        v-model="form.password" required placeholder="Enter your password" />
+                            class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            v-model="form.password" required placeholder="Enter your password" />
                         <svg @click="viewPassword('password')"
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current" width="18"
                             height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,10 +41,10 @@
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="confirm_password" value="Confirm Password" class="text-gray-600" />
-                        <div class="flex relative">
-                            <TextInput id="confirm_password" :type="confirmPasswordType"
-                        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        v-model="form.confirmPassword" required placeholder="Confirm your password" />
+                    <div class="flex relative">
+                        <TextInput id="confirm_password" :type="confirmPasswordType"
+                            class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            v-model="form.confirmPassword" required placeholder="Confirm your password" />
                         <svg @click="viewPassword('confirmPassword')"
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current" width="18"
                             height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,7 +61,7 @@
                 </div>
             </div>
             <div class="mb-6">
-                <InputLabel for="role" value="Role" class="text-gray-600" />
+                <InputLabel for="role" value="Role" class="text-gray-600" :isRequired="true" />
                 <SelectInput v-model="form.role"
                     class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     <option value="" selected>Select user role</option>
@@ -84,16 +85,12 @@
     </DefaultCard>
 </template>
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref, onMounted } from "vue";
-// import axios from "axios";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
 import InputLabel from "@/components/InputLabel.vue";
-import PrimaryButton from "@/components/PrimaryButton.vue";
 import TextInput from "@/components/TextInput.vue";
 import SelectInput from "@/components/SelectInput.vue";
 import { convertJsonToFormData, notificationMessage } from "@/helpers";
-// import { router } from '@inertiajs/vue3'
 import InputError from '@/components/InputError.vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from "../../axios.js";
@@ -101,7 +98,6 @@ const routes = useRoute();
 const router = useRouter();
 let userId = ref("");
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const pageTitle = ref("User");
 const form = ref({});
 let formType = ref('Add');
 const passwordType = ref('password');
@@ -119,10 +115,7 @@ const show = () => {
     axios
         .get(endpoint)
         .then((response) => {
-            console.log(response.data.data, 'get-user');
-            
             form.value = response.data.data;
-            console.log(form.value, 'get-user-value');
         })
         .catch((error) => { })
         .finally(() => { });
@@ -154,7 +147,6 @@ const submitForm = () => {
             let messageType = (form.value.id) ? 'updated' : 'created';
             notificationMessage('success', `User ${messageType} successfully`);
             router.push({ name: 'users' });
-            // router.visit('/users');
         })
         .catch((error) => {
             errors.value = error.response.data.errors;
@@ -168,19 +160,13 @@ onMounted(() => {
         userId.value = routes.params.id;
         show();
         formType.value = 'Update';
-        // console.log(userId, 'edit');
     }
-
-
-    // if (props.id) {
-    //     show();
-    //     formType.value = 'Update';
-    // }
 });
+
 const viewPassword = (type) => {
-    if(type == 'password'){
+    if (type == 'password') {
         passwordType.value = (passwordType.value == 'password') ? 'text' : 'password';
-    }else{
+    } else {
         confirmPasswordType.value = (confirmPasswordType.value == 'password') ? 'text' : 'password';
     }
 }

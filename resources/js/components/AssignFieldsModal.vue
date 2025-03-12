@@ -90,7 +90,7 @@ const submitHandler = () => {
         .then((response) => {
             let status = response.data?.status;
             if (status) {
-                notificationMessage('success', 'Permission added successfully');
+                notificationMessage('success', 'Permission updated successfully');
                 emit('close', props.roleId);
             }
         })
