@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\LeadColorController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\LeadTagController;
+use App\Http\Controllers\LeadRatingController;
+use App\Http\Controllers\NoteStrikeFirstController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
@@ -11,6 +15,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Exports\LeadsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\AssignLeadFieldController;
+use App\Http\Controllers\StatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +38,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
-    Route::get('leads/export', function() {
+    Route::get('leads/export', function () {
         return Excel::download(new LeadsExport, 'leads.xlsx');
     });
 
@@ -42,6 +47,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::apiResource('users', UserController::class);
         Route::apiResource('leadcolors', LeadColorController::class);
         Route::apiResource('roles', RolePermissionController::class)->only('index');
+        Route::apiResource('lead/tags', LeadTagController::class);
+        Route::apiResource('lead/ratings', LeadRatingController::class);
+        Route::apiResource('note/strike/first', NoteStrikeFirstController::class);
+        Route::apiResource('status', StatusController::class);
     });
 
     // Apply the custom CheckLeadAssigned middleware to the update route
@@ -56,7 +65,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::post('update/profile/password', [AuthController::class, 'updateProfilePassword']);
 
 
-    Route::controller(AssignLeadFieldController::class)->group(function() {  
+    Route::controller(AssignLeadFieldController::class)->group(function () {
         Route::get('get/fields/{id}', 'getFields');
         Route::get('get/assign/fields/{id}', 'getAssignFields');
         Route::post('assign/fields', 'assignFields');
@@ -71,9 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
 });
-
 // Route::get('get-user', function(){
 //     return Auth::guard('api')->user();
 // });

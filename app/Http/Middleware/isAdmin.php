@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Helpers\ApiResponse;
 
 class isAdmin
 {
@@ -19,6 +20,7 @@ class isAdmin
         if(Auth::user()->roles->first()?->name == 'admin') {
             return $next($request);
         }
-        return redirect()->back();
+        return ApiResponse::error('Unauthorized user');
+        // return redirect()->back();
     }
 }

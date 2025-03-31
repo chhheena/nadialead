@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/sidebar'
-
+import { useRoute } from 'vue-router';
 import SidebarDropdown from './SidebarDropdown.vue'
 import { Link } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
@@ -23,12 +23,16 @@ const handleItemClick = () => {
     return props.item.children.some((child: SidebarItem) => sidebarStore.selected === child.label)
   }
 }
+
+const route = useRoute();
+
+
 </script>
 
 <template>
   <li>
     <router-link :to="{ name: `${item.route}` }"
-      class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
+      :class="`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${route?.path.includes(item?.name) ? 'bg-graydark' : ''}`">
       <!-- <Link :href="item.route"
       class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
       @click.prevent="handleItemClick"

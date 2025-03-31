@@ -39,28 +39,27 @@
                 </tbody>
             </table>
         </div>
-        <AssignFieldsModal
-            v-show="showModal"
-            :showModal="showModal"
-            :getFields="fieldsData"
-            @close="closeModal"
-            :roleId="roleId"
-            :assignedFileds ="assignedFileds"
-        />
+        <AssignFieldsModal v-show="showModal" :showModal="showModal" :getFields="fieldsData" @close="closeModal"
+            :roleId="roleId" :assignedFileds="assignedFileds" />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted} from "vue";
 import HTTP from "../../axios.js";
 import PrimaryButton from '@/components/PrimaryButton.vue';
+import { useAuthStore } from "@/stores/auth.js";
 import AssignFieldsModal from "@/components/AssignFieldsModal.vue";
+import { set } from "@vueuse/core";
 
 const roles = ref([]);
 const fieldsData = ref([]);
 const showModal = ref(false);
-const roleId  = ref('');
+const store = useAuthStore();
+const roleId = ref('');
 const assignedFileds = ref([]);
+
+
 
 const createTable = (page) => {
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}roles`;
@@ -73,11 +72,23 @@ const createTable = (page) => {
         .finally(() => { });
 };
 
-
+const getLeadFields = (roleId) => {
+    let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields/${roleId}`;
+    HTTP
+        .get(endPoint)
+        .then((response) => {
+            let status = response.data?.status;
+            if (status) {
+                fieldsData.value = response.data.data;
+            }
+        })
+        .catch((error) => { })
+        .finally(() => { });
+}
 
 const getAssignLeadFields = async (roleId) => {
     let endPoint = `${import.meta.env.VITE_API_BASE_URL}get/fields/${roleId}`;
-   await HTTP
+    await HTTP
         .get(endPoint)
         .then((response) => {
             let status = response.data?.status;
@@ -95,13 +106,17 @@ onMounted(() => {
 
 const openModal = (role) => {
     roleId.value = role.id;
+    getLeadFields(role.id);
     getAssignLeadFields(role.id);
-    showModal.value = true;
     assignedFileds.value = role.assigned_fields
+    setTimeout(() => {
+        showModal.value = true;
+    }, 500);
 }
 
-const closeModal = (roleId) => {
-    showModal.value=false;
-    getAssignLeadFields(roleId);
+const closeModal = () => {
+    showModal.value = false;
+    assignedFileds.value = [];
+    createTable();
 }
 </script>

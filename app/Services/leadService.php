@@ -17,8 +17,10 @@ class leadService
         try {
             // Set default value for perPage
             $perPage = $inputs["perPage"] ?? $inputs["params"] ?? 10;
+            $sortOrder = $inputs['sortOrder'] ?? 'DESC';
+            $sortBy = $inputs['sortBy'] ?? 'id';
             // Initialize the Lead query
-            $leads = Lead::latest();
+            $leads = Lead::orderBy($sortBy, $sortOrder);;
             // Apply filters if they exist
             if (!empty($inputs['filters']['leadTag'])) {
                 $leads->where('lead_tag', $inputs['filters']['leadTag']);
@@ -108,7 +110,7 @@ class leadService
             if($lead){
                 $lead->delete();
                 return  ApiResponse::success('Lead Deleted successfully');
-            }            
+            }
         } catch (\Exception  | RequestException $e) {
             return ApiResponse::error($e->getMessage());
         }

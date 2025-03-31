@@ -1,9 +1,11 @@
 
 import _ from "lodash";
-import {useToast} from 'vue-toast-notification';
+import { useToast } from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import { menus } from "./menus";
 import { mappingFields } from "@/LeadFilters/fields"
+import axios from './axios.js';
+import LeadFilters from "@/LeadFilters/filters.js";
 
 const $toast = useToast();
 
@@ -63,7 +65,7 @@ export const convertJsonToFormData = (data) => {
 };
 
 export const notificationMessage = (type, message) => {
-    const toast = $toast[type](message,{
+    const toast = $toast[type](message, {
         position: 'top-right',
         duration: 3000,
         dismissible: true
@@ -77,4 +79,77 @@ export const getMenuBaseOnRole = (role) => {
 
 export const getFieldsBaseOnRole = (role) => {
     return mappingFields[role]
+}
+
+export const addLeadTagFilter = async (name) => {
+    try {
+        const endPoint = `${import.meta.env.VITE_API_BASE_URL}lead/tags`;
+        const filterData = await axios.post(endPoint, { name });
+        let status = filterData.data.status;
+        if(status){
+            return status;
+        }
+    } catch (error) {
+
+    }
+}
+
+export const addLeadRatingFilter = async (name) => {
+    try {
+        const endPoint = `${import.meta.env.VITE_API_BASE_URL}lead/ratings`;
+        const filterData = await axios.post(endPoint, { name });
+        let status = filterData.data.status;
+        if(status){
+            return status;
+        }
+    } catch (error) {
+
+    }
+}
+
+export const addNotesFilter = async (name) => {
+    try {
+        const endPoint = `${import.meta.env.VITE_API_BASE_URL}note/strike/first`;
+        const filterData = await axios.post(endPoint, { name });
+        let status = filterData.data.status;
+        if(status){
+            return status;
+        }
+    } catch (error) {
+
+    }
+}
+
+export const addStatusFilter = async (name) => {
+    try {
+        const endPoint = `${import.meta.env.VITE_API_BASE_URL}status`;
+        const filterData = await axios.post(endPoint, { name });
+        let status = filterData.data.status;
+        if(status){
+            return status;
+        }
+    } catch (error) {
+
+    }
+}
+
+
+export const getFilters = async (path, type) => {
+    try {
+        const getDefaultFiltersDetail = getDefaultFilters(type);
+        const endPoint = `${import.meta.env.VITE_API_BASE_URL}${path}`;
+        const filterData = await axios.get(endPoint);
+        let status = filterData.data.status;
+        if(status){
+            let getFilterNames =  filterData.data.data.map((val) => val.name);
+            getFilterNames = getDefaultFiltersDetail.concat(getFilterNames);
+            return getFilterNames;
+        }
+    } catch (error) {
+
+    }
+}
+
+const getDefaultFilters = (type) => {
+    return LeadFilters[type];
 }

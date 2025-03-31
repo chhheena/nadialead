@@ -91,7 +91,7 @@ const submitHandler = () => {
             let status = response.data?.status;
             if (status) {
                 notificationMessage('success', 'Permission updated successfully');
-                emit('close', props.roleId);
+                emit('close');
             }
         })
         .catch((error) => { })

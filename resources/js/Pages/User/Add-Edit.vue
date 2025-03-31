@@ -6,7 +6,7 @@
                     <InputLabel for="name" value="Name" :isRequired="true" class="text-gray-600" />
                     <TextInput id="name" type="text"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        v-model="form.name" required autofocus autocomplete="name" placeholder="Enter your name" />
+                        v-model="form.name"  placeholder="Enter your name" />
                     <InputError class="mt-2" :message="errors.name ? errors.name[0] : ''" />
                 </div>
 
@@ -23,38 +23,57 @@
                     <InputLabel for="password" value="Password" class="text-gray-600"
                         :isRequired="form.id ? false : true" />
                     <div class="flex relative">
-                        <TextInput id="password" :type="passwordType"
+
+                        <TextInput id="password" :type="passwordType ? 'password' : 'text'"
                             class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                             v-model="form.password" required placeholder="Enter your password" />
-                        <svg @click="viewPassword('password')"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current" width="18"
-                            height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                                fill="" />
-                            <path
-                                d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                                fill="" />
-                        </svg>
+
+                         <svg v-if="passwordType"
+                        class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current" aria-hidden="true"
+                        @click="viewPassword('password')" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                            clip-rule="evenodd" />
+                    </svg>
+<svg v-if="!passwordType" class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current"
+                        aria-hidden="true" @click="viewPassword('password')" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="m4 15.6 3.055-3.056A4.913 4.913 0 0 1 7 12.012a5.006 5.006 0 0 1 5-5c.178.009.356.027.532.054l1.744-1.744A8.973 8.973 0 0 0 12 5.012c-5.388 0-10 5.336-10 7A6.49 6.49 0 0 0 4 15.6Z" />
+                        <path
+                            d="m14.7 10.726 4.995-5.007A.998.998 0 0 0 18.99 4a1 1 0 0 0-.71.305l-4.995 5.007a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.402.211.59l-4.995 4.983a1 1 0 1 0 1.414 1.414l4.995-4.983c.189.091.386.162.59.211.011 0 .021.007.033.01a2.982 2.982 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
+                        <path
+                            d="m19.821 8.605-2.857 2.857a4.952 4.952 0 0 1-5.514 5.514l-1.785 1.785c.767.166 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
+                    </svg>
                     </div>
                     <InputError class="mt-2" :message="errors.password ? errors.password[0] : ''" />
                 </div>
                 <div class="col-span-6">
                     <InputLabel for="confirm_password" value="Confirm Password" class="text-gray-600" />
                     <div class="flex relative">
-                        <TextInput id="confirm_password" :type="confirmPasswordType"
+                        <TextInput id="confirm_password" :type="confirmPasswordType ? 'password' : 'text'"
                             class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                             v-model="form.confirmPassword" required placeholder="Confirm your password" />
-                        <svg @click="viewPassword('confirmPassword')"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current" width="18"
-                            height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                                fill="" />
-                            <path
-                                d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                                fill="" />
-                        </svg>
+                        <svg v-if="confirmPasswordType"
+                        class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current" aria-hidden="true"
+                        @click="viewPassword('new-password')" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+                    <svg v-if="!confirmPasswordType" class="absolute right-2 top-1/2 transform -translate-y-1/2 fill-current"
+                        aria-hidden="true" @click="viewPassword('new-password')" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="m4 15.6 3.055-3.056A4.913 4.913 0 0 1 7 12.012a5.006 5.006 0 0 1 5-5c.178.009.356.027.532.054l1.744-1.744A8.973 8.973 0 0 0 12 5.012c-5.388 0-10 5.336-10 7A6.49 6.49 0 0 0 4 15.6Z" />
+                        <path
+                            d="m14.7 10.726 4.995-5.007A.998.998 0 0 0 18.99 4a1 1 0 0 0-.71.305l-4.995 5.007a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.402.211.59l-4.995 4.983a1 1 0 1 0 1.414 1.414l4.995-4.983c.189.091.386.162.59.211.011 0 .021.007.033.01a2.982 2.982 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
+                        <path
+                            d="m19.821 8.605-2.857 2.857a4.952 4.952 0 0 1-5.514 5.514l-1.785 1.785c.767.166 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
+                    </svg>
                     </div>
 
                     <InputError class="mt-2" :message="errors.confirmPassword ? errors.confirmPassword[0] : ''" />
@@ -64,7 +83,7 @@
                 <InputLabel for="role" value="Role" class="text-gray-600" :isRequired="true" />
                 <SelectInput v-model="form.role"
                     class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option value="" selected>Select user role</option>
+                    <option :value="none" selected>Select User Role</option>
                     <option value="client">Client</option>
                     <option value="team">Team</option>
                 </SelectInput>
@@ -100,8 +119,8 @@ let userId = ref("");
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const form = ref({});
 let formType = ref('Add');
-const passwordType = ref('password');
-const confirmPasswordType = ref('password');
+const passwordType = ref(true);
+const confirmPasswordType = ref(true);
 const props = defineProps({
     id: Number,
 });
@@ -165,9 +184,11 @@ onMounted(() => {
 
 const viewPassword = (type) => {
     if (type == 'password') {
-        passwordType.value = (passwordType.value == 'password') ? 'text' : 'password';
-    } else {
-        confirmPasswordType.value = (confirmPasswordType.value == 'password') ? 'text' : 'password';
+        passwordType.value = !passwordType.value;
+    }
+
+    if(type == 'new-password'){
+        confirmPasswordType.value = !confirmPasswordType.value
     }
 }
 </script>

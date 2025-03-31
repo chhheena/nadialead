@@ -13,6 +13,7 @@ import User from "@/Pages/User/Index.vue";
 import AddEditUser from "@/Pages/User/Add-Edit.vue";
 import Profile from "@/Pages/Profile/Edit.vue";
 import LeadUpdate from "@/Pages/Lead/Update.vue";
+import LeadManageFilters from "@/Pages/Lead/ManageFilters/index.vue";
 
 const routes = [
     {
@@ -162,7 +163,21 @@ const routes = [
                 path: "/edit/profile",
                 name: "edit.profile",
                 component: Profile,
-            }
+            },
+            {
+                path: "manage/filters",
+                name: "manage.filters",
+                component: LeadManageFilters,
+                beforeEnter: (to, from, next) => {
+                    const store = useAuthStore();
+                    const userRole = store.getUserRole;
+                    if (userRole === 'admin') {
+                        next();
+                    } else {
+                        next({ path: from.path });
+                    }
+                }
+            },
         ],
     }
 ];

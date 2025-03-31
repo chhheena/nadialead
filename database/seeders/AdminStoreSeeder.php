@@ -23,7 +23,7 @@ class AdminStoreSeeder extends Seeder
 
         $user = User::create([
             'name' => 'admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@admin.com',
             'password' => Hash::make('admin@123'),
         ]);
 
