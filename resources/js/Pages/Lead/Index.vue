@@ -13,7 +13,6 @@
                             {{ tag }}
                         </option>
                     </select>
-
                     <select id="leadRatings" @change="filter($event)" name="rating"
                         class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         <option value="" selected>Select Lead Rating</option>

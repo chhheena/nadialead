@@ -9,18 +9,24 @@
             </svg>
         </button>
         <DefaultCard cardTitle="Add New Filter">
-            <div class="flex items-center justify-center bg-gray-100 px-4 py-8">
+            <div class="flex items-center justify-center bg-gray-100 px-4 py-8 relative">
+                <Loader v-if="isLoading" height="10" width="10" :overlay="true" />
                 <form @submit.prevent="createNewFilter" class="w-full max-w-sm">
                     <div class="mb-4">
                         <input v-model="filterName" id="name" required type="text"
                             class="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Add filter name" />
-                        <span class="text-red" v-show="showError">Filter name is required</span>
+                            placeholder="Add filter name" maxlength="20" />
+                        <span class="text-red" v-show="showError">{{ errorMessage }}</span>
                     </div>
-                    <button type="submit"
-                        class="bg-blue-500 text-white py-3 px-4 rounded-xl hover:bg-blue-600 transition duration-300">
-                        Create New
-                    </button>
+                    <div class="mt-4 flex justify-start gap-4">
+                        <button type="submit"
+                            class="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
+                            Create New </button>
+                        <button @click="$emit('close')"
+                            class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300">
+                            Cancel </button>
+
+                    </div>
                 </form>
             </div>
         </DefaultCard>
@@ -32,12 +38,15 @@
 import { ref, watch, onMounted, onUnmounted } from "vue";
 import Modal from "@/components/Modal.vue";
 import DefaultCard from "@/components/Forms/DefaultCard.vue";
-import { addLeadTagFilter, addLeadRatingFilter, addNotesFilter, addStatusFilter } from "@/helpers.js";
+import { addLeadTagFilter, addLeadRatingFilter, addNotesFilter, addStatusFilter, notificationMessage } from "@/helpers.js";
+import Loader from "@/components/Loader.vue";
 const emit = defineEmits(['filterAdded']);
 const isShowModal = ref(false);
 const type = ref('');
 const filterName = ref('');
 const showError = ref(false);
+const errorMessage = ref('Filter name is required');
+const isLoading = ref(false);
 const props = defineProps({
     showModal: {
         type: Boolean,
@@ -60,30 +69,24 @@ const createNewFilter = async () => {
         return;
     }
     let status = null;
-    switch (type.value) {
-        case "leadRating":
-            status = await addLeadRatingFilter(filterName.value);
-            if (status) {
-                emit('filterAdded');
-            }
-            break;
-        case "noteFilter":
-            status = await addNotesFilter(filterName.value);
-            if (status) {
-                emit('filterAdded');
-            }
-            break;
-        case "statusFilter":
-            status = await addStatusFilter(filterName.value);
-            if (status) {
-                emit('filterAdded');
-            }
-            break;
-        default:
-            status = await addLeadTagFilter(filterName.value);
-            if (status) {
-                emit('filterAdded');
-            }
+    isLoading.value = true;
+    const filterActions = {
+        leadRating: addLeadRatingFilter,
+        noteFilter: addNotesFilter,
+        statusFilter: addStatusFilter,
+        default: addLeadTagFilter
+    };
+
+    const action = filterActions[type.value] || filterActions.default;
+    status = await action(filterName.value);
+
+    if (status == true) {
+        isLoading.value = false;
+        emit('filterAdded');
+    } else {
+        isLoading.value = false;
+        showError.value = true;
+        errorMessage.value = status;
     }
 }
 </script>

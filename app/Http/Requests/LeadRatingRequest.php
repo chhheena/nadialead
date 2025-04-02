@@ -27,7 +27,7 @@ class LeadRatingRequest extends FormRequest
         $id = $this->route('user');
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:lead_ratings,name,' . $id],
         ];
     }
 

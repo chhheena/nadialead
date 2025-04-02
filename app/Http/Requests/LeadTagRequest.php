@@ -27,7 +27,7 @@ class LeadTagRequest extends FormRequest
         $id = $this->route('user');
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:lead_tags,name,' . $id],
         ];
     }
 

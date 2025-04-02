@@ -90,7 +90,9 @@ export const addLeadTagFilter = async (name) => {
             return status;
         }
     } catch (error) {
-
+        if(error.response.data.errors.name){
+            return error.response.data.message;
+        }
     }
 }
 
@@ -103,7 +105,9 @@ export const addLeadRatingFilter = async (name) => {
             return status;
         }
     } catch (error) {
-
+        if(error.response.data.errors.name){
+            return error.response.data.message;
+        }
     }
 }
 
@@ -116,7 +120,9 @@ export const addNotesFilter = async (name) => {
             return status;
         }
     } catch (error) {
-
+        if(error.response.data.errors.name){
+            return error.response.data.message;
+        }
     }
 }
 
@@ -129,7 +135,9 @@ export const addStatusFilter = async (name) => {
             return status;
         }
     } catch (error) {
-
+        if(error.response.data.errors.name){
+            return error.response.data.message;
+        }
     }
 }
 
@@ -146,7 +154,9 @@ export const getFilters = async (path, type) => {
             return getFilterNames;
         }
     } catch (error) {
-
+        if(error.response.data.errors.name){
+            return error.response.data.message;
+        }
     }
 }
 

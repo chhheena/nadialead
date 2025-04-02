@@ -91,9 +91,9 @@ const maxWidthClass = computed(() => {
                     :class="maxWidthClass">
                     <slot v-if="showSlot" />
                     <!-- Close Button -->
-                    <button class="absolute top-4 border-0 right-4 text-white p-2 rounded-full" @click="close">
+                    <!-- <button class="absolute top-4 border-0 right-4 text-white p-2 rounded-full" @click="close">
                         ✖
-                    </button>
+                    </button> -->
                 </div>
             </Transition>
         </div>

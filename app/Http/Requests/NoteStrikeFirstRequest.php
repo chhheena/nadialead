@@ -27,7 +27,7 @@ class NoteStrikeFirstRequest extends FormRequest
         $id = $this->route('user');
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:note_strike_firsts,name,' . $id],
         ];
     }
 

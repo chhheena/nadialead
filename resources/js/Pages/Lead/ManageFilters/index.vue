@@ -3,7 +3,7 @@
         <!-- Tabs -->
         <div class="flex border-b">
             <button v-for="(tab, index) in tabs" :key="tab.name" @click="setActiveTab(tab.name)"
-                :class="['py-2 px-4', activeTab === tab.name ? 'text-purple-500 border-b-2 border-purple-500' : 'text-gray-500']">
+                :class="['py-2 px-4', activeTab === tab.name ? 'text-primary border-b-2 border-primary' : 'text-gray-500']">
                 {{ tab.label }}
             </button>
         </div>

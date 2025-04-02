@@ -22,7 +22,7 @@
                 <div class="relative">
 
                     <button @click="showFilterModal = true"
-                        class="block w-full px-2 py-2 rounded-lg border text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                        class="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
                         Add Filter
                     </button>
 
@@ -65,7 +65,7 @@
                 <tbody>
                     <tr v-if="serverBusy">
                         <td colspan="6">
-                            <Loader />
+                            <Loader height="10" width="10" />
                         </td>
                     </tr>
                     <tr v-else-if="isDataExist">
@@ -87,17 +87,17 @@
                             <template v-if="!isFieldEditable || tag.id != filterId">{{ tag.name }}</template>                            
                             <form @submit.prevent="updateFilter(index)" v-if="isFieldEditable && tag.id == filterId" class="flex gap-3 items-start">
                                 <div class="flex flex-col gap-1">
-                                    <input v-model="filterName" id="name" type="text"
+                                    <input v-model="filterName" @input="checkFilterName" id="name" type="text"
                                         class="p-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Add filter name" required />
-                                        <span class="text-red" v-show="showError">Required field. Please fill it in.</span>
+                                        placeholder="Add filter name" required maxlength="20" />
+                                        <span class="text-red" v-show="showError">{{ errorMessage }}</span>
                                 </div>
                                 <button type="submit"
-                                    class="bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition duration-300">
+                                    class="py-2 px-4 flex items-center gap-2 rounded bg-primary font-medium text-white hover:bg-opacity-80  bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
                                     Edit Filter
                                 </button>
                                 <button @click="isFieldEditable = false" type="btn"
-                                    class="bg-red-500 text-white py-2 px-4 rounded-xl hover:bg-red-600 transition duration-300">
+                                    class="py-2 px-4 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300">
                                     Cancel
                                 </button>
                             </form>
@@ -182,14 +182,14 @@ const pagination = ref({
 const serverBusy = ref(true);
 const isDataExist = ref(false);
 const destroyFilterId = ref();
-const modalContent = ref('Are you want to sure to delete this filter?');
+const modalContent = ref('Are you sure you want to delete this filter?');
 const showFilterModal = ref(false);
 const filterType = ref('leadTag');
 const isFieldEditable = ref(false);
 const filterName = ref('');
 const filterId = ref(0);
 const showError = ref(false);
-
+const errorMessage = ref('Required field. Please fill it in.');
 
 const setPagination = (response) => {
     pagination.value.total = response.data.meta.total;
@@ -282,6 +282,11 @@ const filterAdded = () => {
 
 
 const editFilter = (editId, editName) => {
+    if(editName.length == 20){
+        showError.value = true;
+        errorMessage.value = 'Filter name too long. Max 20 chars.';
+        
+    }
     filterId.value = editId;
     filterName.value = editName;
     isFieldEditable.value = true;
@@ -315,6 +320,13 @@ const updateFilter = (index) => {
         })
         .catch((error) => { })
         .finally(() => { });
+}
+
+const checkFilterName = () => {
+    if (filterName.value && filterName.value.length == 20) {
+        errorMessage.value = 'Filter name too long. Max 20 chars.';
+        showError.value = true;
+    }
 }
 
 onMounted(() => {

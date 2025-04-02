@@ -165,7 +165,7 @@ const routes = [
                 component: Profile,
             },
             {
-                path: "manage/filters",
+                path: "/manage/filters",
                 name: "manage.filters",
                 component: LeadManageFilters,
                 beforeEnter: (to, from, next) => {

@@ -42,7 +42,7 @@ export const menus = {
 </svg>`,
     label: 'Manage filters',
     route: 'manage.filters',
-    name: 'manage.filters'
+    name: 'manage/filters'
   }
   ],
 

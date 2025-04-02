@@ -14,11 +14,13 @@
                     <div class="flex flex-wrap gap-4">
                         <p>{{ content }}</p>
                     </div>
-                    <div class="mt-4 flex justify-end space-x-1">
-                        <button @click="$emit('deleteFilter')" type="submit"
-                            class="lex items-center gap-2 mx-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
-                            Delete Filter
-                        </button>
+                    <div class="mt-8 flex justify-end">
+                        <button @click="$emit('close')"
+                            class="p-3 me-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-400 focus:ring focus:ring-red-300">
+                            Cancel </button>
+                        <button @click="$emit('deleteFilter')"
+                            class="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">
+                            Delete Filter </button>
                     </div>
                 </form>
             </div>
@@ -40,7 +42,7 @@ const props = defineProps({
     },
     modalContent: {
         type: String,
-        default: 'Are you want to sure to delete this Item',
+        default: 'Are you sure you want to delete this filter?',
     }
 });
 
