@@ -12,7 +12,8 @@ export const useAuthStore = defineStore('auth', {
         loading: false,
         error: null,
         userRole: '',
-        assignedFields: []
+        assignedFields: [],
+        dashboardData: []
     }),
     getters: {
         isAuthenticated: (state) => !!state.token,
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore('auth', {
         getErrors: (state) => state.error,
         getUserRole: (state) => state.userRole,
         getAssignedFields: (state) => state.assignedFields,
+        getDashboardData: (state) => state.dashboardData,
     },
     actions: {
         async login(formData) {
@@ -100,6 +102,21 @@ export const useAuthStore = defineStore('auth', {
                 let response = await http.get(endPoint);
                 if(response.data.status){
                     this.assignedFields = response.data.data;                    
+                }
+            } catch (err) {
+                this.error = err.response?.data?.errors || 'Request failed';
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async fetchDashboardStatistics(){
+            let endPoint = `${this.baseURL}dashboard/data`;
+            try {
+                let response = await http.get(endPoint);
+                if(response.data.status && response.data.data.original?.status){
+                    this.dashboardData = response.data.data.original.data;               
+                    return response.data.data.original.data;
                 }
             } catch (err) {
                 this.error = err.response?.data?.errors || 'Request failed';

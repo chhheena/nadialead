@@ -9,6 +9,10 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\LeadTag;
+use App\Models\LeadRating;
+use App\Models\NoteStrikeFirst;
+use App\Models\Status;
 
 class leadService
 {
@@ -114,5 +118,21 @@ class leadService
         } catch (\Exception  | RequestException $e) {
             return ApiResponse::error($e->getMessage());
         }
+    }
+
+    public function getAllLeadsTags(){
+        return  ApiResponse::success(LeadTag::all());
+    }
+
+    public function getAllLeadsRatings(){
+        return  ApiResponse::success(LeadRating::all());
+    }
+
+    public function getAllLeadsNoteStrikeFirst(){
+        return  ApiResponse::success(NoteStrikeFirst::all());
+    }
+
+    public function getAllLeadsStatus(){
+        return  ApiResponse::success(Status::all());
     }
 }

@@ -548,22 +548,22 @@ onMounted(async () => {
 });
 
 const getLeadTagFilters = async () => {
-    const filterData = await getFilters('lead/tags', 'leadTags');
+    const filterData = await getFilters('get/all/leads/tags', 'leadTags');
     leadTags.value = filterData;
 }
 
 const getLeadRatingFilters = async () => {
-    const filterData = await getFilters('lead/ratings', 'leadRating');
+    const filterData = await getFilters('get/all/leads/ratings', 'leadRating');
     leadRatings.value = filterData;
 }
 
 const getNotesFilters = async () => {
-    const filterData = await getFilters('note/strike/first', 'leadStrike');
+    const filterData = await getFilters('get/all/leads/note/strike/first', 'leadStrike');
     noteStrikeFirst.value = filterData;
 }
 
 const getStatusFilters = async () => {
-    const filterData = await getFilters('status', 'leadStatus');
+    const filterData = await getFilters('get/all/leads/status', 'leadStatus');
     statuses.value = filterData;
 }
 

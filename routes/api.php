@@ -51,6 +51,11 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::apiResource('lead/ratings', LeadRatingController::class);
         Route::apiResource('note/strike/first', NoteStrikeFirstController::class);
         Route::apiResource('status', StatusController::class);
+        Route::get('dashboard/data', [UserController::class, 'dashboardData']);
+        Route::get('get/all/leads/tags', [LeadController::class, 'getAllLeadsTags']);
+        Route::get('get/all/leads/ratings', [LeadController::class, 'getAllLeadsRatings']);
+        Route::get('get/all/leads/note/strike/first', [LeadController::class, 'getAllLeadsNoteStrikeFirst']);
+        Route::get('get/all/leads/status', [LeadController::class, 'getAllLeadsStatus']);
     });
 
     // Apply the custom CheckLeadAssigned middleware to the update route

@@ -113,4 +113,12 @@ class UserController
             }
         }
 
+        public function dashboardData()
+        {
+            $responseArr = [];
+            $responseArr['data'] = $this->userService->dashboardData();
+            $responseArr['message'] = 'Dashboard data fetched successfully.';
+            return $this->successResponse($responseArr);
+        }
+
 }

@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cookie;
-
+use App\Models\Role;
+use App\Models\Lead;
 class userService
 {
     public function getList($inputs)
@@ -223,5 +224,19 @@ class userService
             'password' => $request->new_password,
         ]);
         return ApiResponse::success($isUserExist->refresh());
+    }
+
+    public function dashboardData()
+    {
+        $adminUsers = User::role('admin')->pluck('id'); 
+        $getAllUsersCount = User::where('id', '!=', $adminUsers[0])->get()->count();
+        $getRoleCount = Role::count();
+        $getLeadCount = Lead::count();
+        $data = [
+            'total_users' => $getAllUsersCount,
+            'total_roles' => $getRoleCount,
+            'total_leads' => $getLeadCount,
+        ];
+        return ApiResponse::success($data);
     }
 }

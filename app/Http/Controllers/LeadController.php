@@ -121,4 +121,25 @@ class LeadController extends Controller
     public function destroy($id){
         return $this->leadService->destroy($id);
     }
+
+    public function getAllLeads(){
+        return $this->leadService->getAllLeadsTags();
+    }
+
+    public function getAllLeadsTags(){
+        return $this->leadService->getAllLeadsTags();
+    }
+
+    public function getAllLeadsRatings(){
+        return $this->leadService->getAllLeadsRatings();    
+    }
+
+    public function getAllLeadsNoteStrikeFirst(){
+        return $this->leadService->getAllLeadsNoteStrikeFirst();
+    }
+
+    public function getAllLeadsStatus(){
+        return $this->leadService->getAllLeadsStatus();
+    }
+    
 }
